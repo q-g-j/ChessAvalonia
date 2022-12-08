@@ -377,6 +377,11 @@ public partial class MainPageViewModel
                                             {
                                                 GameState.CurrentOnlineGame.LastMoveStartWhite += "P";
                                             }
+                                            else if (GameState.IsCheckMate)
+                                            {
+                                                GameState.CurrentOnlineGame.LastMoveStartWhite += "M";
+                                            }
+
                                             GameState.CurrentOnlineGame.LastMoveStartBlack = null;
                                             GameState.CurrentOnlineGame.LastMoveEndBlack = null;
                                             GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
@@ -403,6 +408,10 @@ public partial class MainPageViewModel
                                             else if (canPromote)
                                             {
                                                 GameState.CurrentOnlineGame.LastMoveStartBlack += "P";
+                                            }
+                                            else if (GameState.IsCheckMate)
+                                            {
+                                                GameState.CurrentOnlineGame.LastMoveStartBlack += "M";
                                             }
 
                                             GameState.CurrentOnlineGame.LastMoveStartWhite = null;

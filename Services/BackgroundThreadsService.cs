@@ -12,6 +12,7 @@ using ChessAvalonia.ViewModels.Pages.Main;
 using ChessAvalonia.ViewModels.Pages.Main.Overlays;
 using ChessAvalonia.ViewModels.Pages.Lobby;
 using ChessAvalonia.Helpers;
+using ChessAvalonia.GameLogic;
 
 namespace ChessAvalonia.Services;
 internal static class BackgroundThreadsService
@@ -218,12 +219,13 @@ internal static class BackgroundThreadsService
                                     opponentColor = ChessPieceColor.White;
                                 }
 
-
                                 if (lastMoveStart != null && lastMoveEnd != null)
                                 {
-                                    ChessPiece chessPiece = squareDict[lastMoveStart[..2]].ChessPiece;
+
                                     Coords oldCoords = Coords.StringToCoords(lastMoveStart[..2]);
                                     Coords newCoords = Coords.StringToCoords(lastMoveEnd[..2]);
+
+                                    ChessPiece chessPiece = squareDict[lastMoveStart[..2]].ChessPiece;
 
                                     mainPageViewModel.MoveChessPiece(oldCoords, newCoords, true, true);
                                     gameState.MoveList.Add(new Move(oldCoords, newCoords, chessPiece.ChessPieceColor, chessPiece.ChessPieceType));
@@ -261,11 +263,22 @@ internal static class BackgroundThreadsService
                                             else if (type == "Queen")
                                                 chessPiece = new ChessPiece(opponentColor, ChessPieceType.Queen, gameState.IsRotated);
 
-
                                             squareDict[lastMoveEnd[..2]].ChessPiece = chessPiece;
                                             mainPageViewModel.ImageDict[lastMoveEnd[..2]] = ChessPieceImages.GetChessPieceImage(chessPiece.ChessPieceColor, chessPiece.ChessPieceType);
                                         }
+                                        else if (lastMoveStart[2] == 'M')
+                                        {
+                                            gameState.IsCheckMate = true;
+                                        }
                                     }
+
+                                    //if (
+                                    //CheckMateValidationGameLogic.IsCheckMate(squareDict, squareDict.WhiteKingCoords) ||
+                                    //CheckMateValidationGameLogic.IsCheckMate(squareDict, squareDict.BlackKingCoords)
+                                    //)
+                                    //{
+                                    //    mainPageViewModel.GameState.IsCheckMate = true;
+                                    //}
 
                                     doRun = false;
                                     gameState.IsWaitingForMove = false;
