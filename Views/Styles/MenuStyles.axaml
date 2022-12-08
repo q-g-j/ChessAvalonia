@@ -1,0 +1,29 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Style Selector="Border.MenuBorder">
+		<Setter Property="Width" Value="240"/>
+		<Setter Property="Height" Value="200"/>
+	</Style>
+	
+	<Style Selector="Button.MenuButton">
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="VerticalAlignment" Value="Stretch"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Foreground" Value="#f2f2f2"/>
+		<Setter Property="Background" Value="SaddleBrown"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="CornerRadius" Value="8"/>
+	</Style>
+    
+	<Style Selector="Button:pointerover.MenuButton /template/ ContentPresenter">
+        <Setter Property="Button.BorderThickness" Value="0"/>
+		<Setter Property="Button.Background" Value="#dd7f3c"/>
+        <Setter Property="Button.FontFamily" Value="{StaticResource Main}"/>
+        <Setter Property="Button.FontSize" Value="16"/>
+        <Setter Property="Button.Foreground" Value="#f2f2f2"/>
+	</Style>
+</Styles>

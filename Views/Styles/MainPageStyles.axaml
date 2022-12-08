@@ -1,0 +1,98 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Style Selector="Button.MenuBarButton">
+		<Setter Property="Background" Value="#ffb366"/>
+		<Setter Property="Margin" Value="0, 0, 0, 0"/>
+		<Setter Property="Padding" Value="0"/>
+		<Setter Property="Width" Value="50"/>
+		<Setter Property="Height" Value="50"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<!-- <Setter Property="HorizontalAlignment" Value="Left"/> -->
+		<Setter Property="CornerRadius" Value="5"/>
+		<Setter Property="BorderBrush" Value="SaddleBrown"/>
+		<Setter Property="BorderThickness" Value="1"/>
+	</Style>
+
+	<Style Selector="Button:pointerover.MenuBarButton /template/ ContentPresenter">
+		<Setter Property="Button.Background" Value="#dd7f3c"/>
+		<Setter Property="Button.CornerRadius" Value="5"/>
+		<Setter Property="Button.BorderBrush" Value="SaddleBrown"/>
+		<Setter Property="Button.BorderThickness" Value="1"/>
+	</Style>
+
+	<Style Selector="Button:pressed.MenuBarButton">
+		<Setter Property="Background" Value="#dd7f3c"/>
+		<Setter Property="CornerRadius" Value="5"/>
+		<Setter Property="BorderBrush" Value="SaddleBrown"/>
+		<Setter Property="BorderThickness" Value="1"/>
+	</Style>
+
+	<Style Selector="Line.MenuBarButtonLine">
+		<Setter Property="Margin" Value="0"/>
+		<Setter Property="StrokeThickness" Value="6"/>
+		<Setter Property="Stroke" Value="SaddleBrown"/>
+		<Setter Property="StartPoint" Value="0, 0"/>
+		<Setter Property="EndPoint" Value="1, 0"/>
+		<Setter Property="Stretch" Value="Fill"/>
+		<Setter Property="StrokeLineCap" Value="Round"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+	</Style>
+
+	<Style Selector="Label.MoveInfo">
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="16"/>
+	</Style>
+
+	<Style Selector="Rectangle.Square">
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="VerticalAlignment" Value="Stretch"/>
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="Margin" Value="0"/>
+		<Setter Property="Width" Value="60"/>
+		<Setter Property="Height" Value="60"/>
+	</Style>
+
+	<Style Selector="Rectangle.WhiteSquare">
+		<Setter Property="Fill" Value="#ffce9e"/>
+	</Style>
+
+	<Style Selector="Rectangle.BlackSquare">
+		<Setter Property="Fill" Value="#d18b47"/>
+	</Style>
+	
+	<Style Selector="Label.HorizontalNotation">
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Width" Value="60"/>
+		<Setter Property="Height" Value="60"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="FontSize" Value="15"/>
+	</Style>
+
+	<Style Selector="Label.VerticalNotation">
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Width" Value="60"/>
+		<Setter Property="Height" Value="60"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="FontSize" Value="15"/>
+	</Style>
+
+	<Style Selector="Image.ImageChessPiece">	
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Stretch" Value="Fill"/>
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="60"/>
+	</Style>
+</Styles>

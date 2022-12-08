@@ -1,0 +1,40 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="Border.OverlayBorder">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Background" Value="#ffb366"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="SaddleBrown"/>
+        <Setter Property="BoxShadow" Value="3 3 8 1 Black"/>
+    </Style>
+    
+    <Style Selector="Grid.OverlayGrid">
+        <Setter Property="Margin" Value="20"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+	
+	<Style Selector="Button.OverlayButton">
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="VerticalAlignment" Value="Stretch"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Foreground" Value="#f2f2f2"/>
+		<Setter Property="Background" Value="SaddleBrown"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="CornerRadius" Value="8"/>
+	</Style>
+    
+	<Style Selector="Button:pointerover.OverlayButton /template/ ContentPresenter">
+        <Setter Property="Button.BorderThickness" Value="0"/>
+		<Setter Property="Button.Background" Value="#dd7f3c"/>
+        <Setter Property="Button.FontFamily" Value="{StaticResource Main}"/>
+        <Setter Property="Button.FontSize" Value="16"/>
+        <Setter Property="Button.Foreground" Value="#f2f2f2"/>
+	</Style>
+</Styles>

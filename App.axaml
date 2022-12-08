@@ -1,0 +1,46 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:ChessAvalonia"
+             x:Class="ChessAvalonia.App">
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+	<!-- <Application.Styles>
+		<FluentTheme Mode="Light" />
+		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+	</Application.Styles> -->
+	
+	<Application.Resources>
+		<!--<FontFamily x:Key="Title">avares://ChessAvalonia//Assets/Fonts/BowlbyOne-Regular.otf</FontFamily>-->
+		<FontFamily x:Key="Main">/Assets/Fonts/selawk.ttf#Selawik</FontFamily>
+		<FontFamily x:Key="Block">/Assets/Fonts/JetBrainsMono-Regular.ttf#JetBrains Mono</FontFamily>
+
+		<ImageBrush x:Key="WhitePawn"      Source="/Assets/Images/white_pawn.png"/>
+		<ImageBrush x:Key="WhiteRook"      Source="/Assets/Images/white_rook.png"/>
+		<ImageBrush x:Key="WhiteKnight"    Source="/Assets/Images/white_knight.png"/>
+		<ImageBrush x:Key="WhiteBishop"    Source="/Assets/Images/white_bishop.png"/>
+		<ImageBrush x:Key="WhiteQueen"     Source="/Assets/Images/white_queen.png"/>
+		<ImageBrush x:Key="WhiteKing"      Source="/Assets/Images/white_king.png"/>
+
+		<ImageBrush x:Key="BlackPawn"      Source="/Assets/Images/black_pawn.png"/>
+		<ImageBrush x:Key="BlackRook"      Source="/Assets/Images/black_rook.png"/>
+		<ImageBrush x:Key="BlackKnight"    Source="/Assets/Images/black_knight.png"/>
+		<ImageBrush x:Key="BlackBishop"    Source="/Assets/Images/black_bishop.png"/>
+		<ImageBrush x:Key="BlackQueen"     Source="/Assets/Images/black_queen.png"/>
+		<ImageBrush x:Key="BlackKing"      Source="/Assets/Images/black_king.png"/>
+	</Application.Resources>
+	
+	<Application.Styles>
+		<!-- <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
+		<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/> -->
+		<FluentTheme Mode="Light" />
+		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+
+		<StyleInclude Source="/Views/Styles/MainPageStyles.axaml" />
+		<StyleInclude Source="/Views/Styles/LobbyPageStyles.axaml" />
+		<StyleInclude Source="/Views/Styles/OverlayStyles.axaml" />
+		<StyleInclude Source="/Views/Styles/MenuStyles.axaml" />
+	</Application.Styles>
+</Application>

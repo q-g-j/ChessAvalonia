@@ -1,0 +1,58 @@
+<Grid xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ChessAvalonia.ViewModels.Pages.Main.Overlays"
+             xmlns:conv="using:ChessAvalonia.Converters"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d"
+             x:Class="ChessAvalonia.Views.Pages.Main.Overlays.PromotePawn">
+
+	<Design.DataContext>
+		<vm:PromotePawnViewModel/>
+	</Design.DataContext>
+
+    <UserControl.Resources>
+        <conv:BitmapAssetValueConverter x:Key="BitmapConverter"/>
+    </UserControl.Resources>
+
+    <Border
+        Classes="OverlayBorder"
+        Height="90"
+        Width="240">
+        <Grid
+            Classes="OverlayGrid"
+            RowDefinitions="*"
+            ColumnDefinitions="*, *, *, *">
+            <Image Grid.Column="0" Grid.Row="0" Classes="ImageChessPiece" Source="{Binding OverlayPromotePawnList[0], Converter={StaticResource BitmapConverter}}" ZIndex="10">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerPressed">
+                    <ia:InvokeCommandAction Command="{Binding OverlayPromotePawnSelectChessPieceCommand}" CommandParameter="Bishop"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Image>
+            <Image Grid.Column="1" Grid.Row="0" Classes="ImageChessPiece" Source="{Binding OverlayPromotePawnList[1], Converter={StaticResource BitmapConverter}}" ZIndex="10">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerPressed">
+                    <ia:InvokeCommandAction Command="{Binding OverlayPromotePawnSelectChessPieceCommand}" CommandParameter="Knight"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Image>
+            <Image Grid.Column="2" Grid.Row="0" Classes="ImageChessPiece" Source="{Binding OverlayPromotePawnList[2], Converter={StaticResource BitmapConverter}}" ZIndex="10">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerPressed">
+                    <ia:InvokeCommandAction Command="{Binding OverlayPromotePawnSelectChessPieceCommand}" CommandParameter="Rook"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Image>
+            <Image Grid.Column="3" Grid.Row="0" Classes="ImageChessPiece" Source="{Binding OverlayPromotePawnList[3], Converter={StaticResource BitmapConverter}}" ZIndex="10">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerPressed">
+                    <ia:InvokeCommandAction Command="{Binding OverlayPromotePawnSelectChessPieceCommand}" CommandParameter="Queen"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Image>
+        </Grid>
+    </Border>
+</Grid>

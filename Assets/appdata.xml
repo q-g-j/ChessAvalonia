@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>${APPID}</id>
+    <metadatalicense>MIT</metadatalicense>
+    <projectlicense>MIT</projectlicense>
+    <contentrating type="oars-1.1" />
+
+    <name>${DENAME}</name>
+    <summary>${DECOMMENT}</summary>
+
+    <description>
+        <p>A longer description. This needs to be of minimum length, otherwise AppImageTool will give you a warning.
+        No description available (TBD). Add your own here. This is a test - AppRoot: ${APPDIRROOT}</p>
+    </description>
+
+    <releases>
+        <release version="${APPVERSION}" date="${ISODATE}">
+            <description><p>This is a test release only.</p></description>
+        </release>
+    </releases>
+
+    <screenshots>
+        <screenshot type="default">
+            <image>https://via.placeholder.com/800x450.png/0000FF/808080?text=Screenshot+(TBD)</image>
+        </screenshot>
+    </screenshots>
+
+    <developername>Your Name</developername>
+    <url type="homepage">https://example.net/</url>
+
+</component>

@@ -1,0 +1,49 @@
+<Grid xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ChessAvalonia.ViewModels.Pages.Main.Overlays"
+             mc:Ignorable="d" Classes="MenuGrid" 
+             x:Class="ChessAvalonia.Views.Pages.Main.Overlays.Menu"
+             HorizontalAlignment="Left">
+
+	<Design.DataContext>
+		<vm:MenuViewModel/>
+	</Design.DataContext>
+	
+	<Border
+		Classes="MenuBorder OverlayBorder">
+	    <Grid>
+			<Grid IsVisible="{Binding MenuMainIsVisible, FallbackValue=true}">
+				<Grid Classes="OverlayGrid" RowDefinitions="auto, *, auto">
+					<Button Classes="MenuButton" Grid.Row="0" Content="New game" Command="{Binding ButtonNewGameCommand}"/>
+					<Button Classes="MenuButton" Grid.Row="2" Content="Quit" Command="{Binding ButtonQuitCommand}"/>
+				</Grid>
+			</Grid>
+
+	        <Grid IsVisible="{Binding MenuGameModeIsVisible, FallbackValue=false}">
+	            <Grid Classes="OverlayGrid" RowDefinitions="auto, 8, auto, *, auto">
+	                <Button Classes="MenuButton" Grid.Row="0" Content="Local game" Command="{Binding ButtonGameModeLocalGameCommand}"/>
+	                <Button Classes="MenuButton" Grid.Row="2" Content="Online game" Command="{Binding ButtonGameModeOnlineGameCommand}"/>
+	                <Button Classes="MenuButton" Grid.Row="4" Content="Go back" Command="{Binding ButtonGameModeBackCommand}"/>
+	            </Grid>
+	        </Grid>
+
+			<Grid IsVisible="{Binding MenuLocalGameIsVisible, FallbackValue=false}">
+				<Grid Classes="OverlayGrid" RowDefinitions="auto, 8, auto, *, auto">
+					<Button Classes="MenuButton" Grid.Row="0" Content="White at bottom" Command="{Binding ButtonLocalGameWhiteBottomCommand}"/>
+					<Button Classes="MenuButton" Grid.Row="2" Content="Black at bottom" Command="{Binding ButtonLocalGameBlackBottomCommand}"/>
+					<Button Classes="MenuButton" Grid.Row="4" Content="Go back" Command="{Binding ButtonLocalGameBackCommand}"/>
+				</Grid>
+			</Grid>
+
+			<Grid IsVisible="{Binding MenuOnlineGameIsVisible, FallbackValue=false}">
+				<Grid Classes="OverlayGrid" RowDefinitions="auto, 8, auto, *, auto">
+					<Button Classes="MenuButton" Grid.Row="0" Content="Open lobby" Command="{Binding ButtonOnlineGameOpenLobbyCommand}" IsVisible="{Binding MenuButtonOpenLobbyIsVisible, FallbackValue=True}"/>
+					<Button Classes="MenuButton" Grid.Row="0" Content="End online game" Command="{Binding ButtonOnlineGameEndGameCommand}" IsVisible="{Binding MenuButtonEndOnlineGameIsVisible, FallbackValue=False}"/>
+					<Button Classes="MenuButton" Grid.Row="4" Content="Go back" Command="{Binding ButtonOnlineGameBackCommand}"/>
+				</Grid>
+			</Grid>
+	    </Grid>
+	</Border>
+</Grid>

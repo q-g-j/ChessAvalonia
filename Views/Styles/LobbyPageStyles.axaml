@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="DataGrid">
+        <Setter Property="Background" Value="#ffb366"/>
+		<Setter Property="BorderBrush" Value="Black"/>
+    </Style>
+	
+	<Style Selector="DataGridColumnHeader">
+		<Setter Property="Background" Value="#d18b47"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="17"/>
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="Padding" Value="10, 5, 0, 5"/>
+	</Style>
+</Styles>

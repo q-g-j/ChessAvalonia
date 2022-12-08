@@ -1,0 +1,42 @@
+<Grid xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ChessAvalonia.ViewModels.Pages.Lobby.Overlays"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d"
+             x:Class="ChessAvalonia.Views.Pages.Lobby.Overlays.OpponentAcceptedInvitation">
+           
+	<Design.DataContext>
+		<vm:OpponentAcceptedInvitationViewModel/>
+	</Design.DataContext>
+
+    <Grid>
+        <Border
+            Classes="OverlayBorder"
+            Height="150"
+            Width="260">
+            <Grid
+                Classes="OverlayGrid"
+                ColumnDefinitions="*"
+                RowDefinitions="auto, *, auto">
+                <TextBlock
+                        Text="{Binding OpponentName, StringFormat='\{0\} has accepted the invitation.'}"
+                        TextWrapping="Wrap"
+                        FontSize="15"
+                        FontFamily="{StaticResource Main}">
+                </TextBlock>
+                <Button
+                    Classes="OverlayButton"
+                    Grid.Column="0"
+                    Grid.Row="4"
+                    Content="Start game"
+                    Margin="0, 0, 10, 0"
+                    Width="120"
+                    Command="{Binding ButtonStartGameCommand}">
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Grid>

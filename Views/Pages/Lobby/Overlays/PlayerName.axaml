@@ -1,0 +1,77 @@
+<Grid xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ChessAvalonia.ViewModels.Pages.Lobby.Overlays"
+             xmlns:local="using:ChessAvalonia.Views.Pages.Lobby.Overlays"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d"
+             x:Class="ChessAvalonia.Views.Pages.Lobby.Overlays.PlayerName">
+      
+	<Design.DataContext>
+		<vm:PlayerNameViewModel/>
+	</Design.DataContext>
+
+    <Grid>
+        <Border
+            Classes="OverlayBorder"
+            Height="150"
+            Width="300">
+            <Grid
+                Classes="OverlayGrid"
+                ColumnDefinitions="*, *"
+                RowDefinitions="auto, 7, auto, *, auto">
+
+                <DockPanel
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2">
+                    <Label
+                        DockPanel.Dock="Left"
+                        Content="Choose a name:"
+                        VerticalContentAlignment="Center"
+                        FontSize="15"
+                        FontFamily="{StaticResource Main}">
+                    </Label>
+                    <TextBox
+                        Margin="5, 0, 0, 0"
+                        DockPanel.Dock="Left"
+                        HorizontalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        FontSize="15"
+                        IsFocused="{Binding TextBoxPlayerNameIsFocused, Mode=OneWayToSource}"
+                        FontFamily="{StaticResource Main}"
+                        Text="{Binding TextBoxPlayerNameText}">
+                    </TextBox>
+                </DockPanel>
+
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding LabelPlayerNameConflict}"
+                    FontSize="15"
+                    FontStyle="Italic"
+                    Foreground="Red"
+                    FontFamily="{StaticResource Main}"
+                    FontWeight="SemiBold">
+                </Label>
+                
+                <Button
+                    Classes="OverlayButton"
+                    Grid.Column="0"
+                    Grid.Row="4"
+                    Grid.ColumnSpan="2"
+                    Content="OK"
+                    Margin="0, 0, 10, 0"
+                    Width="120"
+                    Command="{Binding ButtonOk}"
+                    IsEnabled="{Binding ButtonOkIsEnabled, FallbackValue=false}">
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+
+</Grid>

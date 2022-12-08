@@ -1,0 +1,676 @@
+#!/bin/bash
+################################################################################
+# PROJECT   : Publish-AppImage for .NET
+# WEBPAGE   : https://github.com/kuiperzone/Publish-AppImage
+# COPYRIGHT : Andy Thomas 2021-2022
+# LICENSE   : MIT
+################################################################################
+
+###############################
+# CONSTANTS
+###############################
+
+declare -r SCRIPTVERSION="1.2.1"
+declare -r SCRIPTTITLE="Publish-AppImage for .NET"
+declare -r SCRIPTIMPLMIN=1
+declare -r SCRIPTIMPLMAX=1
+declare -r SCRIPTCOPYRIGHT="Copyright 2022 Andy Thomas"
+declare -r SCRIPTWEBSITE="https://github.com/kuiperzone/Publish-AppImage"
+
+declare -r SCRIPTNAME="publish-appimage"
+declare -r DEFAULTCONF="${SCRIPTNAME}.conf"
+
+declare -r APPIMAGEKIND="appimage"
+declare -r ZIPKIND="zip"
+declare -r DOTNETNONE="null"
+
+
+###############################
+# FUNCTIONS
+###############################
+
+function assertresult
+{
+    local ret=$?
+
+    if [ ${ret} -ne 0 ]; then
+        echo
+        exit ${ret}
+    fi
+}
+
+function execordie
+{
+    echo "${1}"
+    eval "${1}"
+    assertresult
+}
+
+function ensuredirectory
+{
+    local path="${1}"
+
+    if [ ! -d "${path}" ]; then
+        mkdir -p "${path}"
+        assertresult
+    fi
+}
+
+function removepath
+{
+    local path="${1}"
+
+    if [ -d "${path}" ]; then
+        rm -rf "${path}"
+        assertresult
+    elif [ -f "${path}" ]; then
+        rm -f "${path}"
+        assertresult
+    fi
+}
+
+function assertmandatory
+{
+    local name="${1}"
+    local value="${2}"
+
+    if [ "${value}" == "" ]; then
+        echo "${name} undefined in: ${confargvalue}"
+        echo
+        exit 1
+    fi
+}
+
+function assertoptfile
+{
+    local name="${1}"
+    local value="${2}"
+
+    if [ "${value}" != "" ] && [ ! -f "${value}" ]; then
+        echo "File not found: ${value}"
+
+        if [ "${name}" != "" ]; then
+            echo "See ${name} in: ${confargvalue}"
+        fi
+
+        echo
+        exit 1
+    fi
+}
+
+###############################
+# HANDLE ARGUMENTS
+###############################
+
+# Specify conf file
+declare -r CONFARG="f"
+declare -r CONFARGNAME="conf"
+confargvalue="${DEFAULTCONF}"
+argsyntax=":${CONFARG}:"
+
+# Runtime ID
+declare -r RIDARG="r"
+declare -r RIDARGNAME="runtime"
+ridargvalue="linux-x64"
+argsyntax="${argsyntax}${RIDARG}:"
+
+# Package kind
+declare -r KINDARG="k"
+declare -r KINDARGNAME="kind"
+declare -l kindargvalue="${APPIMAGEKIND}"
+argsyntax="${argsyntax}${KINDARG}:"
+
+# Run app
+declare -r RUNAPPARG="u"
+declare -r RUNAPPARGNAME="run"
+runappargvalue=false
+argsyntax="${argsyntax}${RUNAPPARG}"
+
+# Verbose
+declare -r VERBOSEARG="b"
+declare -r VERBOSEARGNAME="verbose"
+verboseargvalue=false
+argsyntax="${argsyntax}${VERBOSEARG}"
+
+# Skip yes (no prompt)
+declare -r SKIPYESARG="y"
+declare -r SKIPYESARGNAME="skip-yes"
+skipyesargvalue=false
+argsyntax="${argsyntax}${SKIPYESARG}"
+
+# Show version
+declare -r VERSIONARG="v"
+declare -r VERSIONARGNAME="version"
+versionargvalue=false
+argsyntax="${argsyntax}${VERSIONARG}"
+
+# Show help
+declare -r HELPARG="h"
+declare -r HELPARGNAME="help"
+helpargvalue=false
+argsyntax="${argsyntax}${HELPARG}"
+
+exithelp=0
+
+# Transform long options to short ones
+for arg in "${@}"; do
+  shift
+  case "${arg}" in
+    ("--${CONFARGNAME}") set -- "$@" "-${CONFARG}" ;;
+    ("--${RIDARGNAME}") set -- "$@" "-${RIDARG}" ;;
+    ("--${KINDARGNAME}") set -- "$@" "-${KINDARG}" ;;
+    ("--${RUNAPPNAME}") set -- "$@" "-${RUNAPPARG}" ;;
+    ("--${VERBOSEARGNAME}") set -- "$@" "-${VERBOSEARG}" ;;
+    ("--${SKIPYESARGNAME}") set -- "$@" "-${SKIPYESARG}" ;;
+    ("--${VERSIONARGNAME}") set -- "$@" "-${VERSIONARG}" ;;
+    ("--${HELPARGNAME}") set -- "$@" "-${HELPARG}" ;;
+    ("--"*)
+        echo "Illegal argument: ${arg}"
+        echo
+
+        exithelp=1
+        break
+        ;;
+    (*) set -- "$@" "${arg}" ;;
+  esac
+done
+
+if [ ${exithelp} == 0 ]; then
+    # Read arguments
+    while getopts ${argsyntax} arg; do
+        case "${arg}" in
+            (${CONFARG}) confargvalue="${OPTARG}" ;;
+            (${RIDARG}) ridargvalue="${OPTARG}" ;;
+            (${KINDARG}) kindargvalue="${OPTARG}" ;;
+            (${RUNAPPARG}) runappargvalue=true ;;
+            (${VERBOSEARG}) verboseargvalue=true ;;
+            (${SKIPYESARG}) skipyesargvalue=true ;;
+            (${VERSIONARG}) versionargvalue=true ;;
+            (${HELPARG}) helpargvalue=true ;;
+            (*)
+                echo "Illegal argument"
+                echo
+
+                exithelp=1
+                break
+                ;;
+        esac
+    done
+fi
+
+# Handle and help and version
+if [ ${helpargvalue} == true ] || [ $exithelp != 0 ]; then
+
+    indent="  "
+    echo "Usage:"
+    echo "${indent}${SCRIPTNAME} [-flags] [-option-n value-n]"
+    echo
+
+    echo "Help Options:"
+    echo "${indent}-${HELPARG}, --${HELPARGNAME}"
+    echo "${indent}Show help information flag."
+    echo
+    echo "${indent}-${VERSIONARG}, --${VERSIONARGNAME}"
+    echo "${indent}Show version and about information flag."
+    echo
+
+    echo "Build Options:"
+    echo "${indent}-${CONFARG}, --${CONFARGNAME} value"
+    echo "${indent}Specifies the conf file. Defaults to ${SCRIPTNAME}.conf."
+    echo
+    echo "${indent}-${RIDARG}, --${RIDARGNAME} value"
+    echo "${indent}Dotnet publish runtime identifier. Valid examples include:"
+    echo "${indent}linux-x64 and linux-arm64. Default is linux-x64 if unspecified."
+    echo "${indent}See also: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog"
+    echo
+    echo "${indent}-${KINDARG}, --${KINDARGNAME} value"
+    echo "${indent}Package output kind. Value must be one of: ${APPIMAGEKIND} or ${ZIPKIND}."
+    echo "${indent}Default is ${APPIMAGEKIND} if unspecified."
+    echo
+    echo "${indent}-${VERBOSEARG}, --${VERBOSEARGNAME}"
+    echo "${indent}Verbose review info output flag."
+    echo
+    echo "${indent}-${RUNAPPARG}, --${RUNAPPARGNAME}"
+    echo "${indent}Run the application after successful build flag."
+    echo
+    echo "${indent}-${SKIPYESARG}, --${SKIPYESARGNAME}"
+    echo "${indent}Skip confirmation prompt flag (assumes yes)."
+    echo
+
+    echo "Example:"
+    echo "${indent}${SCRIPTNAME} -${RIDARG} linux-arm64"
+    echo
+
+    exit $exithelp
+fi
+
+if [ ${versionargvalue} == true ]; then
+    echo
+    echo "${SCRIPTTITLE}, ${SCRIPTVERSION}"
+    echo "${SCRIPTCOPYRIGHT}"
+    echo "${SCRIPTWEBSITE}"
+    echo
+    echo "MIT License"
+    echo
+    echo "Permission is hereby granted, free of charge, to any person obtaining a copy"
+    echo "of this software and associated documentation files (the "Software"), to deal"
+    echo "in the Software without restriction, including without limitation the rights"
+    echo "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+    echo "copies of the Software, and to permit persons to whom the Software is"
+    echo "furnished to do so, subject to the following conditions:"
+    echo
+    echo "The above copyright notice and this permission notice shall be included in all"
+    echo "copies or substantial portions of the Software."
+    echo
+    echo "THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR"
+    echo "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,"
+    echo "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE"
+    echo "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER"
+    echo "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,"
+    echo "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE"
+    echo "SOFTWARE."
+    echo
+
+    exit 0
+fi
+
+
+###############################
+# SOURCE & WORKING
+###############################
+
+# Export these now as may be
+# useful in an advanced config file
+export DOTNETRID="${ridargvalue}"
+export PKGKIND="${kindargvalue}"
+export ISODATE=`date +"%Y-%m-%d"`
+
+if [ ! -f "${confargvalue}" ]; then
+    echo "Configuration file not found: ${confargvalue}"
+    echo
+    exit 1
+fi
+
+# Export contents to any post publish command
+set -a
+
+# Source local to PWD
+source "${confargvalue}"
+set +a
+
+# For AppImage tool and backward compatibility
+export VERSION="${APPVERSION}"
+
+
+# Then change PWD to conf file
+cd "$(dirname "${confargvalue}")"
+
+
+###############################
+# SANITY
+###############################
+
+if (( ${CONFIMPLVERSION} < ${SCRIPTIMPLMIN} )) || (( ${CONFIMPLVERSION} > ${SCRIPTIMPLMAX} )); then
+    echo "Configuration format version ${SCRIPTIMPLVERSION} not compatible"
+    echo "Older conf file but newer ${SCRIPTNAME} implementation?"
+    echo "Update from: ${SCRIPTWEBSITE}"
+    echo
+    exit 1
+fi
+
+assertmandatory "APPMAIN" "${APPMAIN}"
+assertmandatory "APPID" "${APPID}"
+assertmandatory "APPICONSRC" "${APPICONSRC}"
+assertmandatory "DENAME" "${DENAME}"
+assertmandatory "DECATEGORIES" "${DECATEGORIES}"
+assertmandatory "PKGOUTPUTDIR" "${PKGOUTPUTDIR}"
+
+if [ "${kindargvalue}" == "${APPIMAGEKIND}" ]; then
+    assertmandatory "APPIMAGETOOLCOMMAND" "${APPIMAGETOOLCOMMAND}"
+fi
+
+assertoptfile "APPICONSRC" "${APPICONSRC}"
+assertoptfile "APPXMLSRC" "${APPXMLSRC}"
+
+if [ "${DETERMINALFLAG}" != "true" ] && [ "${DETERMINALFLAG}" != "false" ]; then
+    echo "DETERMINALFLAG invalid value: ${DETERMINALFLAG}"
+    echo
+    exit 1
+fi
+
+if [ "${DOTNETPROJECTPATH}" == "${DOTNETNONE}" ] && [ "${POSTPUBLISH}" == "" ]; then
+    echo "No publish or build operation defined (nothing will be built)"
+    echo "See DOTNETPROJECTPATH and POSTPUBLISH in: ${confargvalue}"
+    echo
+    exit 1
+fi
+
+if [ "${DOTNETPROJECTPATH}" != "" ] && [ "${DOTNETPROJECTPATH}" != "${DOTNETNONE}" ] &&
+    [ ! -f "${DOTNETPROJECTPATH}" ] && [ ! -d "${DOTNETPROJECTPATH}" ]; then
+    echo "DOTNETPROJECTPATH path not found: ${DOTNETPROJECTPATH}"
+    echo
+    exit 1
+fi
+
+if [ "${kindargvalue}" != "${APPIMAGEKIND}" ] && [ "${kindargvalue}" != "${ZIPKIND}" ]; then
+    echo "Invalid argument value: ${kindargvalue}"
+    echo "Use one of: ${APPIMAGEKIND} or ${ZIPKIND}"
+    echo
+    exit 1
+fi
+
+
+# Detect if publish for windows
+execext=""
+declare -l tw="${ridargvalue}"
+
+if [[ "${tw}" == "win"* ]]; then
+
+    # May use this in future
+    execext=".exe"
+
+    if [ "${kindargvalue}" == "${APPIMAGEKIND}" ]; then
+        echo "Invalid AppImage payload"
+        echo "Looks like a windows binary to be packaged as AppImage."
+        echo "Use --${KINDARGNAME} ${ZIPKIND} instead."
+        echo
+        exit 1
+    fi
+fi
+
+
+###############################
+# VARIABLES
+###############################
+
+# Abbreviate RID where it maps well to arch
+if [ "${ridargvalue}" == "linux-x64" ]; then
+    fileoutarch="-x8664"
+elif [ "${ridargvalue}" == "linux-arm64" ]; then
+    fileoutarch="-aarch64"
+else
+    # Otherwise use RID itself
+    fileoutarch="-${ridargvalue}"
+fi
+
+# APPDIR LOCATIONS
+export APPDIRROOT="${PKGOUTPUTDIR}/AppDir"
+
+if [ "${kindargvalue}" == "${APPIMAGEKIND}" ]; then
+    # AppImage
+    export APPDIRUSR="${APPDIRROOT}/usr"
+    export APPDIRBIN="${APPDIRROOT}/usr/bin"
+    export APPDIRSHARE="${APPDIRROOT}/usr/share"
+
+    localrun="usr/bin/${APPMAIN}${execext}"
+else
+    # Simple zip
+    export APPDIRUSR=""
+    export APPDIRBIN="${APPDIRROOT}"
+    export APPDIRSHARE="${APPDIRROOT}"
+
+    localrun="${APPMAIN}${execext}"
+fi
+
+export APPRUNTARGET="${APPDIRBIN}/${APPMAIN}${execext}"
+
+
+# DOTNET PUBLISH
+if [ "${DOTNETPROJECTPATH}" != "${DOTNETNONE}" ]; then
+
+    publishcmd="dotnet publish"
+
+    if [ "${DOTNETPROJECTPATH}" != "" ] && [ "${DOTNETPROJECTPATH}" != "." ]; then
+        publishcmd="${publishcmd} \"${DOTNETPROJECTPATH}\""
+    fi
+
+    publishcmd="${publishcmd} -r ${ridargvalue}"
+
+    if [ "${APPVERSION}" != "" ]; then
+        publishcmd="${publishcmd} -p:Version=${APPVERSION}"
+    fi
+
+    if [ "${DOTNETPUBLISHARGS}" != "" ]; then
+        publishcmd="${publishcmd} ${DOTNETPUBLISHARGS}"
+    fi
+
+    publishcmd="${publishcmd} -o \"${APPDIRBIN}\""
+
+fi
+
+
+# PACKAGE OUTPUT
+if [ $PKGVERSIONFLAG == true ] && [ "${APPVERSION}" != "" ]; then
+    versionout="-${APPVERSION}"
+fi
+
+if [ "${kindargvalue}" == "${APPIMAGEKIND}" ]; then
+
+    # AppImageTool
+    packageout="${PKGOUTPUTDIR}/${APPMAIN}${versionout}${fileoutarch}${PKGAPPIMAGESUFFIX}"
+
+    packagecmd="${APPIMAGETOOLCOMMAND}"
+
+    if [ "${PKGAPPIMAGEARGS}" != "" ]; then
+        packagecmd="${packagecmd} ${PKGAPPIMAGEARGS}"
+    fi
+
+    packagecmd="${packagecmd} \"${APPDIRROOT}\" \"${packageout}\""
+
+    if [ ${runappargvalue} == true ]; then
+        packruncmd="${packageout}"
+    fi
+
+else
+
+    # Simple zip
+    packageout="${PKGOUTPUTDIR}/${APPMAIN}${versionout}${fileoutarch}.zip"
+    packagecmd="(cd \"${APPDIRROOT}\" && zip -r \"${PWD}/${packageout}\" ./)"
+
+    if [ ${runappargvalue} == true ]; then
+        packruncmd="${APPRUNTARGET}"
+    fi
+
+fi
+
+
+###############################
+# DESKTOP ENTRY & APPDATA
+###############################
+
+if [ "${kindargvalue}" == "${APPIMAGEKIND}" ]; then
+
+    desktop="[Desktop Entry]\n"
+    desktop="${desktop}Type=Application\n"
+    desktop="${desktop}Name=${DENAME}\n"
+    desktop="${desktop}Exec=AppRun\n"
+    desktop="${desktop}Terminal=${DETERMINALFLAG}\n"
+    desktop="${desktop}Categories=${DECATEGORIES}\n"
+
+    # Follow app-id
+    desktop="${desktop}Icon=${APPID}\n"
+
+    if [ "${DECOMMENT}" != "" ]; then
+        desktop="${desktop}Comment=${DECOMMENT}\n"
+    fi
+
+    if [ "${DEKEYWORDS}" != "" ]; then
+        desktop="${desktop}Keywords=${DEKEYWORDS}\n"
+    fi
+
+    desktop="${desktop}${DEEXTEND}\n"
+fi
+
+
+# Load appdata.xml
+if [ "${APPXMLSRC}" != "" ]; then
+
+    if command -v envsubst &> /dev/null; then
+        appxml=$(envsubst <"${APPXMLSRC}")
+    else
+        appxml=$(<"${APPXMLSRC}")
+        echo "WARNING: Variable substitution not available for: ${APPXMLSRC}"
+        echo
+    fi
+
+fi
+
+
+###############################
+# DISPLAY & CONFIRM
+###############################
+
+echo "${SCRIPTTITLE}, ${SCRIPTVERSION}"
+echo "${SCRIPTCOPYRIGHT}"
+echo
+
+echo "APPMAIN: ${APPMAIN}"
+echo "APPID: ${APPID}"
+echo "APPVERSION: ${APPVERSION}"
+echo "OUTPUT: ${packageout}"
+echo
+
+if [ "${desktop}" != "" ]; then
+    echo -e "${desktop}"
+fi
+
+if [ ${verboseargvalue} == true ] && [ "${appxml}" != "" ]; then
+    echo -e "${appxml}\n"
+fi
+
+echo "Build Commands:"
+
+if [ "${publishcmd}" != "" ]; then
+    echo
+    echo "${publishcmd}"
+fi
+
+if [ "${POSTPUBLISH}" != "" ]; then
+    echo
+    echo "${POSTPUBLISH}"
+fi
+
+echo
+echo "${packagecmd}"
+echo
+
+# Prompt
+if [ $skipyesargvalue == false ]; then
+
+    echo
+    read -p "Build now [N/y]? " prompt
+
+    if [ "${prompt}" != "y" ] && [ "${prompt}" != "Y" ]; then
+        echo
+        exit 1
+    fi
+
+    # Continue
+    echo
+fi
+
+
+###############################
+# PUBLISH & BUILD
+###############################
+
+# Clean and ensure directoy exists
+ensuredirectory "${PKGOUTPUTDIR}"
+removepath "${APPDIRROOT}"
+removepath "${packageout}"
+
+# Create AppDir structure
+ensuredirectory "${APPDIRBIN}"
+
+if [ "${kindargvalue}" != "${ZIPKIND}" ]; then
+    # We also create usr/share/icons, as some packages require this.
+    # See: https://github.com/kuiperzone/Publish-AppImage/issues/7
+    ensuredirectory "${APPDIRSHARE}/icons"
+fi
+
+echo
+
+# Publish dotnet
+if [ "${publishcmd}" != "" ]; then
+    execordie "${publishcmd}"
+    echo
+fi
+
+# Post-publish
+if [ "${POSTPUBLISH}" != "" ]; then
+
+    execordie "${POSTPUBLISH}"
+    echo
+
+fi
+
+# Application file must exist!
+if [ ! -f "${APPRUNTARGET}" ]; then
+    echo "Expected application file not found: ${APPRUNTARGET}"
+    echo
+    exit 1
+fi
+
+if [ "${kindargvalue}" == "${APPIMAGEKIND}" ]; then
+
+    echo
+
+    # Create desktop
+    if [ "${desktop}" != "" ]; then
+        temp="${APPDIRROOT}/${APPID}.desktop"
+        echo "Creating: ${temp}"
+        echo -e "${desktop}" > "${temp}"
+        assertresult
+    fi
+
+    if [ "${appxml}" != "" ]; then
+        dir="${APPDIRSHARE}/metainfo"
+        file="${dir}/${APPID}.appdata.xml"
+        echo "Creating: ${file}"
+        ensuredirectory "${dir}"
+        echo -e "${appxml}" > "${file}"
+        assertresult
+    fi
+
+    # Copy icon
+    if [ "${APPICONSRC}" != "" ]; then
+
+        iconext="${APPICONSRC##*.}"
+
+        if [ "${iconext}" != "" ]; then
+            iconext=".${iconext}"
+        fi
+
+        temp="${APPDIRROOT}/${APPID}${iconext}"
+        echo "Creating: ${temp}"
+
+        cp "${APPICONSRC}" "${temp}"
+        assertresult
+    fi
+
+    # AppRun
+    temp="${APPDIRROOT}/AppRun"
+
+    if [ ! -f "${temp}" ]; then
+
+        echo "Creating: ${temp}"
+        ln -s "${localrun}" "${temp}"
+        assertresult
+    fi
+fi
+
+# Build package
+echo
+execordie "${packagecmd}"
+echo
+
+echo "OUTPUT OK: ${packageout}"
+echo
+
+if [ "${packruncmd}" != "" ]; then
+    echo "RUNNING ..."
+    execordie "${packruncmd}"
+    echo
+fi
+
+exit 0

@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:ChessAvalonia.Views"
+        xmlns:mainpage="using:ChessAvalonia.Views.Pages.Main"
+        xmlns:lobbypage="using:ChessAvalonia.Views.Pages.Lobby"
+        xmlns:vm="using:ChessAvalonia.ViewModels"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="ChessAvalonia.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Background="#ffce9e"
+        Title="Chess.NET"
+        UseLayoutRounding="True"
+        Width="600"
+        Height="665"
+        MinWidth="600"
+        MinHeight="665"
+        CanResize="False"
+		RenderOptions.BitmapInterpolationMode="MediumQuality"
+        SystemDecorations="Full">
+
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	
+    <Grid>
+        <mainpage:MainPage IsVisible="{ Binding MainPageIsVisible, FallbackValue=False }"/>
+        <lobbypage:LobbyPage IsVisible="{ Binding LobbyPageIsVisible, FallbackValue=True }"/>
+	</Grid>
+</Window>
