@@ -7,22 +7,33 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using static ChessAvalonia.Models.Errors;
 using Avalonia.Input;
+using System.Drawing;
 
 namespace ChessAvalonia.ViewModels.Pages.Main.Overlays;
 
 [INotifyPropertyChanged]
-public partial class ErrorMessageViewModel
+public partial class MainPageErrorMessageViewModel
 {
     #region Constructor
-    public ErrorMessageViewModel()
+    public MainPageErrorMessageViewModel()
     {
         InitializeMessageHandlers();
     }
     #endregion
 
     #region Properties
-    private ErrorReason reason { get; set; }
+    private ErrorReason errorReason;
+    private ErrorReason ErrorReason
+    {
+        get => errorReason;
+        set
+        {
+            errorReason = value;
+            LabelErrorMessage = ErrorMessages[value];
+        }
+    }
     #endregion
 
     #region Bindable Properties
@@ -30,7 +41,7 @@ public partial class ErrorMessageViewModel
     private bool errorMessageIsVisible = false;
 
     [ObservableProperty]
-    private string message = "Error Message";
+    private string labelErrorMessage = ErrorMessages[ErrorReason.Default];
     #endregion
 
     #region Commands
@@ -39,7 +50,7 @@ public partial class ErrorMessageViewModel
     {
         ErrorMessageIsVisible = false;
 
-        if (reason is ErrorReason.ConnectionLost)
+        if (ErrorReason == ErrorReason.MainPageConnectionToServerLost)
         {
             MessageMenuViewModel.MenuButtonEndOnlineGameIsVisible = false;
             MessageMenuViewModel.MenuButtonOpenLobbyIsVisible = true;
@@ -47,14 +58,14 @@ public partial class ErrorMessageViewModel
             MessageMainPageViewModel.GameState.Reset();
         }
 
-        //reason = null;
+        ErrorReason = ErrorReason.Default;
     }
     #endregion
 
     #region Methods
     private void InitializeMessageHandlers()
     {
-        WeakReferenceMessenger.Default.Register<ErrorMessageViewModel, ErrorMessageViewModelRequestMessage>(this, (r, m) =>
+        WeakReferenceMessenger.Default.Register<MainPageErrorMessageViewModel, MainPageErrorMessageViewModelRequestMessage>(this, (r, m) =>
         {
             m.Reply(r);
         });
@@ -62,12 +73,12 @@ public partial class ErrorMessageViewModel
 
     internal void Show(ErrorReason reason)
     {
-        this.reason = reason;
+        ErrorReason = reason;
         ErrorMessageIsVisible = true;
     }
     #endregion
 
     #region Message Handlers
-    internal class ErrorMessageViewModelRequestMessage : RequestMessage<ErrorMessageViewModel> { }
+    internal class MainPageErrorMessageViewModelRequestMessage : RequestMessage<MainPageErrorMessageViewModel> { }
     #endregion
 }

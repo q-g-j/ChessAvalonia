@@ -11,6 +11,7 @@ using ChessAvalonia.Services;
 using Avalonia.Input.Raw;
 using Avalonia.Input;
 using System.Threading.Tasks;
+using static ChessAvalonia.Models.Errors;
 
 namespace ChessAvalonia.ViewModels.Pages.Lobby.Overlays;
 
@@ -68,19 +69,30 @@ public partial class PlayerNameViewModel
         MessageLobbyViewModel.LocalPlayerName = TextBoxPlayerNameText;
 
         ButtonOkIsEnabled = false;
-        Player responseLocalPlayer = await WebApiClient.WebApiClientPlayersCommands.CreatePlayerAsync(localPlayer);
-        if (responseLocalPlayer.Name == localPlayer.Name)
+        try
         {
-            MessageMainPageViewModel.GameState.LocalPlayer = responseLocalPlayer;
+            Player responseLocalPlayer = await WebApiClient.WebApiClientPlayersCommands.CreatePlayerAsync(localPlayer);
+
+            if (responseLocalPlayer.Name == localPlayer.Name)
+            {
+                MessageMainPageViewModel.GameState.LocalPlayer = responseLocalPlayer;
+                BackgroundThreadsService.LobbyKeepResettingInactiveCounter();
+                MessageLobbyViewModel.ButtonRefreshIsEnabled = true;
+            }
+            else
+            {
+                LabelPlayerNameConflict = "This name is already taken.";
+            }
+        }
+        catch
+        {
+            MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageCannotConnectToServer);
+        }
+        finally
+        {
             OverlayPlayerNameIsVisible = false;
-            MessageLobbyViewModel.ButtonRefreshIsEnabled = true;
-            BackgroundThreadsService.LobbyKeepResettingInactiveCounter();
+            ButtonOkIsEnabled = true;
         }
-        else
-        {
-            LabelPlayerNameConflict = "This name is already taken.";
-        }
-        ButtonOkIsEnabled = true;
     }
     #endregion
 

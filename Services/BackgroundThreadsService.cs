@@ -16,6 +16,8 @@ using ChessAvalonia.Helpers;
 using ChessAvalonia.GameLogic;
 using DynamicData;
 using System.Collections.Generic;
+using static ChessAvalonia.Models.Errors;
+using System.Security;
 
 namespace ChessAvalonia.Services;
 internal static class BackgroundThreadsService
@@ -27,27 +29,30 @@ internal static class BackgroundThreadsService
 
         var threadStart = new ThreadStart(() =>
         {
+            bool isException = false;
+
             while (
                 mainPageViewModel.GameState.IsOnlineGame &&
-                mainPageViewModel.GameState.CurrentOnlineGame.BlackId != mainPageViewModel.GameState.LocalPlayer.Id
-            )
+                mainPageViewModel.GameState.CurrentOnlineGame.BlackId != mainPageViewModel.GameState.LocalPlayer.Id &&
+                ! isException
+                )
             {
                 Task.Run(() =>
                 {
                     if (mainPageViewModel.GameState.LocalPlayer != null)
                     {
-                        try
+                        DispatchService.Invoke(async () =>
                         {
-                            DispatchService.Invoke(async () =>
+                            try
                             {
                                 mainPageViewModel.GameState.CurrentOnlineGame
-                                    = await WebApiClientGamesCommands.GetNewGame(mainPageViewModel.GameState.LocalPlayer.Id);                                 
-                            });
-                        }
-                        catch
-                        {
-                            ;
-                        }
+                                    = await WebApiClientGamesCommands.GetNewGame(mainPageViewModel.GameState.LocalPlayer.Id);
+                            }
+                            catch
+                            {
+                                isException = true;
+                            }
+                        });
                     }
                 });
                 Thread.Sleep(1000);
@@ -74,7 +79,9 @@ internal static class BackgroundThreadsService
 
         var threadStart = new ThreadStart(() =>
         {
-            while (MessageLobbyViewModel.LobbyPageIsVisible)
+            bool isException = false;
+
+            while (MessageLobbyViewModel.LobbyPageIsVisible && ! isException)
             {
                 Task.Run(async () =>
                 {
@@ -86,8 +93,8 @@ internal static class BackgroundThreadsService
                         }
                         catch
                         {
-                            // MessageBox.Show(mainPageViewModel.LobbyWindow, "Cannot contact server...", "Error!");
-                            mainPageViewModel.LobbyPage.IsVisible = false;
+                            isException = true;
+                            MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageConnectionToServerLost);
                         }
                     }
                 });
@@ -108,7 +115,11 @@ internal static class BackgroundThreadsService
 
         var threadStart = new ThreadStart(() =>
         {
-            while (gameState.IsOnlineGame)
+            bool isException = false;
+
+            while (
+                gameState.IsOnlineGame &&
+                ! isException)
             {
                 Task.Run(async () =>
                 {
@@ -120,7 +131,8 @@ internal static class BackgroundThreadsService
                         }
                         catch
                         {
-                            ;
+                            isException = true;
+                            MessageMainPageErrorMessageViewModel.Show(ErrorReason.MainPageConnectionToServerLost);
                         }
                     }
                 });
@@ -141,7 +153,11 @@ internal static class BackgroundThreadsService
 
         var threadStart = new ThreadStart(() =>
         {
-            while (gameState.IsOnlineGame)
+            bool isException = false;
+
+            while (
+                gameState.IsOnlineGame &&
+                !isException)
             {
                 Task.Run(async () =>
                 {
@@ -153,7 +169,8 @@ internal static class BackgroundThreadsService
                         }
                         catch
                         {
-                            ;
+                            isException = true;
+                            MessageMainPageErrorMessageViewModel.Show(ErrorReason.MainPageConnectionToServerLost);
                         }
                     }
                 });
@@ -227,7 +244,6 @@ internal static class BackgroundThreadsService
                                     {
                                         Coords oldCoords = Coords.StringToCoords(lastMoveStart);
                                         Coords newCoords = Coords.StringToCoords(lastMoveEnd);
-
 
                                         bool wasSquareNewCoordsEmpty = !squareDict[newCoords.String].IsOccupied;
 

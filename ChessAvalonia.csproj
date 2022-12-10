@@ -35,8 +35,11 @@
     <Compile Update="Views\CustomActionControl.axaml.cs">
       <DependentUpon>CustomActionControl.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Pages\Main\Overlays\ErrorMessage.axaml.cs">
+    <Compile Update="Views\Pages\Lobby\Overlays\ErrorMessage.axaml.cs">
       <DependentUpon>ErrorMessage.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Pages\Main\Overlays\ErrorMessage.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 

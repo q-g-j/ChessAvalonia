@@ -1,15 +1,15 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ChessAvalonia.ViewModels.Pages.Main.Overlays;
+using ChessAvalonia.ViewModels.Pages.Lobby.Overlays;
 
-namespace ChessAvalonia.Views.Pages.Main.Overlays;
+namespace ChessAvalonia.Views.Pages.Lobby.Overlays;
 
 public partial class ErrorMessage : UserControl
 {
     public ErrorMessage()
     {
         InitializeComponent();
-        DataContext = new MainPageErrorMessageViewModel();
+        DataContext = new LobbyPageErrorMessageViewModel();
     }
 }

@@ -34,9 +34,13 @@ internal static class MessengerService
     {
         get => WeakReferenceMessenger.Default.Send<OnlineGamePlayerQuitViewModel.OnlineGamePlayerQuitViewModelRequestMessage>();
     }
-    internal static ErrorMessageViewModel MessageErrorMessageViewModel
+    internal static LobbyPageErrorMessageViewModel MessageLobbyPageErrorMessageViewModel
     {
-        get => WeakReferenceMessenger.Default.Send<ErrorMessageViewModel.ErrorMessageViewModelRequestMessage>();
+        get => WeakReferenceMessenger.Default.Send<LobbyPageErrorMessageViewModel.LobbyPageErrorMessageViewModelRequestMessage>();
+    }
+    internal static MainPageErrorMessageViewModel MessageMainPageErrorMessageViewModel
+    {
+        get => WeakReferenceMessenger.Default.Send<MainPageErrorMessageViewModel.MainPageErrorMessageViewModelRequestMessage>();
     }
     internal static OpponentLeftLobbyViewModel MessageOpponentLeftLobbyViewModel
     {

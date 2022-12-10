@@ -15,6 +15,7 @@ using System.Linq;
 using System.Collections.Generic;
 using ChessAvalonia.ViewModels.Pages.Main;
 using Avalonia.Input;
+using static ChessAvalonia.Models.Errors;
 
 namespace ChessAvalonia.ViewModels.Pages.Lobby;
 
@@ -71,12 +72,23 @@ public partial class LobbyPageViewModel
 
     partial void OnLobbyPageIsVisibleChanged(bool value)
     {
-        if (value == false && MessageMainPageViewModel.GameState.LocalPlayer != null)
+        if (value == false)
         {
-            Task.Run(async () =>
-                await WebApiClient.WebApiClientPlayersCommands.DeletePlayerAsync(
-                    MessageMainPageViewModel.GameState.LocalPlayer.Id)
-                );
+            if (MessageMainPageViewModel.GameState.LocalPlayer != null)
+            {
+                try
+                {
+                    Task.Run(async () =>
+                        await WebApiClient.WebApiClientPlayersCommands.DeletePlayerAsync(
+                            MessageMainPageViewModel.GameState.LocalPlayer.Id)
+                        );
+                }
+                catch
+                {
+
+                }
+            }
+            MessageLobbyPageErrorMessageViewModel.ErrorMessageIsVisible = false;
         }
         else
         {
@@ -126,25 +138,32 @@ public partial class LobbyPageViewModel
         mainPageViewModel.GameState.IsOnlineGame = false;
         mainPageViewModel.GameState.CurrentOnlineGame = null;
 
-        IEnumerable<Player> playerListTemp = await WebApiClient.WebApiClientPlayersCommands.GetAllPlayersAsync();
-        Player opponentInPlayerListTemp = playerListTemp.Where(a => a.Name == selectedPlayerName).FirstOrDefault();
-
-        if (opponentInPlayerListTemp is not null)
+        try
         {
-            MessageMainPageViewModel.GameState.IsOnlineGame = true;
-            MessageMainPageViewModel.GameState.Opponent = opponentInPlayerListTemp;
-            MessageWaitingForInvitationAcceptionViewModel.OpponentName = selectedPlayerName;
-            MessageWaitingForInvitationAcceptionViewModel.OverlayWaitingForInvitationAcceptionIsVisible = true;
-            await WebApiClient.WebApiClientInvitationsCommands.InvitePlayerAsync(selectedPlayerId, localPlayer);
+            IEnumerable<Player> playerListTemp = await WebApiClient.WebApiClientPlayersCommands.GetAllPlayersAsync();
+            Player opponentInPlayerListTemp = playerListTemp.Where(a => a.Name == selectedPlayerName).FirstOrDefault();
 
-            MessageMainPageViewModel.GameState.CurrentOnlineGame = new();
+            if (opponentInPlayerListTemp is not null)
+            {
+                MessageMainPageViewModel.GameState.IsOnlineGame = true;
+                MessageMainPageViewModel.GameState.Opponent = opponentInPlayerListTemp;
+                MessageWaitingForInvitationAcceptionViewModel.OpponentName = selectedPlayerName;
+                MessageWaitingForInvitationAcceptionViewModel.OverlayWaitingForInvitationAcceptionIsVisible = true;
+                await WebApiClient.WebApiClientInvitationsCommands.InvitePlayerAsync(selectedPlayerId, localPlayer);
 
-            BackgroundThreadsService.LobbyKeepCheckingForOpponentAcception();
+                MessageMainPageViewModel.GameState.CurrentOnlineGame = new();
+
+                BackgroundThreadsService.LobbyKeepCheckingForOpponentAcception();
+            }
+            else
+            {
+                MessageOpponentLeftLobbyViewModel.OpponentName = selectedPlayerName;
+                MessageOpponentLeftLobbyViewModel.OverlayOpponentLeftLobbyIsVisible = true;
+            }
         }
-        else
+        catch
         {
-            MessageOpponentLeftLobbyViewModel.OpponentName = selectedPlayerName;
-            MessageOpponentLeftLobbyViewModel.OverlayOpponentLeftLobbyIsVisible = true;
+            MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageConnectionToServerLost);
         }
     }
 
@@ -157,50 +176,65 @@ public partial class LobbyPageViewModel
         string selectedPlayerName = selectedPlayer.Name;
         int selectedPlayerId = selectedPlayer.Id;
 
-        IEnumerable<Player> invitationListTemp = await WebApiClient.WebApiClientInvitationsCommands.GetPlayerInvitationsAsync(localPlayer.Id);
-        Player opponentInInvitationListTemp = invitationListTemp.Where(a => a.Name == selectedPlayerName).FirstOrDefault();
-
-        if (opponentInInvitationListTemp is not null)
+        try
         {
-            mainPageViewModel.GameState.Opponent = null;
-            mainPageViewModel.GameState.IsWaitingForMove = false;
-            mainPageViewModel.GameState.IsOnlineGame = false;
-            mainPageViewModel.GameState.CurrentOnlineGame = null;
+            IEnumerable<Player> invitationListTemp = await WebApiClient.WebApiClientInvitationsCommands.GetPlayerInvitationsAsync(localPlayer.Id);
+            Player opponentInInvitationListTemp = invitationListTemp.Where(a => a.Name == selectedPlayerName).FirstOrDefault();
 
-            OnlineGame newOnlineGame = new(localPlayer.Id, selectedPlayerId);
+            if (opponentInInvitationListTemp is not null)
+            {
+                mainPageViewModel.GameState.Opponent = null;
+                mainPageViewModel.GameState.IsWaitingForMove = false;
+                mainPageViewModel.GameState.IsOnlineGame = false;
+                mainPageViewModel.GameState.CurrentOnlineGame = null;
 
-            mainPageViewModel.GameState.LocalPlayer.Color = "White";
+                OnlineGame newOnlineGame = new(localPlayer.Id, selectedPlayerId);
 
-            mainPageViewModel.GameState.IsOnlineGame = true;
-            mainPageViewModel.GameState.Opponent = opponentInInvitationListTemp;
-            MessageOpponentAcceptedInvitationViewModel.OpponentName = selectedPlayerName;
+                mainPageViewModel.GameState.LocalPlayer.Color = "White";
 
-            mainPageViewModel.GameState.CurrentOnlineGame = 
-                await WebApiClient.WebApiClientGamesCommands.StartNewOnlineGameAsync(newOnlineGame);
+                mainPageViewModel.GameState.IsOnlineGame = true;
+                mainPageViewModel.GameState.Opponent = opponentInInvitationListTemp;
+                MessageOpponentAcceptedInvitationViewModel.OpponentName = selectedPlayerName;
 
-            BackgroundThreadsService.OnlineGameKeepResettingWhiteInactiveCounter();
+                mainPageViewModel.GameState.CurrentOnlineGame =
+                    await WebApiClient.WebApiClientGamesCommands.StartNewOnlineGameAsync(newOnlineGame);
 
-            LobbyPageIsVisible = false;
-            MessageMainPageViewModel.MainPageIsVisible = true;
+                BackgroundThreadsService.OnlineGameKeepResettingWhiteInactiveCounter();
 
-            MessageMenuViewModel.MenuButtonEndOnlineGameIsVisible = true;
-            MessageMenuViewModel.MenuButtonOpenLobbyIsVisible = false;
+                LobbyPageIsVisible = false;
+                MessageMainPageViewModel.MainPageIsVisible = true;
 
-            mainPageViewModel.StartGame(false);
+                MessageMenuViewModel.MenuButtonEndOnlineGameIsVisible = true;
+                MessageMenuViewModel.MenuButtonOpenLobbyIsVisible = false;
+
+                mainPageViewModel.StartGame(false);
+            }
+            else
+            {
+                MessageOpponentCanceledInvitationViewModel.OpponentName = selectedPlayerName;
+                MessageOpponentCanceledInvitationViewModel.OverlayOpponentCanceledInvitationIsVisible = true;
+            }
         }
-        else
+        catch
         {
-            MessageOpponentCanceledInvitationViewModel.OpponentName = selectedPlayerName;
-            MessageOpponentCanceledInvitationViewModel.OverlayOpponentCanceledInvitationIsVisible = true;
+            MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageConnectionToServerLost);
         }
     }
 
     [RelayCommand]
     private async void ButtonRefresh()
     {
-        PlayerList = await WebApiClient.WebApiClientPlayersCommands.GetAllPlayersAsync();
-        InvitationList = await WebApiClient.WebApiClientInvitationsCommands.GetPlayerInvitationsAsync(
-            MessageMainPageViewModel.GameState.LocalPlayer.Id);
+        try
+        {
+            PlayerList = await WebApiClient.WebApiClientPlayersCommands.GetAllPlayersAsync();
+            InvitationList = await WebApiClient.WebApiClientInvitationsCommands.GetPlayerInvitationsAsync(
+                MessageMainPageViewModel.GameState.LocalPlayer.Id
+                );
+        }
+        catch
+        {
+            MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageCannotConnectToServer);
+        }
     }
 
     [RelayCommand]

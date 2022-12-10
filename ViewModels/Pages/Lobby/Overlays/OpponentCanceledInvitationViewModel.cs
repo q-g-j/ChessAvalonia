@@ -30,12 +30,20 @@ public partial class OpponentCanceledInvitationViewModel
     #endregion
 
     #region Commands
-    private async void ButtonOkCommand()
+    [RelayCommand]
+    private async void ButtonOk()
     {
-        MessageLobbyViewModel.PlayerList = await WebApiClient.WebApiClientPlayersCommands.GetAllPlayersAsync();
-        MessageLobbyViewModel.InvitationList = await WebApiClient.WebApiClientInvitationsCommands.GetPlayerInvitationsAsync(
-            MessageMainPageViewModel.GameState.LocalPlayer.Id
-        );
+        try
+        {
+            MessageLobbyViewModel.PlayerList = await WebApiClient.WebApiClientPlayersCommands.GetAllPlayersAsync();
+            MessageLobbyViewModel.InvitationList = await WebApiClient.WebApiClientInvitationsCommands.GetPlayerInvitationsAsync(
+                MessageMainPageViewModel.GameState.LocalPlayer.Id
+            );
+        }
+        catch
+        {
+
+        }
 
         OverlayOpponentCanceledInvitationIsVisible = false;
     }

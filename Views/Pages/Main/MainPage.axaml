@@ -951,8 +951,15 @@
 				ZIndex="20"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
-				IsVisible="{Binding OnlineGamePlayerQuitIsVisible, FallbackValue=false}">			
+				IsVisible="{Binding OnlineGamePlayerQuitIsVisible, FallbackValue=false}">
 			</overlays:OnlineGamePlayerQuit>
+
+			<overlays:ErrorMessage
+				ZIndex="20"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				IsVisible="{Binding ErrorMessageIsVisible, FallbackValue=false}">
+			</overlays:ErrorMessage>
 		</Grid>	
 	</Grid>
 </Grid>

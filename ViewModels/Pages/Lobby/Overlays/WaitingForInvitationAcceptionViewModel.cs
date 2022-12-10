@@ -45,13 +45,19 @@ public partial class WaitingForInvitationAcceptionViewModel
     private async void ButtonCancel()
     {
         MainPageViewModel mainPageViewModel = MessageMainPageViewModel;
-        await WebApiClient.WebApiClientInvitationsCommands.CancelInvitationAsync(
-            mainPageViewModel.GameState.Opponent.Id, mainPageViewModel.GameState.LocalPlayer);
+        try
+        {
+            await WebApiClient.WebApiClientInvitationsCommands.CancelInvitationAsync(
+                mainPageViewModel.GameState.Opponent.Id, mainPageViewModel.GameState.LocalPlayer);
+        }
+        catch
+        {
 
+        }
         mainPageViewModel.GameState.IsOnlineGame = false;
         mainPageViewModel.GameState.CurrentOnlineGame = null;
 
-        MessageWaitingForInvitationAcceptionViewModel.OverlayWaitingForInvitationAcceptionIsVisible = false;
+        OverlayWaitingForInvitationAcceptionIsVisible = false;
     }
     #endregion
 

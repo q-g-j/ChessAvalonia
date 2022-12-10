@@ -374,7 +374,14 @@ public partial class MainPageViewModel
 
                                         if (!canPromote)
                                         {
-                                            await WebApiClientGamesCommands.PutCurrentOnlineGame(GameState.CurrentOnlineGame.Id, GameState.CurrentOnlineGame);
+                                            try
+                                            {
+                                                await WebApiClientGamesCommands.PutCurrentOnlineGame(GameState.CurrentOnlineGame.Id, GameState.CurrentOnlineGame);
+                                            }
+                                            catch
+                                            {
+
+                                            }
                                             Thread.Sleep(100);
                                             BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
 
