@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+	<TrimMode>partial</TrimMode>
   </PropertyGroup>
 
   <ItemGroup>

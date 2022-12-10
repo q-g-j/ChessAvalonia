@@ -102,24 +102,34 @@ public partial class PromotePawnViewModel
         squareDict[mainPageViewModel.PromotePawnCoords.String].ChessPiece = new ChessPiece(ownColor, chessPieceType, mainPageViewModel.GameState.IsRotated);
         imageDict[mainPageViewModel.PromotePawnCoords.String] = ChessPieceImages.GetChessPieceImage(ownColor, chessPieceType);
 
-        if (chessPieceType == ChessPieceType.Bishop)
+        if (mainPageViewModel.GameState.IsOnlineGame)
         {
-            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'B';
+            if (chessPieceType == ChessPieceType.Bishop)
+            {
+                mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'B';
+            }
+            else if (chessPieceType == ChessPieceType.Knight)
+            {
+                mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'K';
+            }
+            else if (chessPieceType == ChessPieceType.Rook)
+            {
+                mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'R';
+            }
+            else if (chessPieceType == ChessPieceType.Queen)
+            {
+                mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'Q';
+            }
+            try
+            {
+                await WebApiClientGamesCommands.PutCurrentOnlineGame(mainPageViewModel.GameState.CurrentOnlineGame.Id, mainPageViewModel.GameState.CurrentOnlineGame);
+            }
+            catch
+            {
+
+            }
+            BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
         }
-        else if (chessPieceType == ChessPieceType.Knight)
-        {
-            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'K';
-        }
-        else if (chessPieceType == ChessPieceType.Rook)
-        {
-            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'R';
-        }
-        else if (chessPieceType == ChessPieceType.Queen)
-        {
-            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'Q';
-        }
-        await WebApiClientGamesCommands.PutCurrentOnlineGame(mainPageViewModel.GameState.CurrentOnlineGame.Id, mainPageViewModel.GameState.CurrentOnlineGame);
-        BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
     }
 
     private void InitializeMessageHandlers()
