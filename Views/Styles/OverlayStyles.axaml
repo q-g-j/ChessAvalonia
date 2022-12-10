@@ -37,4 +37,31 @@
         <Setter Property="Button.FontSize" Value="16"/>
         <Setter Property="Button.Foreground" Value="#f2f2f2"/>
 	</Style>
+
+	<Style Selector="Label.OverlayLabel">
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="15"/>
+	</Style>
+
+	<Style Selector="Label.OverlayErrorTitleLabel">
+		<Setter Property="Foreground" Value="Red"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+	</Style>
+
+	<Style Selector="Label.OverlayErrorLabel">
+		<Setter Property="Foreground" Value="Red"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="15"/>
+		<Setter Property="FontStyle" Value="Italic"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+	</Style>
+
+	<Style Selector="TextBox.OverlayTextBox">
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="FontFamily" Value="{StaticResource Main}"/>
+		<Setter Property="FontSize" Value="15"/>
+	</Style>
 </Styles>

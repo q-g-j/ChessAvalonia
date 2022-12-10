@@ -7,6 +7,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using ChessAvalonia.Services;
+using ChessAvalonia.WebApiClient;
 
 namespace ChessAvalonia.ViewModels.Pages.Main.Overlays;
 
@@ -41,7 +43,7 @@ public partial class PromotePawnViewModel
     private void OverlayPromotePawnSelectChessPiece(object chessPiece)
     {
         string chessPieceString = chessPiece as string;
-        ChessPieceType chessPieceType = ChessPieceType.Empty;
+        ChessPieceType chessPieceType;
 
         if (chessPieceString == "Queen")
         {
@@ -60,7 +62,7 @@ public partial class PromotePawnViewModel
             chessPieceType = ChessPieceType.Knight;
         }
 
-        MessageMainPageViewModel.PromotePawn(chessPieceType);
+        PromotePawn(chessPieceType);
     }
     #endregion
 
@@ -87,6 +89,37 @@ public partial class PromotePawnViewModel
                 ChessPieceImages.BlackQueen
             };
         }
+    }
+
+    internal async void PromotePawn(ChessPieceType chessPieceType)
+    {
+        MainPageViewModel mainPageViewModel = MessageMainPageViewModel;
+        SquareDictionary squareDict = mainPageViewModel.SquareDict;
+        ImageDictionary imageDict = mainPageViewModel.ImageDict;
+
+        MessagePromotePawnViewModel.PromotePawnIsVisible = false;
+        ChessPieceColor ownColor = squareDict[mainPageViewModel.PromotePawnCoords.String].ChessPiece.ChessPieceColor;
+        squareDict[mainPageViewModel.PromotePawnCoords.String].ChessPiece = new ChessPiece(ownColor, chessPieceType, mainPageViewModel.GameState.IsRotated);
+        imageDict[mainPageViewModel.PromotePawnCoords.String] = ChessPieceImages.GetChessPieceImage(ownColor, chessPieceType);
+
+        if (chessPieceType == ChessPieceType.Bishop)
+        {
+            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'B';
+        }
+        else if (chessPieceType == ChessPieceType.Knight)
+        {
+            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'K';
+        }
+        else if (chessPieceType == ChessPieceType.Rook)
+        {
+            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'R';
+        }
+        else if (chessPieceType == ChessPieceType.Queen)
+        {
+            mainPageViewModel.GameState.CurrentOnlineGame.PromotePawnType = 'Q';
+        }
+        await WebApiClientGamesCommands.PutCurrentOnlineGame(mainPageViewModel.GameState.CurrentOnlineGame.Id, mainPageViewModel.GameState.CurrentOnlineGame);
+        BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
     }
 
     private void InitializeMessageHandlers()

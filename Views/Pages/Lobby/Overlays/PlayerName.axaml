@@ -22,42 +22,35 @@
                 Classes="OverlayGrid"
                 ColumnDefinitions="*, *"
                 RowDefinitions="auto, 7, auto, *, auto">
-
                 <DockPanel
                     Grid.Column="0"
                     Grid.Row="0"
                     Grid.ColumnSpan="2">
-                    <Label
+					<Label
+						Classes="OverlayLabel"
                         DockPanel.Dock="Left"
                         Content="Choose a name:"
-                        VerticalContentAlignment="Center"
-                        FontSize="15"
-                        FontFamily="{StaticResource Main}">
-                    </Label>
+                        VerticalContentAlignment="Center">
+					</Label>
                     <TextBox
+						Classes="OverlayTextBox"
                         Margin="5, 0, 0, 0"
                         DockPanel.Dock="Left"
                         HorizontalAlignment="Stretch"
                         VerticalContentAlignment="Center"
-                        FontSize="15"
                         IsFocused="{Binding TextBoxPlayerNameIsFocused, Mode=OneWayToSource}"
-                        FontFamily="{StaticResource Main}"
                         Text="{Binding TextBoxPlayerNameText}">
                     </TextBox>
                 </DockPanel>
 
-                <Label
+				<Label
+					Classes="OverlayErrorLabel"
                     Grid.Column="0"
                     Grid.Row="2"
                     Grid.ColumnSpan="2"
                     VerticalContentAlignment="Center"
-                    Content="{Binding LabelPlayerNameConflict}"
-                    FontSize="15"
-                    FontStyle="Italic"
-                    Foreground="Red"
-                    FontFamily="{StaticResource Main}"
-                    FontWeight="SemiBold">
-                </Label>
+                    Content="{Binding LabelPlayerNameConflict}">
+				</Label>
                 
                 <Button
                     Classes="OverlayButton"

@@ -48,7 +48,6 @@ public partial class MainPageViewModel
     private Point originalPointerPosition;
     private Point dragOverCanvasPosition;
     private Point dragOverChessPiecePosition;
-    private Coords promotePawnCoords;
     private bool isMouseMoving = false;
     private readonly bool wasSideMenuOpen = false;
     #endregion
@@ -58,6 +57,7 @@ public partial class MainPageViewModel
     internal SquareDictionary SquareDict { get; set; } = new();
     internal GameState GameState { get; set; }
     internal UserControl LobbyPage { get; set; } = new();
+    internal Coords PromotePawnCoords { get; set; }
     #endregion
 
     #region Bindable Properties
@@ -290,7 +290,7 @@ public partial class MainPageViewModel
                                     {
                                         MoveChessPiece(oldCoords, newCoords, true, true);
                                         // GameState.MoveList.Add(new Move(oldCoords, newCoords, currentlyDraggedChessPieceColor, currentlyDraggedChessPieceType));
-                                        promotePawnCoords = newCoords;
+                                        PromotePawnCoords = newCoords;
                                         
                                         MessagePromotePawnViewModel.ChangeColor(currentlyDraggedChessPieceColor);
                                         MessagePromotePawnViewModel.PromotePawnIsVisible = true;
@@ -359,29 +359,6 @@ public partial class MainPageViewModel
                                             GameState.CurrentOnlineGame.LastMoveStartWhite = oldCoords.String;
                                             GameState.CurrentOnlineGame.LastMoveEndWhite = newCoords.String;
 
-                                            if (moveValidationData.CanCastle)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartWhite += "C" + moveValidationData.Coords[0].String;
-                                                GameState.CurrentOnlineGame.LastMoveEndWhite += "C" + moveValidationData.Coords[1].String;
-                                            }
-                                            else if (moveValidationData.MovedTwoSquares)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartWhite += "T" + SquareDict.CoordsPawnMovedTwoSquares.String;
-                                            }
-                                            else if (moveValidationData.CanCaptureEnPassant)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartWhite += "E" + SquareDict.CoordsPawnMovedTwoSquares.String;
-                                                SquareDict.CoordsPawnMovedTwoSquares = null;
-                                            }
-                                            else if (canPromote)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartWhite += "P";
-                                            }
-                                            else if (GameState.IsCheckMate)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartWhite += "M";
-                                            }
-
                                             GameState.CurrentOnlineGame.LastMoveStartBlack = null;
                                             GameState.CurrentOnlineGame.LastMoveEndBlack = null;
                                             GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
@@ -391,32 +368,23 @@ public partial class MainPageViewModel
                                             GameState.CurrentOnlineGame.LastMoveStartBlack = oldCoords.String;
                                             GameState.CurrentOnlineGame.LastMoveEndBlack = newCoords.String;
 
-                                            if (moveValidationData.CanCastle)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartBlack += "C" + moveValidationData.Coords[0].String;
-                                                GameState.CurrentOnlineGame.LastMoveEndBlack += "C" + moveValidationData.Coords[1].String;
-                                            }
-                                            else if (moveValidationData.MovedTwoSquares)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartBlack += "T" + SquareDict.CoordsPawnMovedTwoSquares.String;
-                                            }
-                                            else if (moveValidationData.CanCaptureEnPassant)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartBlack += "E" + SquareDict.CoordsPawnMovedTwoSquares.String;
-                                                SquareDict.CoordsPawnMovedTwoSquares = null;
-                                            }
-                                            else if (canPromote)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartBlack += "P";
-                                            }
-                                            else if (GameState.IsCheckMate)
-                                            {
-                                                GameState.CurrentOnlineGame.LastMoveStartBlack += "M";
-                                            }
-
                                             GameState.CurrentOnlineGame.LastMoveStartWhite = null;
                                             GameState.CurrentOnlineGame.LastMoveEndWhite = null;
                                             GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
+                                        }
+
+                                        if (GameState.IsCheckMate)
+                                        {
+                                            GameState.CurrentOnlineGame.IsCheckMate = true;
+                                        }
+                                        else if (moveValidationData.MovedTwoSquares)
+                                        {
+                                            GameState.CurrentOnlineGame.PawnMovedTwoSquares = true;
+                                            SquareDict.CoordsPawnMovedTwoSquares = null;
+                                        }
+                                        else
+                                        {
+                                            GameState.CurrentOnlineGame.PawnMovedTwoSquares = false;
                                         }
 
                                         if (!canPromote)
@@ -424,6 +392,8 @@ public partial class MainPageViewModel
                                             await WebApiClientGamesCommands.PutCurrentOnlineGame(GameState.CurrentOnlineGame.Id, GameState.CurrentOnlineGame);
                                             Thread.Sleep(100);
                                             BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
+
+                                            GameState.CurrentOnlineGame.PromotePawnType = ' ';
                                         }
                                     }
                                 }
@@ -640,41 +610,6 @@ public partial class MainPageViewModel
         }
 
         return true;
-    }
-
-    internal async void PromotePawn(ChessPieceType chessPieceType)
-    {
-        MessagePromotePawnViewModel.PromotePawnIsVisible = false;
-        ChessPieceColor ownColor = SquareDict[promotePawnCoords.String].ChessPiece.ChessPieceColor;
-        SquareDict[promotePawnCoords.String].ChessPiece = new ChessPiece(ownColor, chessPieceType, GameState.IsRotated);
-        ImageDict[promotePawnCoords.String] = ChessPieceImages.GetChessPieceImage(ownColor, chessPieceType);
-
-        bool doPutCurrentGame = false;
-        if (GameState.IsOnlineGame)
-        {
-            if (GameState.CurrentOnlineGame.LastMoveStartWhite != null)
-            {
-                if (GameState.CurrentOnlineGame.LastMoveStartWhite.Length > 2 && GameState.CurrentOnlineGame.LastMoveStartWhite[2] == 'P')
-                {
-                    doPutCurrentGame = true;
-                    GameState.CurrentOnlineGame.LastMoveStartWhite += Enum.GetName(chessPieceType);
-                }
-            }
-            else if (GameState.CurrentOnlineGame.LastMoveStartBlack != null)
-            {
-                if (GameState.CurrentOnlineGame.LastMoveStartBlack.Length > 2 && GameState.CurrentOnlineGame.LastMoveStartBlack[2] == 'P')
-                {
-                    doPutCurrentGame = true;
-                    GameState.CurrentOnlineGame.LastMoveStartBlack += Enum.GetName(chessPieceType);
-                }
-            }
-            if (doPutCurrentGame)
-            {
-                await WebApiClientGamesCommands.PutCurrentOnlineGame(GameState.CurrentOnlineGame.Id, GameState.CurrentOnlineGame);
-
-                BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
-            }
-        }
     }
 
     private void InitializeMessageHandlers()

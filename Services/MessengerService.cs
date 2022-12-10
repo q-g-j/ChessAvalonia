@@ -3,8 +3,8 @@ using ChessAvalonia.ViewModels.Pages.Lobby;
 using ChessAvalonia.ViewModels.Pages.Lobby.Overlays;
 using ChessAvalonia.ViewModels.Pages.Main;
 using ChessAvalonia.ViewModels.Pages.Main.Overlays;
+using ChessAvalonia.ViewModels.Windows.Main;
 using CommunityToolkit.Mvvm.Messaging;
-using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.Services;
 
@@ -33,6 +33,10 @@ internal static class MessengerService
     internal static OnlineGamePlayerQuitViewModel MessageOnlineGamePlayerQuitViewModel
     {
         get => WeakReferenceMessenger.Default.Send<OnlineGamePlayerQuitViewModel.OnlineGamePlayerQuitViewModelRequestMessage>();
+    }
+    internal static ErrorMessageViewModel MessageErrorMessageViewModel
+    {
+        get => WeakReferenceMessenger.Default.Send<ErrorMessageViewModel.ErrorMessageViewModelRequestMessage>();
     }
     internal static OpponentLeftLobbyViewModel MessageOpponentLeftLobbyViewModel
     {

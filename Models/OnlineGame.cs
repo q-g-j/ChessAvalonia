@@ -26,6 +26,9 @@ internal class OnlineGame
     public string LastMoveEndWhite { get; set; }
     public string LastMoveStartBlack { get; set; }
     public string LastMoveEndBlack { get; set; }
+    public bool PawnMovedTwoSquares { get; set; } = false;
+    public char PromotePawnType { get; set; } = ' ';
+    public bool IsCheckMate { get; set; } = false;
     public string MoveInfo { get; set; }
     public bool HasPlayerQuit { get; set; } = false;
     #endregion

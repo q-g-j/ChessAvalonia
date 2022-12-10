@@ -9,14 +9,14 @@ using Avalonia.Media;
 using Avalonia.Xaml.Interactions.Core;
 using Avalonia.Xaml.Interactivity;
 using ChessAvalonia.Models;
-using ChessAvalonia.ViewModels;
+using ChessAvalonia.ViewModels.Windows.Main;
 using ChessAvalonia.Converters;
 using static ChessAvalonia.Services.MessengerService;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace ChessAvalonia.Views;
+namespace ChessAvalonia.Views.Windows.Main;
 
 public partial class MainWindow : Window
 {

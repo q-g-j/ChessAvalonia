@@ -4,8 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using ChessAvalonia.ViewModels;
-using ChessAvalonia.Views;
+using ChessAvalonia.Views.Windows.Main;
 
 namespace ChessAvalonia;
 

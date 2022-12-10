@@ -7,7 +7,7 @@ using ChessAvalonia.Helpers;
 using Avalonia.Input;
 using System;
 
-namespace ChessAvalonia.ViewModels;
+namespace ChessAvalonia.ViewModels.Windows.Main;
 
 [INotifyPropertyChanged]
 public partial class MainWindowViewModel

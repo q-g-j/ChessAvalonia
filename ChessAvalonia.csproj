@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -35,5 +35,13 @@
     <Compile Update="Views\CustomActionControl.axaml.cs">
       <DependentUpon>CustomActionControl.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pages\Main\Overlays\ErrorMessage.axaml.cs">
+      <DependentUpon>ErrorMessage.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Windows\Overlays\" />
+    <Folder Include="Views\Windows\Overlays\" />
   </ItemGroup>
 </Project>

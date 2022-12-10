@@ -1,49 +1,40 @@
-<Grid xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:ChessAvalonia.ViewModels.Pages.Lobby.Overlays"
+             xmlns:vm="using:ChessAvalonia.ViewModels.Pages.Main.Overlays"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              mc:Ignorable="d"
-             x:Class="ChessAvalonia.Views.Pages.Lobby.Overlays.WaitingForInvitationAcception">
-             
+             x:Class="ChessAvalonia.Views.Pages.Main.Overlays.ErrorMessage">
+
 	<Design.DataContext>
-		<vm:WaitingForInvitationAcceptionViewModel/>
+		<vm:ErrorMessageViewModel/>
 	</Design.DataContext>
 
     <Grid>
         <Border
             Classes="OverlayBorder"
-            Height="160"
-            Width="290">
+            Height="170"
+            Width="280">
             <Grid
                 Classes="OverlayGrid"
                 ColumnDefinitions="*"
-                RowDefinitions="auto, 8, auto, *, auto">
+                RowDefinitions="auto, *, auto">
 				<Label
-					Classes="OverlayLabel"
-                    Grid.Column="0"
-                    Grid.Row="0"
-                    Content="{Binding OpponentName, StringFormat='Invited \{0\}.'}">
-				</Label>
-				<Label
-					Classes="OverlayLabel"
-                    Grid.Column="0"
-                    Grid.Row="2"
-					Content="Waiting for acception..."
-					>
+					Classes="OverlayErrorTitleLabel"
+                    Content="Error!">
 				</Label>
                 <Button
                     Classes="OverlayButton"
                     Grid.Column="0"
                     Grid.Row="4"
-                    Content="Cancel invitation"
+                    Content="OK"
                     Margin="0, 0, 10, 0"
-                    Width="160"
-                    Command="{Binding ButtonCancelCommand}">
+                    Width="120"
+                    Command="{Binding ButtonOkCommand}">
                 </Button>
             </Grid>
         </Border>
     </Grid>
-</Grid>
+</UserControl>
