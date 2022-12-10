@@ -354,24 +354,9 @@ public partial class MainPageViewModel
                                     
                                     if (GameState.IsOnlineGame)
                                     {
-                                        if (GameState.LocalPlayer.Color == "White")
-                                        {
-                                            GameState.CurrentOnlineGame.LastMoveStartWhite = oldCoords.String;
-                                            GameState.CurrentOnlineGame.LastMoveEndWhite = newCoords.String;
-
-                                            GameState.CurrentOnlineGame.LastMoveStartBlack = null;
-                                            GameState.CurrentOnlineGame.LastMoveEndBlack = null;
-                                            GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
-                                        }
-                                        else
-                                        {
-                                            GameState.CurrentOnlineGame.LastMoveStartBlack = oldCoords.String;
-                                            GameState.CurrentOnlineGame.LastMoveEndBlack = newCoords.String;
-
-                                            GameState.CurrentOnlineGame.LastMoveStartWhite = null;
-                                            GameState.CurrentOnlineGame.LastMoveEndWhite = null;
-                                            GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
-                                        }
+                                        GameState.CurrentOnlineGame.LastMoveStart = oldCoords.String;
+                                        GameState.CurrentOnlineGame.LastMoveEnd = newCoords.String;
+                                        GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
 
                                         if (GameState.IsCheckMate)
                                         {

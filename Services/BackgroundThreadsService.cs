@@ -209,157 +209,162 @@ internal static class BackgroundThreadsService
                                 string lastMoveEnd;
                                 ChessPieceColor opponentColor;
 
+                                lastMoveStart = gameState.CurrentOnlineGame.LastMoveStart;
+                                lastMoveEnd = gameState.CurrentOnlineGame.LastMoveEnd;
+
                                 if (gameState.LocalPlayer.Color == "White")
                                 {
-                                    lastMoveStart = gameState.CurrentOnlineGame.LastMoveStartBlack;
-                                    lastMoveEnd = gameState.CurrentOnlineGame.LastMoveEndBlack;
                                     opponentColor = ChessPieceColor.Black;
                                 }
                                 else
                                 {
-                                    lastMoveStart = gameState.CurrentOnlineGame.LastMoveStartWhite;
-                                    lastMoveEnd = gameState.CurrentOnlineGame.LastMoveEndWhite;
                                     opponentColor = ChessPieceColor.White;
                                 }
 
                                 if (lastMoveStart != null && lastMoveEnd != null)
                                 {
-                                    Coords oldCoords = Coords.StringToCoords(lastMoveStart);
-                                    Coords newCoords = Coords.StringToCoords(lastMoveEnd);
-
-                                    bool wasSquareNewCoordsEmpty = ! squareDict[newCoords.String].IsOccupied;
-
-                                    ChessPiece chessPiece = squareDict[lastMoveStart].ChessPiece;
-
-                                    mainPageViewModel.MoveChessPiece(oldCoords, newCoords, true, true);
-                                    gameState.MoveList.Add(new Move(oldCoords, newCoords, chessPiece.ChessPieceColor, chessPiece.ChessPieceType));
-
-                                    // block input on check mate:
-                                    if (gameState.CurrentOnlineGame.IsCheckMate)
+                                    if (squareDict[lastMoveStart].ChessPiece.ChessPieceColor == opponentColor)
                                     {
-                                        gameState.IsCheckMate = true;
-                                    }
-                                    // if opponent promoted a pawn:
-                                    else if (gameState.CurrentOnlineGame.PromotePawnType != ' ')
-                                    {
-                                        if (gameState.CurrentOnlineGame.PromotePawnType == 'B')
-                                        {
-                                            chessPiece = new ChessPiece(opponentColor, ChessPieceType.Bishop, gameState.IsRotated);
-                                        }
-                                        else if (gameState.CurrentOnlineGame.PromotePawnType == 'K')
-                                        {
-                                            chessPiece = new ChessPiece(opponentColor, ChessPieceType.Knight, gameState.IsRotated);
-                                        }
-                                        else if (gameState.CurrentOnlineGame.PromotePawnType == 'R')
-                                        {
-                                            chessPiece = new ChessPiece(opponentColor, ChessPieceType.Rook, gameState.IsRotated);
-                                        }
-                                        else if (gameState.CurrentOnlineGame.PromotePawnType == 'Q')
-                                        {
-                                            chessPiece = new ChessPiece(opponentColor, ChessPieceType.Queen, gameState.IsRotated);
-                                        }
+                                        Coords oldCoords = Coords.StringToCoords(lastMoveStart);
+                                        Coords newCoords = Coords.StringToCoords(lastMoveEnd);
 
-                                        mainPageViewModel.ImageDict[newCoords.String] = ChessPieceImages.GetChessPieceImage(chessPiece.ChessPieceColor, chessPiece.ChessPieceType);
-                                        squareDict[newCoords.String].ChessPiece = chessPiece;
-                                    }
-                                    // if opponent's pawn moved two squares:
-                                    else if (gameState.CurrentOnlineGame.PawnMovedTwoSquares)
-                                    {
-                                        squareDict.CoordsPawnMovedTwoSquares = newCoords;
-                                    }
-                                    // if opponent captured own pawn en passant:
-                                    else if (chessPiece.ChessPieceType == ChessPieceType.Pawn)
-                                    {
-                                        bool canCapture = false;
-                                        Coords capturePawnCoords = null;
 
-                                        if (wasSquareNewCoordsEmpty)
+                                        bool wasSquareNewCoordsEmpty = !squareDict[newCoords.String].IsOccupied;
+
+                                        ChessPiece chessPiece = squareDict[lastMoveStart].ChessPiece;
+
+                                        mainPageViewModel.MoveChessPiece(oldCoords, newCoords, true, true);
+                                        gameState.MoveList.Add(new Move(oldCoords, newCoords, chessPiece.ChessPieceColor, chessPiece.ChessPieceType));
+
+                                        // block input on check mate:
+                                        if (gameState.CurrentOnlineGame.IsCheckMate)
                                         {
-                                            // if white pawn moved:
+                                            gameState.IsCheckMate = true;
+                                        }
+                                        // if opponent promoted a pawn:
+                                        else if (gameState.CurrentOnlineGame.PromotePawnType != ' ')
+                                        {
+                                            if (gameState.CurrentOnlineGame.PromotePawnType == 'B')
+                                            {
+                                                chessPiece = new ChessPiece(opponentColor, ChessPieceType.Bishop, gameState.IsRotated);
+                                            }
+                                            else if (gameState.CurrentOnlineGame.PromotePawnType == 'K')
+                                            {
+                                                chessPiece = new ChessPiece(opponentColor, ChessPieceType.Knight, gameState.IsRotated);
+                                            }
+                                            else if (gameState.CurrentOnlineGame.PromotePawnType == 'R')
+                                            {
+                                                chessPiece = new ChessPiece(opponentColor, ChessPieceType.Rook, gameState.IsRotated);
+                                            }
+                                            else if (gameState.CurrentOnlineGame.PromotePawnType == 'Q')
+                                            {
+                                                chessPiece = new ChessPiece(opponentColor, ChessPieceType.Queen, gameState.IsRotated);
+                                            }
+
+                                            mainPageViewModel.ImageDict[newCoords.String] = ChessPieceImages.GetChessPieceImage(chessPiece.ChessPieceColor, chessPiece.ChessPieceType);
+                                            squareDict[newCoords.String].ChessPiece = chessPiece;
+                                        }
+                                        // if opponent's pawn moved two squares:
+                                        else if (gameState.CurrentOnlineGame.PawnMovedTwoSquares)
+                                        {
+                                            squareDict.CoordsPawnMovedTwoSquares = newCoords;
+                                        }
+                                        // if opponent captured own pawn en passant:
+                                        else if (chessPiece.ChessPieceType == ChessPieceType.Pawn)
+                                        {
+                                            bool canCapture = false;
+                                            Coords capturePawnCoords = null;
+
+                                            if (wasSquareNewCoordsEmpty)
+                                            {
+                                                // if white pawn moved:
+                                                if (chessPiece.ChessPieceColor == ChessPieceColor.White)
+                                                {
+                                                    // if white pawn moved up left:
+                                                    if (newCoords.X < oldCoords.X)
+                                                    {
+                                                        canCapture = true;
+                                                        capturePawnCoords = new(oldCoords.X - 1, oldCoords.Y);
+                                                    }
+                                                    // if white pawn moved up right:
+                                                    else if (newCoords.X > oldCoords.X)
+                                                    {
+                                                        canCapture = true;
+                                                        capturePawnCoords = new(oldCoords.X + 1, oldCoords.Y);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    // if black pawn moved up left:
+                                                    if (newCoords.X > oldCoords.X)
+                                                    {
+                                                        canCapture = true;
+                                                        capturePawnCoords = new(oldCoords.X + 1, oldCoords.Y);
+                                                    }
+                                                    // if black pawn moved up right:
+                                                    else if (newCoords.X < oldCoords.X)
+                                                    {
+                                                        canCapture = true;
+                                                        capturePawnCoords = new(oldCoords.X - 1, oldCoords.Y);
+                                                    }
+                                                }
+                                            }
+
+                                            if (canCapture)
+                                            {
+                                                squareDict[capturePawnCoords.String].ChessPiece = new ChessPiece();
+                                                squareDict[capturePawnCoords.String].IsOccupied = false;
+
+                                                mainPageViewModel.ImageDict[capturePawnCoords.String] = ChessPieceImages.Empty;
+                                            }
+                                        }
+                                        // if opponent castled his king:
+                                        else if (chessPiece.ChessPieceType == ChessPieceType.King)
+                                        {
+                                            List<Coords> rookCoordsOldNew = new();
+
+                                            // if opponent is white:
                                             if (chessPiece.ChessPieceColor == ChessPieceColor.White)
                                             {
-                                                // if white pawn moved up left:
-                                                if (newCoords.X < oldCoords.X)
+                                                if (newCoords.X - oldCoords.X > 1)
                                                 {
-                                                    canCapture = true;
-                                                    capturePawnCoords = new(oldCoords.X - 1, oldCoords.Y);
+                                                    rookCoordsOldNew.Add(new Coords(Columns.H, 1));
+                                                    rookCoordsOldNew.Add(new Coords(Columns.F, 1));
                                                 }
-                                                // if white pawn moved up right:
-                                                else if (newCoords.X > oldCoords.X)
+                                                else if (oldCoords.X - newCoords.X > 1)
                                                 {
-                                                    canCapture = true;
-                                                    capturePawnCoords = new(oldCoords.X + 1, oldCoords.Y);
+                                                    rookCoordsOldNew.Add(new Coords(Columns.A, 1));
+                                                    rookCoordsOldNew.Add(new Coords(Columns.D, 1));
                                                 }
                                             }
+                                            // if opponent is black:
                                             else
                                             {
-                                                // if black pawn moved up left:
-                                                if (newCoords.X > oldCoords.X)
+                                                if (newCoords.X - oldCoords.X > 1)
                                                 {
-                                                    canCapture = true;
-                                                    capturePawnCoords = new(oldCoords.X + 1, oldCoords.Y);
+                                                    rookCoordsOldNew.Add(new Coords(Columns.H, 8));
+                                                    rookCoordsOldNew.Add(new Coords(Columns.F, 8));
                                                 }
-                                                // if black pawn moved up right:
-                                                else if (newCoords.X < oldCoords.X)
+                                                else if (oldCoords.X - newCoords.X > 1)
                                                 {
-                                                    canCapture = true;
-                                                    capturePawnCoords = new(oldCoords.X - 1, oldCoords.Y);
+                                                    rookCoordsOldNew.Add(new Coords(Columns.A, 8));
+                                                    rookCoordsOldNew.Add(new Coords(Columns.D, 8));
                                                 }
                                             }
+
+                                            if (rookCoordsOldNew.Count > 0)
+                                            {
+                                                mainPageViewModel.MoveChessPiece(rookCoordsOldNew[0], rookCoordsOldNew[1], false, true);
+                                            }
                                         }
 
-                                        if (canCapture)
-                                        {
-                                            squareDict[capturePawnCoords.String].ChessPiece = new ChessPiece();
-                                            squareDict[capturePawnCoords.String].IsOccupied = false;
+                                        doRun = false;
+                                        gameState.IsWaitingForMove = false;
+                                        mainPageViewModel.LabelMoveInfo = gameState.CurrentOnlineGame.MoveInfo;
 
-                                            mainPageViewModel.ImageDict[capturePawnCoords.String] = ChessPieceImages.Empty;
-                                        }
+                                        gameState.CurrentOnlineGame.LastMoveStart = null;
+                                        gameState.CurrentOnlineGame.LastMoveEnd = null;
                                     }
-                                    // if opponent castled his king:
-                                    else if (chessPiece.ChessPieceType == ChessPieceType.King)
-                                    {
-                                        List<Coords> rookCoordsOldNew = new();
-
-                                        // if opponent is white:
-                                        if (chessPiece.ChessPieceColor == ChessPieceColor.White)
-                                        {
-                                            if (newCoords.X - oldCoords.X > 1)
-                                            {
-                                                rookCoordsOldNew.Add(new Coords(Columns.H, 1));
-                                                rookCoordsOldNew.Add(new Coords(Columns.F, 1));
-                                            }
-                                            else if (oldCoords.X - newCoords.X > 1)
-                                            {
-                                                rookCoordsOldNew.Add(new Coords(Columns.A, 1));
-                                                rookCoordsOldNew.Add(new Coords(Columns.D, 1));
-                                            }
-                                        }
-                                        // if opponent is black:
-                                        else
-                                        {
-                                            if (newCoords.X - oldCoords.X > 1)
-                                            {
-                                                rookCoordsOldNew.Add(new Coords(Columns.H, 8));
-                                                rookCoordsOldNew.Add(new Coords(Columns.F, 8));
-                                            }
-                                            else if (oldCoords.X - newCoords.X > 1)
-                                            {
-                                                rookCoordsOldNew.Add(new Coords(Columns.A, 8));
-                                                rookCoordsOldNew.Add(new Coords(Columns.D, 8));
-                                            }
-                                        }
-
-                                        if (rookCoordsOldNew.Count > 0)
-                                        {
-                                            mainPageViewModel.MoveChessPiece(rookCoordsOldNew[0], rookCoordsOldNew[1], false, true);
-                                        }
-
-                                    }
-
-                                    doRun = false;
-                                    gameState.IsWaitingForMove = false;
-                                    mainPageViewModel.LabelMoveInfo = gameState.CurrentOnlineGame.MoveInfo;
                                 }
                             }
                         }

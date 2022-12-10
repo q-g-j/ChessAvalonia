@@ -22,10 +22,8 @@ internal class OnlineGame
     public int Id { get; set; }
     public int WhiteId { get; set; }
     public int BlackId { get; set; }
-    public string LastMoveStartWhite { get; set; }
-    public string LastMoveEndWhite { get; set; }
-    public string LastMoveStartBlack { get; set; }
-    public string LastMoveEndBlack { get; set; }
+    public string LastMoveStart { get; set; }
+    public string LastMoveEnd { get; set; }
     public bool PawnMovedTwoSquares { get; set; } = false;
     public char PromotePawnType { get; set; } = ' ';
     public bool IsCheckMate { get; set; } = false;
