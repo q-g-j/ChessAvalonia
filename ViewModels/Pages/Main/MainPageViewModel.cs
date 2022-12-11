@@ -35,6 +35,7 @@ public partial class MainPageViewModel
     {
         GameState = new();
         ClientInstance = new(@"http://qgj.myddns.me:7002");
+        //ClientInstance = new(@"http://localhost:7002");
 
         InitializeMessageHandlers();
         StartGame(false);
@@ -47,7 +48,6 @@ public partial class MainPageViewModel
     private int currentlyDraggedImageOriginalCanvasTop;
     private Point originalPointerPosition;
     private Point dragOverCanvasPosition;
-    private Point dragOverChessPiecePosition;
     private bool isMouseMoving = false;
     private readonly bool wasSideMenuOpen = false;
     #endregion
@@ -193,7 +193,6 @@ public partial class MainPageViewModel
                         if (!isMouseMoving)
                         {
                             dragOverCanvasPosition = e.GetPosition(chessCanvas);
-                            dragOverChessPiecePosition = e.GetPosition(currentlyDraggedImage);
                         }
                         isMouseMoving = true;
                         dragOverCanvasPosition = e.GetPosition(chessCanvas);
@@ -210,7 +209,7 @@ public partial class MainPageViewModel
     }
 
     [RelayCommand]
-    private async void MainPagePointerReleased(object o)
+    private void MainPagePointerReleased(object o)
     {
         if (IsInputAllowed())
         {
@@ -232,180 +231,19 @@ public partial class MainPageViewModel
                         }
                         else
                         {
-                            Point oldPoint = new(currentlyDraggedImageOriginalCanvasLeft,
-                                currentlyDraggedImageOriginalCanvasTop);
+                            Point oldPoint = new(currentlyDraggedImageOriginalCanvasLeft, currentlyDraggedImageOriginalCanvasTop);
+
                             Coords oldCoords = Coords.CanvasPositionToCoords(oldPoint);
                             Coords newCoords = Coords.CanvasPositionToCoords(dragOverCanvasPosition);
+
+                            Canvas.SetLeft(currentlyDraggedImage, currentlyDraggedImageOriginalCanvasLeft);
+                            Canvas.SetTop(currentlyDraggedImage, currentlyDraggedImageOriginalCanvasTop);
 
                             if (newCoords.X >= 1 && newCoords.X <= 8 && newCoords.Y >= 1 && newCoords.Y <= 8
                                 && !(newCoords.X == oldCoords.X && newCoords.Y == oldCoords.Y))
                             {
-                                ChessPiece currentlyDraggedChessPiece = SquareDict[oldCoords.String].ChessPiece;
-                                ChessPieceColor currentlyDraggedChessPieceColor = currentlyDraggedChessPiece.ChessPieceColor;
-                                ChessPieceType currentlyDraggedChessPieceType = currentlyDraggedChessPiece.ChessPieceType;
 
-                                Canvas.SetLeft(currentlyDraggedImage, currentlyDraggedImageOriginalCanvasLeft);
-                                Canvas.SetTop(currentlyDraggedImage, currentlyDraggedImageOriginalCanvasTop);
-
-                                MoveValidationData moveValidationData = MoveValidationGameLogic.ValidateCurrentMove(
-                                    SquareDict, oldCoords, newCoords);
-
-                                bool isFirstMoveValid = true;
-                                if (GameState.MoveList.Count == 0)
-                                {
-                                    isFirstMoveValid = currentlyDraggedChessPieceColor == ChessPieceColor.White;
-                                }
-
-                                bool isTurnCorrectColor = true;
-                                if (GameState.MoveList.Count > 0)
-                                {
-                                    isTurnCorrectColor = GameState.MoveList[^1].ChessPieceColor != currentlyDraggedChessPieceColor;
-                                }
-
-                                if (isFirstMoveValid
-                                    && isTurnCorrectColor
-                                    && moveValidationData.IsValid)
-                                {
-                                    // can an opponent's pawn be captured en passant?
-                                    if (moveValidationData.CanCaptureEnPassant)
-                                    {
-                                        SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].ChessPiece = new ChessPiece();
-                                        SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].IsOccupied = false;
-                                        ImageDict[SquareDict.CoordsPawnMovedTwoSquares.String] = ChessPieceImages.Empty;
-                                    }
-
-                                    // has a pawn moved two tiles at once? Store its coords for the next turn...
-                                    if (moveValidationData.MovedTwoSquares)
-                                    {
-                                        SquareDict.CoordsPawnMovedTwoSquares = moveValidationData.Coords[0];
-                                    }
-                                    else if (! GameState.IsOnlineGame)
-                                    {
-                                        SquareDict.CoordsPawnMovedTwoSquares = null;
-                                    }
-
-                                    // promote your pawn if it is on the opposite of the field:
-                                    bool canPromote = PromotePawnGameLogic.CanPromote(SquareDict, oldCoords, newCoords);
-                                    if (canPromote)
-                                    {
-                                        MoveChessPiece(oldCoords, newCoords, true, true);
-                                        // GameState.MoveList.Add(new Move(oldCoords, newCoords, currentlyDraggedChessPieceColor, currentlyDraggedChessPieceType));
-                                        PromotePawnCoords = newCoords;
-                                        
-                                        MessagePromotePawnViewModel.ChangeColor(currentlyDraggedChessPieceColor);
-                                        MessagePromotePawnViewModel.PromotePawnIsVisible = true;
-                                    }
-
-                                    // check if a king tries to castle:
-                                    else if (moveValidationData.CanCastle)
-                                    {
-                                        MoveChessPiece(oldCoords, newCoords, true, true);
-                                        Coords rookOldCoords = moveValidationData.Coords[0];
-                                        Coords rookNewCoords = moveValidationData.Coords[1];
-                                        MoveChessPiece(rookOldCoords, rookNewCoords, true, true);
-                                    }
-                                    else
-                                    {
-                                        MoveChessPiece(oldCoords, newCoords, true, true);
-                                    }
-                                    
-                                    string labelMoveInfoText = oldCoords.String + " -> " + newCoords.String;
-
-                                    if (ThreateningValidationGameLogic.IsSquareThreatened(
-                                        SquareDict, ChessPieceColor.White, SquareDict.WhiteKingCoords, false))
-                                    {
-                                        labelMoveInfoText += ", White king is in check!";
-                                    }
-                                    else if (ThreateningValidationGameLogic.IsSquareThreatened(
-                                        SquareDict, ChessPieceColor.Black, SquareDict.BlackKingCoords, false))
-                                    {
-                                        labelMoveInfoText += ", Black king is in check!";
-                                    }
-
-                                    if (currentlyDraggedChessPieceColor == ChessPieceColor.Black)
-                                    {
-                                        labelMoveInfoText += " - It's white's turn...";
-                                    }
-                                    else
-                                    {
-                                        labelMoveInfoText += " - It's black's turn...";
-                                    }
-
-                                    if (currentlyDraggedChessPieceColor == ChessPieceColor.Black)
-                                    {
-                                        if (CheckMateValidationGameLogic.IsCheckMate(SquareDict, SquareDict.WhiteKingCoords))
-                                        {
-                                            labelMoveInfoText = oldCoords.String + " -> " + newCoords.String + ", White is check mate!";
-                                            GameState.IsCheckMate = true;
-                                        }
-                                    }
-                                    else if (currentlyDraggedChessPieceColor == ChessPieceColor.White)
-                                    {
-                                        if (CheckMateValidationGameLogic.IsCheckMate(SquareDict, SquareDict.BlackKingCoords))
-                                        {
-                                            labelMoveInfoText = oldCoords.String + " -> " + newCoords.String + ", Black is check mate!";
-                                            GameState.IsCheckMate = true;
-                                        }
-                                    }
-
-                                    LabelMoveInfo = labelMoveInfoText;
-
-                                    GameState.MoveList.Add(new Move(oldCoords, newCoords, currentlyDraggedChessPieceColor, currentlyDraggedChessPieceType));
-                                    
-                                    if (GameState.IsOnlineGame)
-                                    {
-                                        GameState.CurrentOnlineGame.LastMoveStart = oldCoords.String;
-                                        GameState.CurrentOnlineGame.LastMoveEnd = newCoords.String;
-                                        GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
-
-                                        if (GameState.IsCheckMate)
-                                        {
-                                            GameState.CurrentOnlineGame.IsCheckMate = true;
-                                        }
-                                        else if (moveValidationData.MovedTwoSquares)
-                                        {
-                                            GameState.CurrentOnlineGame.PawnMovedTwoSquares = true;
-                                            SquareDict.CoordsPawnMovedTwoSquares = null;
-                                        }
-                                        else
-                                        {
-                                            GameState.CurrentOnlineGame.PawnMovedTwoSquares = false;
-                                        }
-
-                                        if (!canPromote)
-                                        {
-                                            try
-                                            {
-                                                await WebApiClientGamesCommands.PutCurrentOnlineGame(GameState.CurrentOnlineGame.Id, GameState.CurrentOnlineGame);
-                                            }
-                                            catch
-                                            {
-
-                                            }
-                                            Thread.Sleep(100);
-                                            BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
-
-                                            GameState.CurrentOnlineGame.PromotePawnType = ' ';
-                                        }
-                                    }
-                                }
-
-                                // Debug: Print occupation state of all tiles:
-                                // for (int i = 8; i > 0; i--)
-                                // {
-                                //     for (int j = 1; j < 9; j++)
-                                //     {
-                                //         Coords c = new Coords(j, i);
-                                //         char oc = SquareDict[c.String].IsOccupied ? 'O' : ' ';
-                                //         ChessDebug.Write(c.String + ":" + oc + " ");
-                                //     }
-                                //     ChessDebug.WriteLine("");
-                                // }
-                            }
-                            else
-                            {
-                                Canvas.SetLeft(currentlyDraggedImage, currentlyDraggedImageOriginalCanvasLeft);
-                                Canvas.SetTop(currentlyDraggedImage, currentlyDraggedImageOriginalCanvasTop);
+                                ExecuteMove(oldCoords, newCoords);
                             }
                         }
 
@@ -422,6 +260,156 @@ public partial class MainPageViewModel
     #endregion
 
     #region Methods
+    private async void ExecuteMove(Coords oldCoords, Coords newCoords)
+    {
+        ChessPiece currentlyDraggedChessPiece = SquareDict[oldCoords.String].ChessPiece;
+        ChessPieceColor currentlyDraggedChessPieceColor = currentlyDraggedChessPiece.ChessPieceColor;
+        ChessPieceType currentlyDraggedChessPieceType = currentlyDraggedChessPiece.ChessPieceType;
+
+        MoveValidationData moveValidationData = MoveValidationGameLogic.ValidateCurrentMove(
+                                    SquareDict, oldCoords, newCoords);
+
+        bool isFirstMoveValid = true;
+        if (GameState.MoveList.Count == 0)
+        {
+            isFirstMoveValid = currentlyDraggedChessPieceColor == ChessPieceColor.White;
+        }
+
+        bool isTurnCorrectColor = true;
+        if (GameState.MoveList.Count > 0)
+        {
+            isTurnCorrectColor = GameState.MoveList[^1].ChessPieceColor != currentlyDraggedChessPieceColor;
+        }
+
+        if (isFirstMoveValid
+            && isTurnCorrectColor
+            && moveValidationData.IsValid)
+        {
+            // can an opponent's pawn be captured en passant?
+            if (moveValidationData.CanCaptureEnPassant)
+            {
+                SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].ChessPiece = new ChessPiece();
+                SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].IsOccupied = false;
+                ImageDict[SquareDict.CoordsPawnMovedTwoSquares.String] = ChessPieceImages.Empty;
+            }
+
+            // has a pawn moved two tiles at once? Store its coords for the next turn...
+            if (moveValidationData.MovedTwoSquares)
+            {
+                SquareDict.CoordsPawnMovedTwoSquares = moveValidationData.Coords[0];
+            }
+            else if (!GameState.IsOnlineGame)
+            {
+                SquareDict.CoordsPawnMovedTwoSquares = null;
+            }
+
+            // promote your pawn if it is on the opposite of the field:
+            bool canPromote = PromotePawnGameLogic.CanPromote(SquareDict, oldCoords, newCoords);
+            if (canPromote)
+            {
+                MoveChessPiece(oldCoords, newCoords, true, true);
+                // GameState.MoveList.Add(new Move(oldCoords, newCoords, currentlyDraggedChessPieceColor, currentlyDraggedChessPieceType));
+                PromotePawnCoords = newCoords;
+
+                MessagePromotePawnViewModel.ChangeColor(currentlyDraggedChessPieceColor);
+                MessagePromotePawnViewModel.PromotePawnIsVisible = true;
+            }
+
+            // check if a king tries to castle:
+            else if (moveValidationData.CanCastle)
+            {
+                MoveChessPiece(oldCoords, newCoords, true, true);
+                Coords rookOldCoords = moveValidationData.Coords[0];
+                Coords rookNewCoords = moveValidationData.Coords[1];
+                MoveChessPiece(rookOldCoords, rookNewCoords, true, true);
+            }
+            else
+            {
+                MoveChessPiece(oldCoords, newCoords, true, true);
+            }
+
+            string labelMoveInfoText = oldCoords.String + " -> " + newCoords.String;
+
+            if (ThreateningValidationGameLogic.IsSquareThreatened(
+                SquareDict, ChessPieceColor.White, SquareDict.WhiteKingCoords, false))
+            {
+                labelMoveInfoText += ", White king is in check!";
+            }
+            else if (ThreateningValidationGameLogic.IsSquareThreatened(
+                SquareDict, ChessPieceColor.Black, SquareDict.BlackKingCoords, false))
+            {
+                labelMoveInfoText += ", Black king is in check!";
+            }
+
+            if (currentlyDraggedChessPieceColor == ChessPieceColor.Black)
+            {
+                labelMoveInfoText += " - It's white's turn...";
+            }
+            else
+            {
+                labelMoveInfoText += " - It's black's turn...";
+            }
+
+            if (currentlyDraggedChessPieceColor == ChessPieceColor.Black)
+            {
+                if (CheckMateValidationGameLogic.IsCheckMate(SquareDict, SquareDict.WhiteKingCoords))
+                {
+                    labelMoveInfoText = oldCoords.String + " -> " + newCoords.String + ", White is check mate!";
+                    GameState.IsCheckMate = true;
+                }
+            }
+            else if (currentlyDraggedChessPieceColor == ChessPieceColor.White)
+            {
+                if (CheckMateValidationGameLogic.IsCheckMate(SquareDict, SquareDict.BlackKingCoords))
+                {
+                    labelMoveInfoText = oldCoords.String + " -> " + newCoords.String + ", Black is check mate!";
+                    GameState.IsCheckMate = true;
+                }
+            }
+
+            LabelMoveInfo = labelMoveInfoText;
+
+            GameState.MoveList.Add(new Move(oldCoords, newCoords, currentlyDraggedChessPieceColor, currentlyDraggedChessPieceType));
+
+            if (GameState.IsOnlineGame)
+            {
+                GameState.CurrentOnlineGame.LastMoveStart = oldCoords.String;
+                GameState.CurrentOnlineGame.LastMoveEnd = newCoords.String;
+                GameState.CurrentOnlineGame.MoveInfo = LabelMoveInfo;
+
+                if (GameState.IsCheckMate)
+                {
+                    GameState.CurrentOnlineGame.IsCheckMate = true;
+                }
+                else if (moveValidationData.MovedTwoSquares)
+                {
+                    GameState.CurrentOnlineGame.PawnMovedTwoSquares = true;
+                    SquareDict.CoordsPawnMovedTwoSquares = null;
+                }
+                else
+                {
+                    GameState.CurrentOnlineGame.PawnMovedTwoSquares = false;
+                }
+
+                if (!canPromote)
+                {
+                    try
+                    {
+                        await WebApiClientGamesCommands.PutCurrentOnlineGame(GameState.CurrentOnlineGame.Id, GameState.CurrentOnlineGame);
+                        Thread.Sleep(100);
+                        BackgroundThreadsService.OnlineGameKeepCheckingForNextMove();
+
+                        GameState.CurrentOnlineGame.PromotePawnType = ' ';
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+        }
+    }
+
     private void CreateNotation()
     {
         HorizontalNotationList = new();

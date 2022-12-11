@@ -93,8 +93,11 @@ internal static class BackgroundThreadsService
                         }
                         catch
                         {
-                            isException = true;
-                            MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageConnectionToServerLost);
+                            if (! isException)
+                            {
+                                MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageConnectionToServerLost);
+                                isException = true;
+                            }
                         }
                     }
                 });
@@ -131,8 +134,11 @@ internal static class BackgroundThreadsService
                         }
                         catch
                         {
-                            isException = true;
-                            MessageMainPageErrorMessageViewModel.Show(ErrorReason.MainPageConnectionToServerLost);
+                            if (! isException)
+                            {
+                                MessageMainPageErrorMessageViewModel.Show(ErrorReason.MainPageConnectionToServerLost);
+                                isException = true;
+                            }
                         }
                     }
                 });
@@ -169,8 +175,11 @@ internal static class BackgroundThreadsService
                         }
                         catch
                         {
-                            isException = true;
-                            MessageMainPageErrorMessageViewModel.Show(ErrorReason.MainPageConnectionToServerLost);
+                            if (!isException)
+                            {
+                                MessageMainPageErrorMessageViewModel.Show(ErrorReason.MainPageConnectionToServerLost);
+                                isException = true;
+                            }
                         }
                     }
                 });
