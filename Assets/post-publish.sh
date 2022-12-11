@@ -15,3 +15,5 @@ echo "APPDIRROOT: ${APPDIRROOT}"
 echo "APPDIRUSR: ${APPDIRUSR}"
 echo "APPDIRBIN: ${APPDIRBIN}"
 echo "APPRUNTARGET: ${APPRUNTARGET}"
+
+cp -r Assets/icons/hicolor $APPDIRUSR/share/icons

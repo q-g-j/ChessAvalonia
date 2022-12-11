@@ -1,11 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <ApplicationIcon>Assets/chess.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PublishSingleFile>true</PublishSingleFile>
 	<TrimMode>partial</TrimMode>
+  </PropertyGroup>
+
+  
+  <PropertyGroup>
+    <CFBundleName>ChessAvalonia</CFBundleName>
+    <CFBundleDisplayName>ChessAvalonia</CFBundleDisplayName>
+    <CFBundleIdentifier>com.qgjsoft.ChessAvalonia</CFBundleIdentifier>
+    <CFBundleVersion>1.0.0</CFBundleVersion>
+    <CFBundleShortVersionString>1.0.0</CFBundleShortVersionString>
+    <OutputType>WinExe</OutputType>
+    <CFBundlePackageType>APPL</CFBundlePackageType>
+    <CFBundleExecutable>ChessAvalonia</CFBundleExecutable>
+    <CFBundleIconFile>chess.icns</CFBundleIconFile>
+    <NSPrincipalClass>NSApplication</NSPrincipalClass>
+    <NSHighResolutionCapable>true</NSHighResolutionCapable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +47,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
+    <PackageReference Include="Dotnet.Bundle" Version="0.9.13" />
   </ItemGroup>
 
   <ItemGroup>
