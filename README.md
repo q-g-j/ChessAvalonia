@@ -1,4 +1,4 @@
-.# ChessAvalonia
+# ChessAvalonia
 **A cross platform chess program for Windows, Linux and macOS**</br>
 *Written in C# for .NET 6.0+ using the MVVM pattern*
 
