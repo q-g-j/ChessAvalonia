@@ -132,12 +132,10 @@ public partial class MainPageViewModel
 
                     if (e.GetCurrentPoint(chessCanvas).Properties.IsLeftButtonPressed == true)
                     {
-                        chessCanvas = image.Parent as Canvas;
                         currentlyDraggedImage = image;
                         currentlyDraggedImageOriginalCanvasLeft = -1000;
                         currentlyDraggedImageOriginalCanvasTop = -1000;
                         originalPointerPosition = e.GetPosition(chessCanvas);
-                        //originalPointerPosition = currentPointerPosition;
 
                         var chessPieceColor = SquareDict[image.Name].ChessPiece.ChessPieceColor;
                         var chessPieceType = SquareDict[image.Name].ChessPiece.ChessPieceType;
@@ -146,18 +144,18 @@ public partial class MainPageViewModel
 
                         if (isFirstTurn)
                         {
-                        if (chessPieceColor == ChessPieceColor.Black)
-                        {
-                            isInputAllowed = false;
-                        }
+                            if (chessPieceColor == ChessPieceColor.Black)
+                            {
+                                isInputAllowed = false;
+                            }
                         }
                         else
                         {
-                        ChessPieceColor lastMoveColor = GameState.MoveList[^1].ChessPieceColor;
-                        if (chessPieceColor == lastMoveColor)
-                        {
-                            isInputAllowed = false;
-                        }
+                            ChessPieceColor lastMoveColor = GameState.MoveList[^1].ChessPieceColor;
+                            if (chessPieceColor == lastMoveColor)
+                            {
+                                isInputAllowed = false;
+                            }
                         }
 
                         if (isInputAllowed && chessPieceType != ChessPieceType.Empty)

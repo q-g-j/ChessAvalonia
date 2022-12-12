@@ -26,12 +26,6 @@ public partial class LobbyPageViewModel
     public LobbyPageViewModel()
     {
         InitializeMessageHandlers();
-
-        // MessageMainPageViewModel.MainPageIsVisible = true;
-        // LobbyPageIsVisible = false;
-
-        // MessageMainPageViewModel.MainPageIsVisible = false;
-        // LobbyPageIsVisible = true;
     }
     #endregion
 
@@ -52,7 +46,7 @@ public partial class LobbyPageViewModel
     private object dataGridInvitationListSelectedItem;
 
     [ObservableProperty]
-    private string localPlayerName;
+    private string localPlayerName = " ";
 
     [ObservableProperty]
     private bool overlayWaitingForInvitationAcceptedIsVisible = false;

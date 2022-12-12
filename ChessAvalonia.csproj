@@ -7,9 +7,9 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <PublishSingleFile>true</PublishSingleFile>
-	<TrimMode>partial</TrimMode>
+     <PublishTrimmed>true</PublishTrimmed>
+	  <TrimMode>partial</TrimMode> 
   </PropertyGroup>
-
   
   <PropertyGroup>
     <CFBundleName>ChessAvalonia</CFBundleName>
