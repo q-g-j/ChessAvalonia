@@ -1,11 +1,4 @@
-﻿using Avalonia.Media.Imaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessAvalonia.Models;
+﻿namespace ChessAvalonia.Models;
 internal class ChessPiece
 {
     public ChessPiece(ChessPieceColor chessPieceColor, ChessPieceType chessPieceType, bool isRotated)

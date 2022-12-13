@@ -1,12 +1,9 @@
 using System;
 using System.Globalization;
-using System.Reflection;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 /// <summary>
 /// <para>
 /// Converts a string path to a bitmap asset.

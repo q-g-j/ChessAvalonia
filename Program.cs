@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using ChessAvalonia.WebApiClient;
 using System;
 
 namespace ChessAvalonia;

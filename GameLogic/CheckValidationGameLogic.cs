@@ -1,12 +1,6 @@
 ﻿using ChessAvalonia.Models;
-using static ChessAvalonia.Services.MessengerService;
 using ChessAvalonia.ViewModels.Pages.Main;
-using CommunityToolkit.Mvvm.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.GameLogic
 {

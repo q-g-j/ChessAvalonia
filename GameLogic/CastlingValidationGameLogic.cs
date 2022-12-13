@@ -1,10 +1,5 @@
-﻿using ChessAvalonia.Models;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using ChessAvalonia.Models;
 
 namespace ChessAvalonia.GameLogic;
 internal static class CastlingValidationGameLogic
@@ -15,7 +10,7 @@ internal static class CastlingValidationGameLogic
         // 1. king must not have moved ### done
         // 2. rook must not have moved ### done
         // 3. there must not be any pieces between both ### done
-        // 4. the king's old and new position and the tile that the king is passing may not be threatened ### done
+        // 4. the king's old and new position and the square that the king is passing may not be threatened ### done
 
         MoveValidationData moveValidationData = new MoveValidationData();
 
@@ -47,7 +42,7 @@ internal static class CastlingValidationGameLogic
                 {
                     return moveValidationData;
                 }
-                // rule 4: is the king (old or new coords) or the crossed tile threatened?
+                // rule 4: is the king (old or new coords) or the crossed square threatened?
                 List<Coords> coordsListToCheck = new List<Coords>
                 {
                     oldCoords,
@@ -80,7 +75,7 @@ internal static class CastlingValidationGameLogic
                 {
                     return moveValidationData;
                 }
-                // rule 4: is the king (old or new coords) or the crossed tile threatened?
+                // rule 4: is the king (old or new coords) or the crossed square threatened?
                 List<Coords> coordsListToCheck = new List<Coords>
                 {
                     oldCoords,
@@ -122,7 +117,7 @@ internal static class CastlingValidationGameLogic
                 {
                     return moveValidationData;
                 }
-                // is the king or the crossed tile threatened?
+                // is the king or the crossed square threatened?
                 List<Coords> coordsListToCheck = new List<Coords>
                 {
                     oldCoords,
@@ -155,7 +150,7 @@ internal static class CastlingValidationGameLogic
                 {
                     return moveValidationData;
                 }
-                // is the king (old or new coords) or the crossed tile threatened?
+                // is the king (old or new coords) or the crossed square threatened?
                 List<Coords> coordsListToCheck = new List<Coords>
                 {
                     oldCoords,

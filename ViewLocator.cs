@@ -1,7 +1,6 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using ChessAvalonia.ViewModels;
 using ChessAvalonia.ViewModels.Pages.Main;
 
 namespace ChessAvalonia;
@@ -23,7 +22,6 @@ public class ViewLocator : IDataTemplate
 
     public bool Match(object data)
     {
-
         return data is MainPageViewModel;
     }
 }

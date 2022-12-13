@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessAvalonia.Models;
+﻿namespace ChessAvalonia.Models;
 internal class Move
 {
     public Move(Coords startCoords, Coords endCoords, ChessPieceColor chessPieceColor, ChessPieceType chessPieceType)

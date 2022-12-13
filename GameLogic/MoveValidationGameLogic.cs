@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using ChessAvalonia.Models;
 using static ChessAvalonia.Models.Coords;
 
-
 namespace ChessAvalonia.GameLogic
 {
     internal class MoveValidationData

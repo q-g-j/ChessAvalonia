@@ -1,14 +1,12 @@
-using System;
 using System.Collections.ObjectModel;
-using ChessAvalonia.Helpers;
-using ChessAvalonia.Models;
-using static ChessAvalonia.Services.MessengerService;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using ChessAvalonia.Services;
 using ChessAvalonia.WebApiClient;
+using ChessAvalonia.Models;
+using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.ViewModels.Pages.Main.Overlays;
 

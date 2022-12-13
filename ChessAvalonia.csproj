@@ -33,6 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaXaml Remove="AppImages\**" />
+    <Compile Remove="AppImages\**" />
+    <EmbeddedResource Remove="AppImages\**" />
+    <None Remove="AppImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TrimmerRootDescriptor Include="Roots.xml" />
   </ItemGroup>
 

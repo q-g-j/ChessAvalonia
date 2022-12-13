@@ -1,15 +1,10 @@
-using System;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using ChessAvalonia.Helpers;
-using static ChessAvalonia.Services.MessengerService;
-using ChessAvalonia.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using ChessAvalonia.Models;
-
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using static ChessAvalonia.Services.MessengerService;
 namespace ChessAvalonia.ViewModels.Pages.Main.Overlays;
 
 [INotifyPropertyChanged]

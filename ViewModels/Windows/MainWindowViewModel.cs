@@ -1,11 +1,8 @@
-﻿using static ChessAvalonia.Services.MessengerService;
+﻿using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using ChessAvalonia.Helpers;
-using Avalonia.Input;
-using System;
+using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.ViewModels.Windows.Main;
 
@@ -39,8 +36,6 @@ public partial class MainWindowViewModel
 
     internal void KeyDownHandler(object sender, KeyEventArgs e)
     {
-        ChessDebug.WriteLine(Enum.GetName(e.Key));
-
         if (MessagePlayerNameViewModel.OverlayPlayerNameIsVisible)
         {
             if (e.Key == Key.Escape)

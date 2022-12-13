@@ -1,7 +1,6 @@
-﻿using ChessAvalonia.Models;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Collections.Generic;
+using ChessAvalonia.Models;
+
 namespace ChessAvalonia.GameLogic
 {
     internal static class CheckMateValidationGameLogic
@@ -10,10 +9,10 @@ namespace ChessAvalonia.GameLogic
         {
             ChessPieceColor kingColor = squareDict[kingCoords.String].ChessPiece.ChessPieceColor;
             ChessPieceColor ownColor = kingColor == ChessPieceColor.White ? ChessPieceColor.Black : ChessPieceColor.White;
-            List<Coords> threateningTiles = ThreateningValidationGameLogic.IsSquareThreatenedList(squareDict, kingColor, kingCoords);
-            int threateningTilesNumber = threateningTiles.Count;
+            List<Coords> threateningSquares = ThreateningValidationGameLogic.IsSquareThreatenedList(squareDict, kingColor, kingCoords);
+            int threateningSquaresNumber = threateningSquares.Count;
 
-            if (threateningTilesNumber > 0)
+            if (threateningSquaresNumber > 0)
             {
                 // can the king escape the check mate without being in check again?
                 List<Coords> coordsKingNeighbors = new List<Coords>()
@@ -41,11 +40,11 @@ namespace ChessAvalonia.GameLogic
                     }
                 }
 
-                // if there is no double check, test if the tiles between the king and the threatening chess piece
+                // if there is no double check, test if the squares between the king and the threatening chess piece
                 // can be reached by a chess piece of the same color:
-                if (threateningTilesNumber == 1)
+                if (threateningSquaresNumber == 1)
                 {
-                    Square threateningSquare = squareDict[threateningTiles[0].String];
+                    Square threateningSquare = squareDict[threateningSquares[0].String];
                     ChessPieceType threateningType = threateningSquare.ChessPiece.ChessPieceType;
                     //System.Diagnostics.Debug.WriteLine(threateningType.ToString());
 
@@ -89,7 +88,7 @@ namespace ChessAvalonia.GameLogic
                     }
 
                     // check if threatening chess piece can be captured:
-                    else if (ThreateningValidationGameLogic.IsSquareThreatened(squareDict, ownColor, threateningTiles[0], true))
+                    else if (ThreateningValidationGameLogic.IsSquareThreatened(squareDict, ownColor, threateningSquares[0], true))
                     {
                         return false;
                     }
@@ -101,28 +100,28 @@ namespace ChessAvalonia.GameLogic
             return false;
         }
         internal static bool CanBlockQueenAndRookHorizontally(
-            SquareDictionary squareDict, Square threateningTile, Coords kingCoords)
+            SquareDictionary squareDict, Square threateningSquare, Coords kingCoords)
         {
-            ChessPieceColor threateningColor = threateningTile.ChessPiece.ChessPieceColor;
+            ChessPieceColor threateningColor = threateningSquare.ChessPiece.ChessPieceColor;
 
-            if (threateningTile.Coords.Y == kingCoords.Y)
+            if (threateningSquare.Coords.Y == kingCoords.Y)
             {
-                if (threateningTile.Coords.X < kingCoords.X)
+                if (threateningSquare.Coords.X < kingCoords.X)
                 {
-                    for (int column = threateningTile.Coords.X + 1; column <= kingCoords.X - 1; column++)
+                    for (int column = threateningSquare.Coords.X + 1; column <= kingCoords.X - 1; column++)
                     {
-                        Coords coordsInBetween = new Coords(column, threateningTile.Coords.Y);
+                        Coords coordsInBetween = new Coords(column, threateningSquare.Coords.Y);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
                             return true;
                         }
                     }
                 }
-                else if (threateningTile.Coords.X > kingCoords.X)
+                else if (threateningSquare.Coords.X > kingCoords.X)
                 {
-                    for (int column = threateningTile.Coords.X - 1; column >= kingCoords.X + 1; column--)
+                    for (int column = threateningSquare.Coords.X - 1; column >= kingCoords.X + 1; column--)
                     {
-                        Coords coordsInBetween = new Coords(column, threateningTile.Coords.Y);
+                        Coords coordsInBetween = new Coords(column, threateningSquare.Coords.Y);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
                             return true;
@@ -135,17 +134,17 @@ namespace ChessAvalonia.GameLogic
             return false;
         }
         internal static bool CanBlockQueenAndRookVertically(
-            SquareDictionary squareDict, Square threateningTile, Coords kingCoords)
+            SquareDictionary squareDict, Square threateningSquare, Coords kingCoords)
         {
-            ChessPieceColor threateningColor = threateningTile.ChessPiece.ChessPieceColor;
+            ChessPieceColor threateningColor = threateningSquare.ChessPiece.ChessPieceColor;
 
-            if (threateningTile.Coords.X == kingCoords.X)
+            if (threateningSquare.Coords.X == kingCoords.X)
             {
-                if (threateningTile.Coords.Y < kingCoords.Y)
+                if (threateningSquare.Coords.Y < kingCoords.Y)
                 {
-                    for (int row = threateningTile.Coords.Y + 1; row <= kingCoords.Y - 1; row++)
+                    for (int row = threateningSquare.Coords.Y + 1; row <= kingCoords.Y - 1; row++)
                     {
-                        Coords coordsInBetween = new Coords(threateningTile.Coords.X, row);
+                        Coords coordsInBetween = new Coords(threateningSquare.Coords.X, row);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
                             System.Diagnostics.Debug.WriteLine(coordsInBetween.String);
@@ -153,11 +152,11 @@ namespace ChessAvalonia.GameLogic
                         }
                     }
                 }
-                else if (threateningTile.Coords.Y > kingCoords.Y)
+                else if (threateningSquare.Coords.Y > kingCoords.Y)
                 {
-                    for (int row = threateningTile.Coords.Y - 1; row >= kingCoords.Y + 1; row--)
+                    for (int row = threateningSquare.Coords.Y - 1; row >= kingCoords.Y + 1; row--)
                     {
-                        Coords coordsInBetween = new Coords(threateningTile.Coords.X, row);
+                        Coords coordsInBetween = new Coords(threateningSquare.Coords.X, row);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
                             return true;
@@ -170,17 +169,17 @@ namespace ChessAvalonia.GameLogic
             return false;
         }
         internal static bool CanBlockQueenAndBishopDiagonally(
-            SquareDictionary squareDict, Square threateningTile, Coords kingCoords)
+            SquareDictionary squareDict, Square threateningSquare, Coords kingCoords)
         {
-            ChessPieceColor threateningColor = threateningTile.ChessPiece.ChessPieceColor;
+            ChessPieceColor threateningColor = threateningSquare.ChessPiece.ChessPieceColor;
 
-            if (threateningTile.Coords.X < kingCoords.X)
+            if (threateningSquare.Coords.X < kingCoords.X)
             {
-                if (threateningTile.Coords.Y < kingCoords.Y)
+                if (threateningSquare.Coords.Y < kingCoords.Y)
                 {
-                    for (int column = threateningTile.Coords.X + 1; column <= kingCoords.X - 1; column++)
+                    for (int column = threateningSquare.Coords.X + 1; column <= kingCoords.X - 1; column++)
                     {
-                        Coords coordsInBetween = new Coords(column, threateningTile.Coords.Y + (column - threateningTile.Coords.X));
+                        Coords coordsInBetween = new Coords(column, threateningSquare.Coords.Y + (column - threateningSquare.Coords.X));
                         System.Diagnostics.Debug.WriteLine(coordsInBetween.String);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
@@ -188,11 +187,11 @@ namespace ChessAvalonia.GameLogic
                         }
                     }
                 }
-                else if (threateningTile.Coords.Y > kingCoords.Y)
+                else if (threateningSquare.Coords.Y > kingCoords.Y)
                 {
-                    for (int column = threateningTile.Coords.X + 1; column <= kingCoords.X - 1; column++)
+                    for (int column = threateningSquare.Coords.X + 1; column <= kingCoords.X - 1; column++)
                     {
-                        Coords coordsInBetween = new Coords(column, threateningTile.Coords.Y - (column - threateningTile.Coords.X));
+                        Coords coordsInBetween = new Coords(column, threateningSquare.Coords.Y - (column - threateningSquare.Coords.X));
                         System.Diagnostics.Debug.WriteLine(coordsInBetween.String);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
@@ -202,13 +201,13 @@ namespace ChessAvalonia.GameLogic
                 }
             }
 
-            else if (threateningTile.Coords.X > kingCoords.X)
+            else if (threateningSquare.Coords.X > kingCoords.X)
             {
-                if (threateningTile.Coords.Y < kingCoords.Y)
+                if (threateningSquare.Coords.Y < kingCoords.Y)
                 {
-                    for (int column = threateningTile.Coords.X - 1; column >= kingCoords.X + 1; column--)
+                    for (int column = threateningSquare.Coords.X - 1; column >= kingCoords.X + 1; column--)
                     {
-                        Coords coordsInBetween = new Coords(column, threateningTile.Coords.Y - (column - threateningTile.Coords.X));
+                        Coords coordsInBetween = new Coords(column, threateningSquare.Coords.Y - (column - threateningSquare.Coords.X));
                         System.Diagnostics.Debug.WriteLine(coordsInBetween.String);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {
@@ -216,11 +215,11 @@ namespace ChessAvalonia.GameLogic
                         }
                     }
                 }
-                else if (threateningTile.Coords.Y > kingCoords.Y)
+                else if (threateningSquare.Coords.Y > kingCoords.Y)
                 {
-                    for (int column = threateningTile.Coords.X - 1; column >= kingCoords.X + 1; column--)
+                    for (int column = threateningSquare.Coords.X - 1; column >= kingCoords.X + 1; column--)
                     {
-                        Coords coordsInBetween = new Coords(column, threateningTile.Coords.Y + (column - threateningTile.Coords.X));
+                        Coords coordsInBetween = new Coords(column, threateningSquare.Coords.Y + (column - threateningSquare.Coords.X));
                         System.Diagnostics.Debug.WriteLine("here" + coordsInBetween.String);
                         if (MoveValidationGameLogic.CanReachSquare(squareDict, threateningColor, coordsInBetween))
                         {

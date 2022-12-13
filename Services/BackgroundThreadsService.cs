@@ -1,23 +1,12 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using System;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using ChessAvalonia.Models;
-using ChessAvalonia.ViewModels;
 using ChessAvalonia.WebApiClient;
-using ChessAvalonia.Views;
-using static ChessAvalonia.Services.MessengerService;
-using ChessAvalonia.ViewModels.Windows.Main;
 using ChessAvalonia.ViewModels.Pages.Main;
 using ChessAvalonia.ViewModels.Pages.Main.Overlays;
-using ChessAvalonia.ViewModels.Pages.Lobby;
-using ChessAvalonia.Helpers;
-using ChessAvalonia.GameLogic;
-using DynamicData;
-using System.Collections.Generic;
 using static ChessAvalonia.Models.Errors;
-using System.Security;
+using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.Services;
 internal static class BackgroundThreadsService

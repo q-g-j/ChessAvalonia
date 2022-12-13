@@ -1,29 +1,18 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
-using System.Reactive;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System;
+using System.Threading;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Avalonia.Controls;
-using static ChessAvalonia.Services.MessengerService;
-using ChessAvalonia.Models;
-using Avalonia.Media.Imaging;
-using System.Collections.Generic;
-using System.Linq;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
-using Avalonia.Media;
-using Avalonia;
-using System.Runtime.CompilerServices;
-using System.Collections.ObjectModel;
-using ChessAvalonia.Views;
-using ChessAvalonia.Helpers;
 using ChessAvalonia.GameLogic;
-using System.Reflection;
 using ChessAvalonia.WebApiClient;
 using ChessAvalonia.Services;
-using System.Threading;
+using ChessAvalonia.Models;
+using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.ViewModels.Pages.Main;
 
@@ -291,7 +280,7 @@ public partial class MainPageViewModel
                 ImageDict[SquareDict.CoordsPawnMovedTwoSquares.String] = ChessPieceImages.Empty;
             }
 
-            // has a pawn moved two tiles at once? Store its coords for the next turn...
+            // has a pawn moved two squares at once? Store its coords for the next turn...
             if (moveValidationData.MovedTwoSquares)
             {
                 SquareDict.CoordsPawnMovedTwoSquares = moveValidationData.Coords[0];

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChessAvalonia.Models;
+﻿namespace ChessAvalonia.Models;
 public class Square
 {
     internal Square(int col, int row, bool occupied, ChessPiece chessPiece)

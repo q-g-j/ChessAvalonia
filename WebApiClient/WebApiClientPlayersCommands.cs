@@ -1,14 +1,11 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
-
-using ChessAvalonia.Models;
-using ChessAvalonia.ViewModels;
 using System.Net.Http.Json;
+using Newtonsoft.Json;
+using ChessAvalonia.Models;
 using static ChessAvalonia.Services.MessengerService;
-using ChessAvalonia.ViewModels.Pages.Main;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ChessAvalonia.WebApiClient;
 internal static class WebApiClientPlayersCommands
@@ -29,6 +26,7 @@ internal static class WebApiClientPlayersCommands
         return playerList;
     }
 
+    [RequiresUnreferencedCode("Calls System.Net.Http.Json.HttpClientJsonExtensions.PostAsJsonAsync<TValue>(String, TValue, JsonSerializerOptions, CancellationToken)")]
     internal static async Task<Player> CreatePlayerAsync(Player player)
     {
         Player responsePlayer;
@@ -49,6 +47,7 @@ internal static class WebApiClientPlayersCommands
         return responsePlayer;
     }
 
+    [RequiresUnreferencedCode("Calls System.Net.Http.Json.HttpClientJsonExtensions.PostAsJsonAsync<TValue>(String, TValue, JsonSerializerOptions, CancellationToken)")]
     internal static async Task ResetInactiveCounterAsync(int localPlayerId)
     {
         await MessageMainPageViewModel.ClientInstance.PutAsJsonAsync(

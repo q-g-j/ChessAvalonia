@@ -1,8 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using ChessAvalonia.ViewModels.Pages.Lobby;
-using ChessAvalonia.ViewModels.Pages.Lobby.Overlays;
 
 namespace ChessAvalonia.Views.Pages.Lobby;
 

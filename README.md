@@ -17,3 +17,6 @@ Currently my personal server at home is hard coded in the client for testing pur
 - en passant
 - promote pawn
 - castling
+
+### Download:
+Go to [Releases](https://github.com/q-g-j/ChessAvalonia/releases).

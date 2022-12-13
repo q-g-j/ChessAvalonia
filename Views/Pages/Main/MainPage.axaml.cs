@@ -1,6 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using ChessAvalonia.ViewModels.Pages.Main;
 
 namespace ChessAvalonia.Views.Pages.Main;
