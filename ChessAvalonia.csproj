@@ -20,7 +20,7 @@
     <OutputType>WinExe</OutputType>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleExecutable>ChessAvalonia</CFBundleExecutable>
-    <CFBundleIconFile>Assets/Icons/chess.icns</CFBundleIconFile>
+    <CFBundleIconFile>chess.icns</CFBundleIconFile>
     <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
   </PropertyGroup>
