@@ -10,7 +10,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         x:Class="ChessAvalonia.Views.Windows.Main.MainWindow"
-        Icon="avares://ChessAvalonia/Assets/chess.ico"
+        Icon="/Assets/Icons/chess.ico"
         Background="#ffce9e"
         Title="ChessAvalonia"
         UseLayoutRounding="True"

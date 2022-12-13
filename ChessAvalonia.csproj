@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ApplicationIcon>Assets/chess.ico</ApplicationIcon>
+    <ApplicationIcon>Assets/Icons/chess.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
@@ -20,7 +20,7 @@
     <OutputType>WinExe</OutputType>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleExecutable>ChessAvalonia</CFBundleExecutable>
-    <CFBundleIconFile>chess.icns</CFBundleIconFile>
+    <CFBundleIconFile>Assets/Icons/chess.icns</CFBundleIconFile>
     <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
   </PropertyGroup>
@@ -28,6 +28,7 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Include="Assets\Fonts\**" />
+    <AvaloniaResource Include="Assets\Icons\**" />
     <AvaloniaResource Include="Assets\Images\**" />
   </ItemGroup>
 
@@ -48,22 +49,5 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
     <PackageReference Include="Dotnet.Bundle" Version="0.9.13" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\CustomActionControl.axaml.cs">
-      <DependentUpon>CustomActionControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Pages\Lobby\Overlays\ErrorMessage.axaml.cs">
-      <DependentUpon>ErrorMessage.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Pages\Main\Overlays\ErrorMessage.axaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\Windows\Overlays\" />
-    <Folder Include="Views\Windows\Overlays\" />
   </ItemGroup>
 </Project>
