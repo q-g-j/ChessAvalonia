@@ -42,5 +42,7 @@
 		<StyleInclude Source="/Views/Styles/LobbyPageStyles.axaml" />
 		<StyleInclude Source="/Views/Styles/OverlayStyles.axaml" />
 		<StyleInclude Source="/Views/Styles/MenuStyles.axaml" />
+		
+		<StyleInclude Source="/Controls/CapturedChessPiecesControl.axaml" />
 	</Application.Styles>
 </Application>

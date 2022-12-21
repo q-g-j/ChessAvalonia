@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using static ChessAvalonia.Services.MessengerService;
 
-namespace ChessAvalonia.ViewModels.Windows.Main;
+namespace ChessAvalonia.ViewModels.Windows;
 
 [INotifyPropertyChanged]
 public partial class MainWindowViewModel

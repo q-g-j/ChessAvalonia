@@ -72,6 +72,8 @@ public partial class PlayerNameViewModel
                 MessageMainPageViewModel.GameState.LocalPlayer = responseLocalPlayer;
                 BackgroundThreadsService.LobbyKeepResettingInactiveCounter();
                 MessageLobbyViewModel.ButtonRefreshIsEnabled = true;
+                OverlayPlayerNameIsVisible = false;
+                ButtonOkIsEnabled = true;
             }
             else
             {
@@ -81,11 +83,6 @@ public partial class PlayerNameViewModel
         catch
         {
             MessageLobbyPageErrorMessageViewModel.Show(ErrorReason.LobbyPageCannotConnectToServer);
-        }
-        finally
-        {
-            OverlayPlayerNameIsVisible = false;
-            ButtonOkIsEnabled = true;
         }
     }
     #endregion

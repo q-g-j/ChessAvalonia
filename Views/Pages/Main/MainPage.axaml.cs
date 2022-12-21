@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using ChessAvalonia.ViewModels.Pages.Main;
+using System;
 
 namespace ChessAvalonia.Views.Pages.Main;
 

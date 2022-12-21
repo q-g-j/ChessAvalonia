@@ -3,12 +3,12 @@
     <ApplicationIcon>Assets/Icons/chess.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+	<RuntimeIdentifiers>win-x86;win-x64;linux-x64;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <Nullable>disable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <PublishSingleFile>true</PublishSingleFile>
-     <PublishTrimmed>true</PublishTrimmed>
-	  <TrimMode>partial</TrimMode> 
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
   
   <PropertyGroup>

@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ChessAvalonia.ViewModels.Windows.Main;
+using ChessAvalonia.ViewModels.Windows;
 using static ChessAvalonia.Services.MessengerService;
 
-namespace ChessAvalonia.Views.Windows.Main;
+namespace ChessAvalonia.Views.Windows;
 
 public partial class MainWindow : Window
 {

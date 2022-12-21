@@ -455,7 +455,3 @@ $RECYCLE.BIN/
 PublishProfiles
 /Properties/launchSettings.json
 AppImages
-/publish-appimage.conf
-/publish-appimage
-/Assets/post-publish.sh
-/Assets/appdata.xml

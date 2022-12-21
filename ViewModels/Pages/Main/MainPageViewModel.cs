@@ -13,6 +13,9 @@ using ChessAvalonia.WebApiClient;
 using ChessAvalonia.Services;
 using ChessAvalonia.Models;
 using static ChessAvalonia.Services.MessengerService;
+using System.Diagnostics.CodeAnalysis;
+using ChessAvalonia.Controls;
+using System.Linq;
 
 namespace ChessAvalonia.ViewModels.Pages.Main;
 
@@ -24,7 +27,7 @@ public partial class MainPageViewModel
     {
         GameState = new();
         ClientInstance = new(@"http://qgj.myddns.me:7002");
-        //ClientInstance = new(@"http://localhost:7002");
+        // ClientInstance = new(@"http://localhost:7002");
 
         InitializeMessageHandlers();
         StartGame(false);
@@ -32,6 +35,8 @@ public partial class MainPageViewModel
     #endregion
 
     #region Fields
+    private int capturedWhiteCount = 0;
+    private int capturedBlackCount = 0;
     private Image currentlyDraggedImage = null;
     private int currentlyDraggedImageOriginalCanvasLeft;
     private int currentlyDraggedImageOriginalCanvasTop;
@@ -75,10 +80,25 @@ public partial class MainPageViewModel
     private ObservableCollection<string> verticalNotationList;
 
     [ObservableProperty]
+    private ObservableCollection<string> capturedWhiteImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
+
+    [ObservableProperty]
+    private ObservableCollection<string> capturedBlackImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
+
+    [ObservableProperty]
     private string labelMoveInfo = "";
 
     [ObservableProperty]
     private bool mainPageIsVisible = true;
+
+    [ObservableProperty]
+    private int slideInBoxMaxWidth = 500;
+
+    [ObservableProperty]
+    private bool slideInBoxIsVisible;
+
+    [ObservableProperty]
+    private string txt = "Test";
     #endregion
 
     #region Commands
@@ -92,14 +112,44 @@ public partial class MainPageViewModel
                 MessageMenuViewModel.MenuIsVisible = false;
             }
         }
+
+        var control = e.Source as Control;
+        var parent = control.Parent;
+        bool doCloseSlideInBox = true;
+
+        while (parent != null && doCloseSlideInBox)
+        {
+            if (parent.Name == "CapturedChessPiecesControlGrid")
+            {
+                doCloseSlideInBox = false;
+            }
+            parent = parent.Parent;
+        }
+
+        if (doCloseSlideInBox)
+        {
+            CapturedChessPiecesControl sideMenu = WeakReferenceMessenger.Default.Send<CapturedChessPiecesControl.CapturedChessPiecesControlRequestMessage>();
+            if (!sideMenu.IsMouseOverArrowLabel)
+            {
+                if (sideMenu.SlideInBoxWidth == 500)
+                {
+                    sideMenu.SlideInBoxIsVisible = false;
+                }
+            }
+        }
     }
 
     [RelayCommand]
     private void MenuButtonPressed()
     {
-        if (MessageMenuViewModel.MenuIsVisible)
+        CapturedChessPiecesControl sideMenu = WeakReferenceMessenger.Default.Send<CapturedChessPiecesControl.CapturedChessPiecesControlRequestMessage>();
+        if (sideMenu.SlideInBoxWidth == 500)
         {
-           MessageMenuViewModel.MenuIsVisible = false;
+            sideMenu.SlideInBoxIsVisible = false;
+        }
+        else if (MessageMenuViewModel.MenuIsVisible)
+        {
+            MessageMenuViewModel.MenuIsVisible = false;
         }
         else
         {
@@ -196,6 +246,7 @@ public partial class MainPageViewModel
     }
 
     [RelayCommand]
+    [RequiresUnreferencedCode("Calls ChessAvalonia.ViewModels.Pages.Main.MainPageViewModel.ExecuteMove(Coords, Coords)")]
     private void MainPagePointerReleased(object o)
     {
         if (IsInputAllowed())
@@ -247,6 +298,7 @@ public partial class MainPageViewModel
     #endregion
 
     #region Methods
+    [RequiresUnreferencedCode("Calls ChessAvalonia.WebApiClient.WebApiClientGamesCommands.PutCurrentOnlineGame(Int32, OnlineGame)")]
     private async void ExecuteMove(Coords oldCoords, Coords newCoords)
     {
         ChessPiece currentlyDraggedChessPiece = SquareDict[oldCoords.String].ChessPiece;
@@ -275,6 +327,7 @@ public partial class MainPageViewModel
             // can an opponent's pawn be captured en passant?
             if (moveValidationData.CanCaptureEnPassant)
             {
+                AddToCapturedList(SquareDict.CoordsPawnMovedTwoSquares, currentlyDraggedChessPieceColor);
                 SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].ChessPiece = new ChessPiece();
                 SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].IsOccupied = false;
                 ImageDict[SquareDict.CoordsPawnMovedTwoSquares.String] = ChessPieceImages.Empty;
@@ -294,6 +347,8 @@ public partial class MainPageViewModel
             bool canPromote = PromotePawnGameLogic.CanPromote(SquareDict, oldCoords, newCoords);
             if (canPromote)
             {
+                AddToCapturedList(newCoords, currentlyDraggedChessPieceColor);
+
                 MoveChessPiece(oldCoords, newCoords, true, true);
                 // GameState.MoveList.Add(new Move(oldCoords, newCoords, currentlyDraggedChessPieceColor, currentlyDraggedChessPieceType));
                 PromotePawnCoords = newCoords;
@@ -312,6 +367,7 @@ public partial class MainPageViewModel
             }
             else
             {
+                AddToCapturedList(newCoords, currentlyDraggedChessPieceColor);
                 MoveChessPiece(oldCoords, newCoords, true, true);
             }
 
@@ -448,6 +504,26 @@ public partial class MainPageViewModel
 
         CreateNotation();
 
+        capturedWhiteCount = 0;
+        capturedBlackCount = 0;
+
+        // ObservableCollection<string> capturedWhiteList = new();
+        // for (int i = 0; i < 15; i++)
+        // {
+        //     capturedWhiteList.Add(ChessPieceImages.Empty);
+        // }
+        // CapturedWhiteImageList = capturedWhiteList;
+
+        // ObservableCollection<string> capturedBlackList = new();
+        // for (int i = 0; i < 15; i++)
+        // {
+        //     capturedBlackList.Add(ChessPieceImages.Empty);
+        // }
+        // CapturedBlackImageList = capturedBlackList;
+
+        CapturedWhiteImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
+        CapturedBlackImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
+
         if (GameState.IsRotated)
         {
             RotationAngle = 180;
@@ -531,6 +607,24 @@ public partial class MainPageViewModel
         ImageDict["H8"] = ChessPieceImages.BlackRook;
 
         LabelMoveInfo = "It's white's turn...";
+    }
+
+    internal void AddToCapturedList(Coords capturedCoords, ChessPieceColor capturingColor)
+    {
+        if (SquareDict[capturedCoords.String].IsOccupied)
+        {
+            string newCoordsChessPieceImage = ImageDict[capturedCoords.String];
+            if (capturingColor == ChessPieceColor.White)
+            {
+                CapturedBlackImageList[capturedBlackCount] = newCoordsChessPieceImage;
+                capturedBlackCount++;
+            }
+            else
+            {
+                CapturedWhiteImageList[capturedWhiteCount] = newCoordsChessPieceImage;
+                capturedWhiteCount++;
+            }
+        }
     }
 
     internal void MoveChessPiece(Coords oldCoords, Coords newCoords, bool doChangeCounter, bool doChangeImage)

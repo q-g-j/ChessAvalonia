@@ -3,7 +3,7 @@ using ChessAvalonia.ViewModels.Pages.Lobby;
 using ChessAvalonia.ViewModels.Pages.Lobby.Overlays;
 using ChessAvalonia.ViewModels.Pages.Main;
 using ChessAvalonia.ViewModels.Pages.Main.Overlays;
-using ChessAvalonia.ViewModels.Windows.Main;
+using ChessAvalonia.ViewModels.Windows;
 
 namespace ChessAvalonia.Services;
 

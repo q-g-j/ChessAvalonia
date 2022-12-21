@@ -1,0 +1,105 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:controls="using:ChessAvalonia.Controls">
+
+	<Design.PreviewWith>
+		<controls:CapturedChessPiecesControl />
+	</Design.PreviewWith>
+
+	<Style Selector="controls|CapturedChessPiecesControl">
+		<!-- Set Defaults -->
+		<Setter Property="SideButtonOpacity" Value="0.0" />
+		<Setter Property="SlideInBoxMaxWidth" Value="500" />
+		<Setter Property="SlideInBoxIsVisible" Value="false" />
+		<Setter Property="SlideInBoxHeight" Value="510" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Arrow" Value="&lt;" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Grid
+					Name="CapturedChessPiecesControlGrid"
+					ColumnDefinitions="*, 20">
+					<Border
+						Name="SlideInBox"
+						Grid.Column="0"
+						Margin="0, 70, 0, 0"
+						Background="#ffb366"
+						Width="{Binding SlideInBoxWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}, FallbackValue=0}"
+						Height="{TemplateBinding SlideInBoxHeight}"
+						HorizontalAlignment="Right"
+						BorderBrush="SaddleBrown"
+						BorderThickness="1, 1, 0, 1"
+						CornerRadius="10, 0, 0, 10"
+						ZIndex="100">
+						<Border.Transitions>
+							<Transitions>
+								<DoubleTransition Property="Width" Duration="0:0:0.2" />
+							</Transitions>
+						</Border.Transitions>
+						<i:Interaction.Behaviors>
+							<ia:EventTriggerBehavior EventName="Initialized">
+								<ia:InvokeCommandAction Command="{Binding OnSlideInBoxInitialized, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}" CommandParameter="{Binding ElementName=SlideInBox}"/>
+							</ia:EventTriggerBehavior>
+						</i:Interaction.Behaviors>
+						<Grid>
+                			<Viewbox
+								Stretch="Fill"
+								Margin="0">
+								<Grid
+									Margin="0"
+									Width="500"
+									Height="{TemplateBinding SlideInBoxHeight}">
+									<ContentPresenter Content="{Binding Content, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}" />
+								</Grid>
+							</Viewbox>
+						</Grid>
+					</Border>
+					<Grid
+						Grid.Column="1">
+						<Label
+							Name="ArrowLabel"
+							Background="Transparent"
+							Foreground="Black"
+							HorizontalAlignment="Stretch"
+							VerticalAlignment="Stretch"
+							HorizontalContentAlignment="Center"
+							VerticalContentAlignment="Center"
+							ZIndex="20"
+							FontSize="18"
+							Content="{Binding Arrow, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}">
+							<i:Interaction.Behaviors>
+								<ia:EventTriggerBehavior EventName="PointerPressed">
+									<ia:InvokeCommandAction Command="{Binding OnArrowLabelPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}"/>
+								</ia:EventTriggerBehavior>
+								<ia:EventTriggerBehavior EventName="PointerEnter">
+									<ia:InvokeCommandAction Command="{Binding OnArrowLabelEnter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}"/>
+								</ia:EventTriggerBehavior>
+								<ia:EventTriggerBehavior EventName="PointerLeave">
+									<ia:InvokeCommandAction Command="{Binding OnArrowLabelLeave, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}"/>
+								</ia:EventTriggerBehavior>
+							</i:Interaction.Behaviors>
+						</Label>
+						<Label
+							Name="SideButton"
+							Background="SaddleBrown"
+							Foreground="Black"
+							HorizontalAlignment="Stretch"
+							VerticalAlignment="Stretch"
+							HorizontalContentAlignment="Center"
+							VerticalContentAlignment="Center"
+							Opacity="{Binding SideButtonOpacity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}, FallbackValue=0.0}"
+							ZIndex="10">
+							<Label.Transitions>
+								<Transitions>
+									<DoubleTransition Property="Opacity" Duration="0:0:0.3" />
+								</Transitions>
+							</Label.Transitions>
+						</Label>
+					</Grid>
+				</Grid>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+</Styles>

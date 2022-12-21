@@ -7,6 +7,7 @@ using ChessAvalonia.Services;
 using ChessAvalonia.WebApiClient;
 using ChessAvalonia.Models;
 using static ChessAvalonia.Services.MessengerService;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ChessAvalonia.ViewModels.Pages.Main.Overlays;
 
@@ -38,6 +39,7 @@ public partial class PromotePawnViewModel
 
     #region Commands
     [RelayCommand]
+    [RequiresUnreferencedCode("Calls ChessAvalonia.ViewModels.Pages.Main.Overlays.PromotePawnViewModel.PromotePawn(ChessPieceType)")]
     private void OverlayPromotePawnSelectChessPiece(object chessPiece)
     {
         string chessPieceString = chessPiece as string;
@@ -89,6 +91,7 @@ public partial class PromotePawnViewModel
         }
     }
 
+    [RequiresUnreferencedCode("Calls ChessAvalonia.WebApiClient.WebApiClientGamesCommands.PutCurrentOnlineGame(Int32, OnlineGame)")]
     internal async void PromotePawn(ChessPieceType chessPieceType)
     {
         MainPageViewModel mainPageViewModel = MessageMainPageViewModel;

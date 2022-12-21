@@ -247,6 +247,8 @@ internal static class BackgroundThreadsService
 
                                         ChessPiece chessPiece = squareDict[lastMoveStart].ChessPiece;
 
+                                        mainPageViewModel.AddToCapturedList(newCoords, opponentColor);
+
                                         mainPageViewModel.MoveChessPiece(oldCoords, newCoords, true, true);
                                         gameState.MoveList.Add(new Move(oldCoords, newCoords, chessPiece.ChessPieceColor, chessPiece.ChessPieceType));
 
@@ -326,6 +328,8 @@ internal static class BackgroundThreadsService
 
                                             if (canCapture)
                                             {
+                                                mainPageViewModel.AddToCapturedList(capturePawnCoords, opponentColor);
+
                                                 squareDict[capturePawnCoords.String].ChessPiece = new ChessPiece();
                                                 squareDict[capturePawnCoords.String].IsOccupied = false;
 
