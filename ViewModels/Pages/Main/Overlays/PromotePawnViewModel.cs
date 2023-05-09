@@ -96,12 +96,12 @@ public partial class PromotePawnViewModel
     {
         MainPageViewModel mainPageViewModel = MessageMainPageViewModel;
         SquareDictionary squareDict = mainPageViewModel.SquareDict;
-        ImageDictionary imageDict = mainPageViewModel.ImageDict;
+        var chessBoard = mainPageViewModel.CanvasBoard;
 
         MessagePromotePawnViewModel.PromotePawnIsVisible = false;
         ChessPieceColor ownColor = squareDict[mainPageViewModel.PromotePawnCoords.String].ChessPiece.ChessPieceColor;
         squareDict[mainPageViewModel.PromotePawnCoords.String].ChessPiece = new ChessPiece(ownColor, chessPieceType, mainPageViewModel.GameState.IsRotated);
-        imageDict[mainPageViewModel.PromotePawnCoords.String] = ChessPieceImages.GetChessPieceImage(ownColor, chessPieceType);
+        chessBoard[Coords.CoordsStringToIndex(mainPageViewModel.PromotePawnCoords.String)].Image = ChessPieceImages.GetChessPieceImage(ownColor, chessPieceType);
 
         if (mainPageViewModel.GameState.IsOnlineGame)
         {

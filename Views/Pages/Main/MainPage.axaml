@@ -16,15 +16,15 @@
 		<vm:MainPageViewModel/>
 	</Design.DataContext>
 
-    <UserControl.Resources>
-        <conv:BitmapAssetValueConverter x:Key="BitmapConverter"/>
-    </UserControl.Resources>
+	<UserControl.Resources>
+		<conv:BitmapAssetValueConverter x:Key="BitmapConverter"/>
+	</UserControl.Resources>
 
 	<i:Interaction.Behaviors>
 		<ia:EventTriggerBehavior EventName="PointerPressed">
 			<ia:InvokeCommandAction Command="{Binding MainPagePointerPressedCommand}" PassEventArgsToCommand="True"/>
 		</ia:EventTriggerBehavior>
-		 <ia:EventTriggerBehavior EventName="PointerMoved">
+		<ia:EventTriggerBehavior EventName="PointerMoved">
 			<ia:InvokeCommandAction Command="{Binding MainPagePointerMovedCommand}" PassEventArgsToCommand="True"/>
 		</ia:EventTriggerBehavior>
 		<ia:EventTriggerBehavior EventName="PointerReleased">
@@ -80,7 +80,7 @@
 				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[6], FallbackValue=G}"/>
 				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[7], FallbackValue=H}"/>
 			</StackPanel>
-			
+
 			<StackPanel
 				Orientation="Horizontal"
 				ZIndex="1"
@@ -98,7 +98,7 @@
 				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[6], FallbackValue=G}"/>
 				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[7], FallbackValue=H}"/>
 			</StackPanel>
-			
+
 			<StackPanel
 				Orientation="Vertical"
 				ZIndex="1"
@@ -116,7 +116,7 @@
 				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[6], FallbackValue=2}"/>
 				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[7], FallbackValue=1}"/>
 			</StackPanel>
-			
+
 			<StackPanel
 				Orientation="Vertical"
 				ZIndex="1"
@@ -146,794 +146,83 @@
 					Background="SaddleBrown"
 					Width="500"
 					Height="500">
-					<Canvas
-						Name="ChessCanvas"
-						Width="480"
-						Height="480">					
-						<Canvas.RenderTransform>
-							<RotateTransform
-								Angle="{Binding RotationAngle}"
-								CenterX="{Binding ChessCanvasRotationCenterX}"
-								CenterY="{Binding ChessCanvasRotationCenterY}">
-							</RotateTransform>
-						</Canvas.RenderTransform>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="0" Classes="Square WhiteSquare"/>
-						<Image Name="A8" Canvas.Left="0"   Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="0" Classes="Square BlackSquare"/>
-						<Image Name="B8" Canvas.Left="60"  Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="0" Classes="Square WhiteSquare"/>
-						<Image Name="C8" Canvas.Left="120" Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="0" Classes="Square BlackSquare"/>
-						<Image Name="D8" Canvas.Left="180" Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="0" Classes="Square WhiteSquare"/>
-						<Image Name="E8" Canvas.Left="240" Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="0" Classes="Square BlackSquare"/>
-						<Image Name="F8" Canvas.Left="300" Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="0" Classes="Square WhiteSquare"/>
-						<Image Name="G8" Canvas.Left="360" Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="0" Classes="Square BlackSquare"/>
-						<Image Name="H8" Canvas.Left="420" Canvas.Top="0" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H8], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+					<ItemsControl Items="{Binding CanvasBoard}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Canvas
+									Name="ChessCanvas"
+									Width="480"
+									Height="480">
+									<Canvas.RenderTransform>
+										<RotateTransform
+											Angle="{Binding $parent[UserControl].DataContext.RotationAngle}"
+											CenterX="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterX}"
+											CenterY="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterY}">
+										</RotateTransform>
+									</Canvas.RenderTransform>
+								</Canvas>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="60" Classes="Square BlackSquare"/>
-						<Image Name="A7" Canvas.Left="0"   Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="60" Classes="Square WhiteSquare"/>
-						<Image Name="B7" Canvas.Left="60"  Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="60" Classes="Square BlackSquare"/>
-						<Image Name="C7" Canvas.Left="120" Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="60" Classes="Square WhiteSquare"/>
-						<Image Name="D7" Canvas.Left="180" Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="60" Classes="Square BlackSquare"/>
-						<Image Name="E7" Canvas.Left="240" Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="60" Classes="Square WhiteSquare"/>
-						<Image Name="F7" Canvas.Left="300" Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="60" Classes="Square BlackSquare"/>
-						<Image Name="G7" Canvas.Left="360" Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="60" Classes="Square WhiteSquare"/>
-						<Image Name="H7" Canvas.Left="420" Canvas.Top="60" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H7], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+						<ItemsControl.Styles>
+							<Style Selector="ContentPresenter">
+								<Setter Property="Canvas.Left" Value="{Binding CanvasLeft}" />
+								<Setter Property="Canvas.Top" Value="{Binding CanvasTop}" />
+							</Style>
+						</ItemsControl.Styles>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="120" Classes="Square WhiteSquare"/>
-						<Image Name="A6" Canvas.Left="0"   Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="120" Classes="Square BlackSquare"/>
-						<Image Name="B6" Canvas.Left="60"  Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="120" Classes="Square WhiteSquare"/>
-						<Image Name="C6" Canvas.Left="120" Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="120" Classes="Square BlackSquare"/>
-						<Image Name="D6" Canvas.Left="180" Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="120" Classes="Square WhiteSquare"/>
-						<Image Name="E6" Canvas.Left="240" Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="120" Classes="Square BlackSquare"/>
-						<Image Name="F6" Canvas.Left="300" Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="120" Classes="Square WhiteSquare"/>
-						<Image Name="G6" Canvas.Left="360" Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="120" Classes="Square BlackSquare"/>
-						<Image Name="H6" Canvas.Left="420" Canvas.Top="120" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H6], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Rectangle Classes="Square" Fill="{Binding BackgroundColor}" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="180" Classes="Square BlackSquare"/>
-						<Image Name="A5" Canvas.Left="0"   Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="180" Classes="Square WhiteSquare"/>
-						<Image Name="B5" Canvas.Left="60"  Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="180" Classes="Square BlackSquare"/>
-						<Image Name="C5" Canvas.Left="120" Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="180" Classes="Square WhiteSquare"/>
-						<Image Name="D5" Canvas.Left="180" Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="180" Classes="Square BlackSquare"/>
-						<Image Name="E5" Canvas.Left="240" Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="180" Classes="Square WhiteSquare"/>
-						<Image Name="F5" Canvas.Left="300" Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="180" Classes="Square BlackSquare"/>
-						<Image Name="G5" Canvas.Left="360" Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="180" Classes="Square WhiteSquare"/>
-						<Image Name="H5" Canvas.Left="420" Canvas.Top="180" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H5], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+					</ItemsControl>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="240" Classes="Square WhiteSquare"/>
-						<Image Name="A4" Canvas.Left="0"   Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="240" Classes="Square BlackSquare"/>
-						<Image Name="B4" Canvas.Left="60"  Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="240" Classes="Square WhiteSquare"/>
-						<Image Name="C4" Canvas.Left="120" Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="240" Classes="Square BlackSquare"/>
-						<Image Name="D4" Canvas.Left="180" Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="240" Classes="Square WhiteSquare"/>
-						<Image Name="E4" Canvas.Left="240" Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="240" Classes="Square BlackSquare"/>
-						<Image Name="F4" Canvas.Left="300" Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="240" Classes="Square WhiteSquare"/>
-						<Image Name="G4" Canvas.Left="360" Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="240" Classes="Square BlackSquare"/>
-						<Image Name="H4" Canvas.Left="420" Canvas.Top="240" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H4], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+					<ItemsControl Items="{Binding CanvasBoard}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Canvas
+									Name="ChessCanvas"
+									Width="480"
+									Height="480">
+									<Canvas.RenderTransform>
+										<RotateTransform
+											Angle="{Binding $parent[UserControl].DataContext.RotationAngle}"
+											CenterX="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterX}"
+											CenterY="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterY}">
+										</RotateTransform>
+									</Canvas.RenderTransform>
+								</Canvas>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="300" Classes="Square BlackSquare"/>
-						<Image Name="A3" Canvas.Left="0"   Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="300" Classes="Square WhiteSquare"/>
-						<Image Name="B3" Canvas.Left="60"  Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="300" Classes="Square BlackSquare"/>
-						<Image Name="C3" Canvas.Left="120" Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="300" Classes="Square WhiteSquare"/>
-						<Image Name="D3" Canvas.Left="180" Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="300" Classes="Square BlackSquare"/>
-						<Image Name="E3" Canvas.Left="240" Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="300" Classes="Square WhiteSquare"/>
-						<Image Name="F3" Canvas.Left="300" Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="300" Classes="Square BlackSquare"/>
-						<Image Name="G3" Canvas.Left="360" Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="300" Classes="Square WhiteSquare"/>
-						<Image Name="H3" Canvas.Left="420" Canvas.Top="300" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H3], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+						<ItemsControl.Styles>
+							<Style Selector="ContentPresenter">
+								<Setter Property="Canvas.Left" Value="{Binding CanvasLeft}" />
+								<Setter Property="Canvas.Top" Value="{Binding CanvasTop}" />
+							</Style>
+						</ItemsControl.Styles>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="360" Classes="Square WhiteSquare"/>
-						<Image Name="A2" Canvas.Left="0"   Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="360" Classes="Square BlackSquare"/>
-						<Image Name="B2" Canvas.Left="60"  Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="360" Classes="Square WhiteSquare"/>
-						<Image Name="C2" Canvas.Left="120" Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="360" Classes="Square BlackSquare"/>
-						<Image Name="D2" Canvas.Left="180" Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="360" Classes="Square WhiteSquare"/>
-						<Image Name="E2" Canvas.Left="240" Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="360" Classes="Square BlackSquare"/>
-						<Image Name="F2" Canvas.Left="300" Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="360" Classes="Square WhiteSquare"/>
-						<Image Name="G2" Canvas.Left="360" Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="360" Classes="Square BlackSquare"/>
-						<Image Name="H2" Canvas.Left="420" Canvas.Top="360" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H2], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Image Name="{Binding CellName}" Classes="ImageChessPiece"
+									Source="{Binding Image, Converter={StaticResource BitmapConverter}}" >
+									<Image.RenderTransform>
+										<RotateTransform Angle="{Binding $parent[UserControl].DataContext.RotationAngle}" />
+									</Image.RenderTransform>
+									<i:Interaction.Behaviors>
+										<ia:EventTriggerBehavior EventName="PointerPressed">
+											<ia:InvokeCommandAction Command="{Binding $parent[ItemsControl].DataContext.ChessPiecePointerPressedCommand}"
+																   PassEventArgsToCommand="True" />
+										</ia:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</Image>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
 
-						<Rectangle Canvas.Left="0"   Canvas.Top="420" Classes="Square BlackSquare"/>
-						<Image Name="A1" Canvas.Left="0"   Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[A1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="60"  Canvas.Top="420" Classes="Square WhiteSquare"/>
-						<Image Name="B1" Canvas.Left="60"  Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[B1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="120" Canvas.Top="420" Classes="Square BlackSquare"/>
-						<Image Name="C1" Canvas.Left="120" Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[C1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="180" Canvas.Top="420" Classes="Square WhiteSquare"/>
-						<Image Name="D1" Canvas.Left="180" Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[D1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="240" Canvas.Top="420" Classes="Square BlackSquare"/>
-						<Image Name="E1" Canvas.Left="240" Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[E1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="300" Canvas.Top="420" Classes="Square WhiteSquare"/>
-						<Image Name="F1" Canvas.Left="300" Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[F1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="360" Canvas.Top="420" Classes="Square BlackSquare"/>
-						<Image Name="G1" Canvas.Left="360" Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[G1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-						<Rectangle Canvas.Left="420" Canvas.Top="420" Classes="Square WhiteSquare"/>
-						<Image Name="H1" Canvas.Left="420" Canvas.Top="420" Classes="ImageChessPiece"
-							Source="{Binding ImageDict[H1], Converter={StaticResource BitmapConverter}}">
-							<Image.RenderTransform>
-								<RotateTransform Angle="{Binding RotationAngle}"/>
-							</Image.RenderTransform>
-							<i:Interaction.Behaviors>
-								<ia:EventTriggerBehavior  EventName="PointerPressed">
-									<ia:InvokeCommandAction Command="{Binding ChessPiecePointerPressedCommand}" PassEventArgsToCommand="True"/>
-								</ia:EventTriggerBehavior >
-							</i:Interaction.Behaviors>
-						</Image>
-					</Canvas>
+					</ItemsControl>
 				</Grid>
 
 				<overlays:Menu
@@ -964,12 +253,12 @@
 				</overlays:ErrorMessage>
 			</Grid>
 		</Grid>
-		
-        <controls:CapturedChessPiecesControl			
+
+		<controls:CapturedChessPiecesControl
 			SlideInBoxIsVisible="False"
 			SideButtonOpacity="0.0"
 			DataContext="{Binding}">
-            <controls:CapturedChessPiecesControl.Content>
+			<controls:CapturedChessPiecesControl.Content>
 				<Grid
 					Margin="0, 20, 0, 20"
 					ColumnDefinitions="*"
@@ -1007,231 +296,80 @@
 							EndPoint="0, 1"
 							Stretch="Fill">
 						</Line>
-						<Grid
+
+						<ItemsControl
 							Grid.Column="0"
-							Grid.Row="2"
-							Margin="0, 20, 0, 0"
-							Background="Transparent"
-							HorizontalAlignment="Center"
-							ColumnDefinitions="*, *, *"
-							RowDefinitions="*, *, *, *, *, *, *, *">
-							<Image
-								Grid.Column="0"
-								Grid.Row="0"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[0], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="0"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[1], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="0"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[2], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="1"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[3], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="1"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[4], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="1"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[5], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="2"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[6], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="2"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[7], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="2"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[8], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="3"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[9], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="3"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[10], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="3"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[11], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="4"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[12], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="4"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[13], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="4"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedWhiteImageList[14], Converter={StaticResource BitmapConverter}}">
-							</Image>
-						</Grid>
-						<Grid
+							Grid.Row="0"
+							Items="{Binding CapturedWhiteChessPieces}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<Grid
+										Margin="0, 20, 0, 0"
+										Background="Transparent"
+										HorizontalAlignment="Center"
+										ColumnDefinitions="*, *, *"
+										RowDefinitions="*, *, *, *, *, *, *, *">
+									</Grid>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+
+							<ItemsControl.Styles>
+								<Style Selector="ContentPresenter">
+									<Setter Property="Grid.Column" Value="{Binding GridColumn}" />
+									<Setter Property="Grid.Row" Value="{Binding GridRow}" />
+									<Setter Property="Margin" Value="0 0 0 25" />
+								</Style>
+							</ItemsControl.Styles>
+
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Image
+										Margin="0, 0, 0, 25"
+										Classes="ImageChessPiece"
+										Source="{Binding Image, Converter={StaticResource BitmapConverter}}">
+									</Image>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+
+						<ItemsControl 
 							Grid.Column="2"
-							Grid.Row="2"
-							Margin="0, 20, 0, 0"
-							Background="Transparent"
-							HorizontalAlignment="Center"
-							ColumnDefinitions="*, *, *"
-							RowDefinitions="*, *, *, *, *, *, *, *">
-							<Image
-								Grid.Column="0"
-								Grid.Row="0"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[0], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="0"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[1], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="0"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[2], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="1"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[3], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="1"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[4], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="1"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[5], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="2"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[6], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="2"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[7], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="2"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[8], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="3"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[9], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="3"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[10], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="3"
-								Margin="0, 0, 0, 25"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[11], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="0"
-								Grid.Row="4"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[12], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="1"
-								Grid.Row="4"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[13], Converter={StaticResource BitmapConverter}}">
-							</Image>
-							<Image
-								Grid.Column="2"
-								Grid.Row="4"
-								Classes="ImageChessPiece"
-								Source="{Binding CapturedBlackImageList[14], Converter={StaticResource BitmapConverter}}">
-							</Image>
-						</Grid>
+							Grid.Row="0"
+							Items="{Binding CapturedBlackChessPieces}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<Grid
+										Margin="0, 20, 0, 0"
+										Background="Transparent"
+										HorizontalAlignment="Center"
+										ColumnDefinitions="*, *, *"
+										RowDefinitions="*, *, *, *, *, *, *, *">
+									</Grid>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+
+							<ItemsControl.Styles>
+								<Style Selector="ContentPresenter">
+									<Setter Property="Grid.Column" Value="{Binding GridColumn}" />
+									<Setter Property="Grid.Row" Value="{Binding GridRow}" />
+									<Setter Property="Margin" Value="0 0 0 25" />
+								</Style>
+							</ItemsControl.Styles>
+
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Image
+										Margin="0, 0, 0, 25"
+										Classes="ImageChessPiece"
+										Source="{Binding Image, Converter={StaticResource BitmapConverter}}">
+									</Image>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+
 					</Grid>
 				</Grid>
 			</controls:CapturedChessPiecesControl.Content>
-        </controls:CapturedChessPiecesControl>
+		</controls:CapturedChessPiecesControl>
 	</Grid>
 </UserControl>

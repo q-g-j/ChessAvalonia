@@ -455,3 +455,5 @@ $RECYCLE.BIN/
 PublishProfiles
 /Properties/launchSettings.json
 AppImages
+*.puml
+*.cd

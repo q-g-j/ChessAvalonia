@@ -1,4 +1,6 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using ChessAvalonia.ViewModels.Pages.Main;
 using System;
 

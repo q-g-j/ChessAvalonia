@@ -16,6 +16,8 @@ using static ChessAvalonia.Services.MessengerService;
 using System.Diagnostics.CodeAnalysis;
 using ChessAvalonia.Controls;
 using System.Linq;
+using Avalonia.VisualTree;
+using Avalonia.Controls.Presenters;
 
 namespace ChessAvalonia.ViewModels.Pages.Main;
 
@@ -37,7 +39,7 @@ public partial class MainPageViewModel
     #region Fields
     private int capturedWhiteCount = 0;
     private int capturedBlackCount = 0;
-    private Image currentlyDraggedImage = null;
+    private ContentPresenter currentlyDraggedImage = null;
     private int currentlyDraggedImageOriginalCanvasLeft;
     private int currentlyDraggedImageOriginalCanvasTop;
     private Point originalPointerPosition;
@@ -55,9 +57,6 @@ public partial class MainPageViewModel
     #endregion
 
     #region Bindable Properties
-    [ObservableProperty]
-    private ImageDictionary imageDict = new();
-
     [ObservableProperty]
     private double rotationAngle = 0.0;
 
@@ -80,12 +79,6 @@ public partial class MainPageViewModel
     private ObservableCollection<string> verticalNotationList;
 
     [ObservableProperty]
-    private ObservableCollection<string> capturedWhiteImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
-
-    [ObservableProperty]
-    private ObservableCollection<string> capturedBlackImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
-
-    [ObservableProperty]
     private string labelMoveInfo = "";
 
     [ObservableProperty]
@@ -99,6 +92,15 @@ public partial class MainPageViewModel
 
     [ObservableProperty]
     private string txt = "Test";
+
+    [ObservableProperty]
+    private CanvasBoard canvasBoard;
+
+    [ObservableProperty]
+    private CapturedChessPieces capturedWhiteChessPieces;
+
+    [ObservableProperty]
+    private CapturedChessPieces capturedBlackChessPieces;
     #endregion
 
     #region Commands
@@ -167,11 +169,11 @@ public partial class MainPageViewModel
             {
                 if (e.Source is Image image)
                 {
-                    var chessCanvas = image.Parent as Canvas;
+                    var chessCanvas = image.FindAncestorOfType<Canvas>();
 
                     if (e.GetCurrentPoint(chessCanvas).Properties.IsLeftButtonPressed == true)
                     {
-                        currentlyDraggedImage = image;
+                        currentlyDraggedImage = image.FindAncestorOfType<ContentPresenter>();
                         currentlyDraggedImageOriginalCanvasLeft = -1000;
                         currentlyDraggedImageOriginalCanvasTop = -1000;
                         originalPointerPosition = e.GetPosition(chessCanvas);
@@ -221,7 +223,7 @@ public partial class MainPageViewModel
         {
             if (currentlyDraggedImage != null)
             {
-                var chessCanvas = (e.Source as Image).Parent as Canvas;
+                var chessCanvas = (e.Source as Image).FindAncestorOfType<Canvas>();
 
                 if (e.GetCurrentPoint(chessCanvas).Properties.IsLeftButtonPressed == true)
                 {
@@ -233,11 +235,14 @@ public partial class MainPageViewModel
                         }
                         isMouseMoving = true;
                         dragOverCanvasPosition = e.GetPosition(chessCanvas);
-                        currentlyDraggedImage.ZIndex = 100;
+                        currentlyDraggedImage.ZIndex = 1000;
                         double offsetX = originalPointerPosition.X - currentlyDraggedImageOriginalCanvasLeft;
                         double offsetY = originalPointerPosition.Y - currentlyDraggedImageOriginalCanvasTop;
                         Canvas.SetLeft(currentlyDraggedImage, dragOverCanvasPosition.X - offsetX);
                         Canvas.SetTop(currentlyDraggedImage, dragOverCanvasPosition.Y - offsetY);
+
+                        //System.Diagnostics.Debug.Write(Canvas.GetLeft(currentlyDraggedImage).ToString() + ",");
+                        //System.Diagnostics.Debug.WriteLine(Canvas.GetTop(currentlyDraggedImage).ToString());
                     }
                 }
             }
@@ -330,7 +335,8 @@ public partial class MainPageViewModel
                 AddToCapturedList(SquareDict.CoordsPawnMovedTwoSquares, currentlyDraggedChessPieceColor);
                 SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].ChessPiece = new ChessPiece();
                 SquareDict[SquareDict.CoordsPawnMovedTwoSquares.String].IsOccupied = false;
-                ImageDict[SquareDict.CoordsPawnMovedTwoSquares.String] = ChessPieceImages.Empty;
+
+                CanvasBoard[Coords.CoordsStringToIndex(SquareDict.CoordsPawnMovedTwoSquares.String)].Image = ChessPieceImages.Empty;
             }
 
             // has a pawn moved two squares at once? Store its coords for the next turn...
@@ -499,30 +505,15 @@ public partial class MainPageViewModel
         GameState.IsCheckMate = false;
         GameState.MoveList = new();
 
-        SquareDict = new SquareDictionary();
-        ImageDict = new();
+        SquareDict = new();
+        CanvasBoard = new();
+        CapturedWhiteChessPieces = new();
+        CapturedBlackChessPieces = new();
 
         CreateNotation();
 
         capturedWhiteCount = 0;
         capturedBlackCount = 0;
-
-        // ObservableCollection<string> capturedWhiteList = new();
-        // for (int i = 0; i < 15; i++)
-        // {
-        //     capturedWhiteList.Add(ChessPieceImages.Empty);
-        // }
-        // CapturedWhiteImageList = capturedWhiteList;
-
-        // ObservableCollection<string> capturedBlackList = new();
-        // for (int i = 0; i < 15; i++)
-        // {
-        //     capturedBlackList.Add(ChessPieceImages.Empty);
-        // }
-        // CapturedBlackImageList = capturedBlackList;
-
-        CapturedWhiteImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
-        CapturedBlackImageList = new(Enumerable.Repeat(ChessPieceImages.Empty, 15).ToList<string>());
 
         if (GameState.IsRotated)
         {
@@ -543,7 +534,9 @@ public partial class MainPageViewModel
         {
             SquareDict[Coords.IntsToCoordsString(col, 2)].ChessPiece = new ChessPiece(ChessPieceColor.White, ChessPieceType.Pawn, doRotate);
             SquareDict[Coords.IntsToCoordsString(col, 2)].IsOccupied = true;
-            ImageDict[Coords.IntsToCoordsString(col, 2)] = ChessPieceImages.WhitePawn;
+
+            string coordsString = Coords.IntsToCoordsString(col, 2);
+            CanvasBoard[Coords.CoordsStringToIndex(coordsString)].Image = ChessPieceImages.WhitePawn;
         }
         SquareDict["A1"].ChessPiece = new ChessPiece(ChessPieceColor.White, ChessPieceType.Rook, doRotate);
         SquareDict["B1"].ChessPiece = new ChessPiece(ChessPieceColor.White, ChessPieceType.Knight, doRotate);
@@ -563,20 +556,21 @@ public partial class MainPageViewModel
         SquareDict["G1"].IsOccupied = true;
         SquareDict["H1"].IsOccupied = true;
         
-        ImageDict["A1"] = ChessPieceImages.WhiteRook;
-        ImageDict["B1"] = ChessPieceImages.WhiteKnight;
-        ImageDict["C1"] = ChessPieceImages.WhiteBishop;
-        ImageDict["D1"] = ChessPieceImages.WhiteQueen;
-        ImageDict["E1"] = ChessPieceImages.WhiteKing;
-        ImageDict["F1"] = ChessPieceImages.WhiteBishop;
-        ImageDict["G1"] = ChessPieceImages.WhiteKnight;
-        ImageDict["H1"] = ChessPieceImages.WhiteRook;
+        CanvasBoard[Coords.CoordsStringToIndex("A1")].Image = ChessPieceImages.WhiteRook;
+        CanvasBoard[Coords.CoordsStringToIndex("B1")].Image = ChessPieceImages.WhiteKnight;
+        CanvasBoard[Coords.CoordsStringToIndex("C1")].Image = ChessPieceImages.WhiteBishop;
+        CanvasBoard[Coords.CoordsStringToIndex("D1")].Image = ChessPieceImages.WhiteQueen;
+        CanvasBoard[Coords.CoordsStringToIndex("E1")].Image = ChessPieceImages.WhiteKing;
+        CanvasBoard[Coords.CoordsStringToIndex("F1")].Image = ChessPieceImages.WhiteBishop;
+        CanvasBoard[Coords.CoordsStringToIndex("G1")].Image = ChessPieceImages.WhiteKnight;
+        CanvasBoard[Coords.CoordsStringToIndex("H1")].Image = ChessPieceImages.WhiteRook;
 
         for (int col = 1; col < 9; col++)
         {
             SquareDict[Coords.IntsToCoordsString(col, 7)].ChessPiece = new ChessPiece(ChessPieceColor.Black, ChessPieceType.Pawn, doRotate);
             SquareDict[Coords.IntsToCoordsString(col, 7)].IsOccupied = true;
-            ImageDict[Coords.IntsToCoordsString(col, 7)] = ChessPieceImages.BlackPawn;
+            string coordsString = Coords.IntsToCoordsString(col, 7);
+            CanvasBoard[Coords.CoordsStringToIndex(coordsString)].Image = ChessPieceImages.BlackPawn;
         }
 
         SquareDict["A8"].ChessPiece = new ChessPiece(ChessPieceColor.Black, ChessPieceType.Rook, doRotate);
@@ -597,14 +591,14 @@ public partial class MainPageViewModel
         SquareDict["G8"].IsOccupied = true;
         SquareDict["H8"].IsOccupied = true;
         
-        ImageDict["A8"] = ChessPieceImages.BlackRook;
-        ImageDict["B8"] = ChessPieceImages.BlackKnight;
-        ImageDict["C8"] = ChessPieceImages.BlackBishop;
-        ImageDict["D8"] = ChessPieceImages.BlackQueen;
-        ImageDict["E8"] = ChessPieceImages.BlackKing;
-        ImageDict["F8"] = ChessPieceImages.BlackBishop;
-        ImageDict["G8"] = ChessPieceImages.BlackKnight;
-        ImageDict["H8"] = ChessPieceImages.BlackRook;
+        CanvasBoard[Coords.CoordsStringToIndex("A8")].Image = ChessPieceImages.BlackRook;
+        CanvasBoard[Coords.CoordsStringToIndex("B8")].Image = ChessPieceImages.BlackKnight;
+        CanvasBoard[Coords.CoordsStringToIndex("C8")].Image = ChessPieceImages.BlackBishop;
+        CanvasBoard[Coords.CoordsStringToIndex("D8")].Image = ChessPieceImages.BlackQueen;
+        CanvasBoard[Coords.CoordsStringToIndex("E8")].Image = ChessPieceImages.BlackKing;
+        CanvasBoard[Coords.CoordsStringToIndex("F8")].Image = ChessPieceImages.BlackBishop;
+        CanvasBoard[Coords.CoordsStringToIndex("G8")].Image = ChessPieceImages.BlackKnight;
+        CanvasBoard[Coords.CoordsStringToIndex("H8")].Image = ChessPieceImages.BlackRook;
 
         LabelMoveInfo = "It's white's turn...";
     }
@@ -613,15 +607,16 @@ public partial class MainPageViewModel
     {
         if (SquareDict[capturedCoords.String].IsOccupied)
         {
-            string newCoordsChessPieceImage = ImageDict[capturedCoords.String];
+            string newCoordsChessPieceImage = CanvasBoard[Coords.CoordsStringToIndex(capturedCoords.String)].Image;
+            
             if (capturingColor == ChessPieceColor.White)
             {
-                CapturedBlackImageList[capturedBlackCount] = newCoordsChessPieceImage;
+                CapturedBlackChessPieces[capturedBlackCount].Image = newCoordsChessPieceImage;
                 capturedBlackCount++;
             }
             else
             {
-                CapturedWhiteImageList[capturedWhiteCount] = newCoordsChessPieceImage;
+                CapturedWhiteChessPieces[capturedWhiteCount].Image = newCoordsChessPieceImage;
                 capturedWhiteCount++;
             }
         }
@@ -634,8 +629,8 @@ public partial class MainPageViewModel
 
         if (doChangeImage)
         {
-            ImageDict[newCoords.String] = ImageDict[oldCoords.String];
-            ImageDict[oldCoords.String] = ChessPieceImages.Empty;
+            CanvasBoard[Coords.CoordsStringToIndex(newCoords.String)].Image = CanvasBoard[Coords.CoordsStringToIndex(oldCoords.String)].Image;
+            CanvasBoard[Coords.CoordsStringToIndex(oldCoords.String)].Image = ChessPieceImages.Empty;
         }
 
         if (doChangeCounter)
