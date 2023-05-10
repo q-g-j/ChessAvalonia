@@ -733,24 +733,6 @@ public partial class MainPageViewModel
         CanvasImages.Clear();
 
         int t = 0;
-        //{
-        //    for (int col = 1; col < 9; col++, t++)
-        //    {
-        //        int l = 0;
-        //        for (int row = 8; row > 0; row--, l++)
-        //        {
-        //            CanvasImage cell = new()
-        //            {
-        //                CellName = Coords.IntsToCoordsString(row, col),
-        //                CanvasLeft = l * 60,
-        //                CanvasTop = t * 60,
-        //                Image = ChessPieceImages.Empty,
-        //            };
-
-        //            CanvasImages.Add(cell);
-        //        }
-        //    }
-        //}
         for (int col = 8; col > 0; col--, t++)
         {
             int l = 0;
