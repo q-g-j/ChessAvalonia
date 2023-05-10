@@ -9,7 +9,6 @@
              xmlns:overlays="using:ChessAvalonia.Views.Pages.Main.Overlays"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-             xmlns:iae="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions.Events"
              xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions.Custom"
              mc:Ignorable="d"
              x:Class="ChessAvalonia.Views.Pages.Main.MainPage">
@@ -290,7 +289,7 @@
 			<controls:CapturedChessPiecesControl.Content>
 				<Grid
 					ZIndex="20"
-					Margin="0, 20, 0, 20"
+					Margin="0, 10, 0, 20"
 					ColumnDefinitions="*"
 					RowDefinitions="30, 10, *"
 					HorizontalAlignment="Stretch"

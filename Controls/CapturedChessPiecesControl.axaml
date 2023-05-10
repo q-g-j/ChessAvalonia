@@ -24,7 +24,7 @@
 					<Border
 						Name="SlideInBox"
 						Grid.Column="0"
-						Margin="0, 70, 0, 0"
+						Margin="0, 52, 0, 0"
 						Background="#ffb366"
 						Width="{Binding SlideInBoxWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}, FallbackValue=0}"
 						Height="{TemplateBinding SlideInBoxHeight}"

@@ -130,7 +130,7 @@ public partial class MainPageViewModel
 
     #region Commands
     [RelayCommand]
-    private void MainPagePointerPressed(PointerEventArgs e)
+    private static void MainPagePointerPressed(PointerEventArgs e)
     {
         if (MessageMenuViewModel.MenuIsVisible)
         {
@@ -167,7 +167,7 @@ public partial class MainPageViewModel
     }
 
     [RelayCommand]
-    private void MenuButtonPressed()
+    private static void MenuButtonPressed()
     {
         CapturedChessPiecesControl sideMenu = WeakReferenceMessenger.Default.Send<CapturedChessPiecesControl.CapturedChessPiecesControlRequestMessage>();
         if (sideMenu.SlideInBoxWidth == 500)
@@ -518,7 +518,6 @@ public partial class MainPageViewModel
 
         SquareDict = new();
         CreateNotation();
-        FillCanvasRectangles();
         FillCanvasImages();
 
         CapturedWhiteChessPieces = new();
