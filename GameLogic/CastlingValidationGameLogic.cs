@@ -12,7 +12,7 @@ internal static class CastlingValidationGameLogic
         // 3. there must not be any pieces between both ### done
         // 4. the king's old and new position and the square that the king is passing may not be threatened ### done
 
-        MoveValidationData moveValidationData = new MoveValidationData();
+        MoveValidationData moveValidationData = new();
 
         // rule 1: has king moved?
         if (squareDict[oldCoords.String].ChessPiece.HasMoved)
@@ -43,7 +43,7 @@ internal static class CastlingValidationGameLogic
                     return moveValidationData;
                 }
                 // rule 4: is the king (old or new coords) or the crossed square threatened?
-                List<Coords> coordsListToCheck = new List<Coords>
+                List<Coords> coordsListToCheck = new()
                 {
                     oldCoords,
                     newCoords,

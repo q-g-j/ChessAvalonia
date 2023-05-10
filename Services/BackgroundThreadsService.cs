@@ -277,7 +277,7 @@ internal static class BackgroundThreadsService
                                                 chessPiece = new ChessPiece(opponentColor, ChessPieceType.Queen, gameState.IsRotated);
                                             }
 
-                                            mainPageViewModel.CanvasBoard[Coords.CoordsStringToIndex(newCoords.String)].Image = ChessPieceImages.GetChessPieceImage(chessPiece.ChessPieceColor, chessPiece.ChessPieceType);
+                                            mainPageViewModel.CanvasImages[Coords.CoordsStringToIndex(newCoords.String)].Image = ChessPieceImages.GetChessPieceImage(chessPiece.ChessPieceColor, chessPiece.ChessPieceType);
                                             squareDict[newCoords.String].ChessPiece = chessPiece;
                                         }
                                         // if opponent's pawn moved two squares:
@@ -333,7 +333,7 @@ internal static class BackgroundThreadsService
                                                 squareDict[capturePawnCoords.String].ChessPiece = new ChessPiece();
                                                 squareDict[capturePawnCoords.String].IsOccupied = false;
 
-                                                mainPageViewModel.CanvasBoard[Coords.CoordsStringToIndex(capturePawnCoords.String)].Image = ChessPieceImages.Empty;
+                                                mainPageViewModel.CanvasImages[Coords.CoordsStringToIndex(capturePawnCoords.String)].Image = ChessPieceImages.Empty;
                                             }
                                         }
                                         // if opponent castled his king:

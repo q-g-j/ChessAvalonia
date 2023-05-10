@@ -1,14 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessAvalonia.ViewModels.Pages.Main
 {
     [INotifyPropertyChanged]
-    public partial class CanvasCell
+    public partial class CanvasImage
     {
         [ObservableProperty]
         private string cellName;
@@ -23,6 +18,6 @@ namespace ChessAvalonia.ViewModels.Pages.Main
         private string image;
 
         [ObservableProperty]
-        private string backgroundColor;
+        private int zIndex;
     }
 }

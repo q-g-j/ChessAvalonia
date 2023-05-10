@@ -96,7 +96,7 @@ public partial class PromotePawnViewModel
     {
         MainPageViewModel mainPageViewModel = MessageMainPageViewModel;
         SquareDictionary squareDict = mainPageViewModel.SquareDict;
-        var chessBoard = mainPageViewModel.CanvasBoard;
+        var chessBoard = mainPageViewModel.CanvasImages;
 
         MessagePromotePawnViewModel.PromotePawnIsVisible = false;
         ChessPieceColor ownColor = squareDict[mainPageViewModel.PromotePawnCoords.String].ChessPiece.ChessPieceColor;
