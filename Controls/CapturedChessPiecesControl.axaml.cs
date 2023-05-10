@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using ChessAvalonia.ViewModels.Pages.Main;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
+using Newtonsoft.Json.Linq;
+using Avalonia.Controls.Templates;
 
 namespace ChessAvalonia.Controls
 {
@@ -23,37 +25,38 @@ namespace ChessAvalonia.Controls
         public CapturedChessPiecesControl()
         {
             InitializeMessageHandlers();
-            KeepCheckingIsSlideInBoxAnimating();
+            KeepCheckingIsCapturedBoxAnimating();
+
         }
         #endregion
 
         #region Fields
         public bool IsMouseOverArrowLabel = false;
-        private bool isSlideInBoxTriggered = false;
-        private Border slideInBox = null;
+        private bool isCapturedBoxTriggered = false;
+        private Border capturedBox = null;
         #endregion
 
         #region Styled Properties
-        public static readonly StyledProperty<bool> SlideInBoxIsVisibleProperty =
-            AvaloniaProperty.Register<CapturedChessPiecesControl, bool>(nameof(SlideInBoxIsVisible));
+        public static readonly StyledProperty<bool> CapturedBoxIsVisibleProperty =
+            AvaloniaProperty.Register<CapturedChessPiecesControl, bool>(nameof(CapturedBoxIsVisible));
 
-        public bool SlideInBoxIsVisible
+        public bool CapturedBoxIsVisible
         {
-            get { return GetValue(SlideInBoxIsVisibleProperty); }
+            get { return GetValue(CapturedBoxIsVisibleProperty); }
             set
             {
                 if (value)
                 {
-                    SlideInBoxWidth = 500;
-                    isSlideInBoxTriggered = true;
+                    CapturedBoxWidth = 500;
+                    isCapturedBoxTriggered = true;
                 }
                 else
                 {
-                    SlideInBoxWidth = 0;
+                    CapturedBoxWidth = 0;
                     Arrow = "<";
-                    isSlideInBoxTriggered = false;
+                    isCapturedBoxTriggered = false;
                 }
-                SetValue(SlideInBoxIsVisibleProperty, value);
+                SetValue(CapturedBoxIsVisibleProperty, value);
             }
         }
 
@@ -65,7 +68,7 @@ namespace ChessAvalonia.Controls
             get => GetValue(ContentProperty);
             set => SetValue(ContentProperty, value);
         }
-        
+
         public static readonly StyledProperty<double> SideButtonOpacityProperty =
             AvaloniaProperty.Register<CapturedChessPiecesControl, double>(nameof(SideButtonOpacity));
 
@@ -75,40 +78,49 @@ namespace ChessAvalonia.Controls
             set { SetValue(SideButtonOpacityProperty, value); }
         }
 
-        public static readonly StyledProperty<int> SlideInBoxWidthProperty =
-            AvaloniaProperty.Register<CapturedChessPiecesControl, int>(nameof(SlideInBoxWidth));
+        public static readonly StyledProperty<double> CapturedBoxTopOffsetProperty =
+            AvaloniaProperty.Register<CapturedChessPiecesControl, double>(nameof(CapturedBoxTopOffset));
 
-        public int SlideInBoxWidth
+        public double CapturedBoxTopOffset
         {
-            get { return GetValue(SlideInBoxWidthProperty); }
-            set { SetValue(SlideInBoxWidthProperty, value); }
+            get { return GetValue(CapturedBoxTopOffsetProperty); }
+            set { SetValue(CapturedBoxTopOffsetProperty, value); }
         }
 
-        public static readonly StyledProperty<int> SlideInBoxHeightProperty =
-            AvaloniaProperty.Register<CapturedChessPiecesControl, int>(nameof(SlideInBoxHeight));
+        public static readonly StyledProperty<int> CapturedBoxWidthProperty =
+            AvaloniaProperty.Register<CapturedChessPiecesControl, int>(nameof(CapturedBoxWidth));
 
-        public int SlideInBoxHeight
+        public int CapturedBoxWidth
         {
-            get { return GetValue(SlideInBoxHeightProperty); }
-            set { SetValue(SlideInBoxHeightProperty, value); }
+            get { return GetValue(CapturedBoxWidthProperty); }
+            set { SetValue(CapturedBoxWidthProperty, value); }
         }
 
-        public static readonly StyledProperty<int> SlideInBoxMaxWidthProperty =
-            AvaloniaProperty.Register<CapturedChessPiecesControl, int>(nameof(SlideInBoxMaxWidth));
+        public static readonly StyledProperty<int> CapturedBoxHeightProperty =
+            AvaloniaProperty.Register<CapturedChessPiecesControl, int>(nameof(CapturedBoxHeight));
 
-        public int SlideInBoxMaxWidth
+        public int CapturedBoxHeight
         {
-            get { return GetValue(SlideInBoxMaxWidthProperty); }
-            set { SetValue(SlideInBoxMaxWidthProperty, value); }
+            get { return GetValue(CapturedBoxHeightProperty); }
+            set { SetValue(CapturedBoxHeightProperty, value); }
         }
 
-        public static readonly StyledProperty<bool> IsSlideInBoxAnimatedProperty =
-            AvaloniaProperty.Register<CapturedChessPiecesControl, bool>(nameof(IsSlideInBoxAnimated));
+        public static readonly StyledProperty<int> CapturedBoxMaxWidthProperty =
+            AvaloniaProperty.Register<CapturedChessPiecesControl, int>(nameof(CapturedBoxMaxWidth));
 
-        public bool IsSlideInBoxAnimated
+        public int CapturedBoxMaxWidth
         {
-            get { return GetValue(IsSlideInBoxAnimatedProperty); }
-            set { SetValue(IsSlideInBoxAnimatedProperty, value); }
+            get { return GetValue(CapturedBoxMaxWidthProperty); }
+            set { SetValue(CapturedBoxMaxWidthProperty, value); }
+        }
+
+        public static readonly StyledProperty<bool> CapturedBoxAnimatedProperty =
+            AvaloniaProperty.Register<CapturedChessPiecesControl, bool>(nameof(CapturedBoxAnimated));
+
+        public bool CapturedBoxAnimated
+        {
+            get { return GetValue(CapturedBoxAnimatedProperty); }
+            set { SetValue(CapturedBoxAnimatedProperty, value); }
         }
 
         public static readonly StyledProperty<string> ArrowProperty =
@@ -122,7 +134,7 @@ namespace ChessAvalonia.Controls
         #endregion
 
         #region Methods
-        private void KeepCheckingIsSlideInBoxAnimating()
+        private void KeepCheckingIsCapturedBoxAnimating()
         {
             Task.Run(async () =>
             {
@@ -132,15 +144,15 @@ namespace ChessAvalonia.Controls
                     {
                         DispatchService.Invoke(() =>
                         {
-                            if (slideInBox!.IsAnimating(WidthProperty))
+                            if (capturedBox!.IsAnimating(WidthProperty))
                             {
-                                IsSlideInBoxAnimated = true;
+                                CapturedBoxAnimated = true;
                             }
                             else
                             {
-                                IsSlideInBoxAnimated = false;
+                                CapturedBoxAnimated = false;
                                 if (! IsMouseOverArrowLabel &&
-                                    SlideInBoxWidth == 0)
+                                    CapturedBoxWidth == 0)
                                 {
                                     SideButtonOpacity = 0.0;
                                 }
@@ -152,26 +164,21 @@ namespace ChessAvalonia.Controls
             });
         }
 
-        public void OnSlideInBoxInitialized(object o)
-        {
-            slideInBox = o as Border;
-        }
-
         public void OnArrowLabelPressed()
         {
             
-            if (! isSlideInBoxTriggered)
+            if (! isCapturedBoxTriggered)
             {
-                SlideInBoxWidth = SlideInBoxMaxWidth;
+                CapturedBoxWidth = CapturedBoxMaxWidth;
                 Arrow = ">";
             }
             else
             {
-                SlideInBoxWidth = 0;
+                CapturedBoxWidth = 0;
                 Arrow = "<";
             }
 
-            isSlideInBoxTriggered = !isSlideInBoxTriggered;
+            isCapturedBoxTriggered = !isCapturedBoxTriggered;
         }
 
         public void OnArrowLabelEnter()
@@ -184,8 +191,8 @@ namespace ChessAvalonia.Controls
         {
             IsMouseOverArrowLabel = false;
 
-            if (!IsSlideInBoxAnimated &&
-                SlideInBoxWidth != SlideInBoxMaxWidth)
+            if (!CapturedBoxAnimated &&
+                CapturedBoxWidth != CapturedBoxMaxWidth)
             {
                 SideButtonOpacity = 0.0;
             }
@@ -196,6 +203,14 @@ namespace ChessAvalonia.Controls
             {
                 m.Reply(r);
             });
+        }
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            capturedBox = e.NameScope.Find<Border>("CapturedBox");
+            capturedBox.SetValue(MarginProperty, new Thickness(0, CapturedBoxTopOffset, 0, 0));
         }
         #endregion
 

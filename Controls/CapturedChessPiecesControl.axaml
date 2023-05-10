@@ -11,9 +11,9 @@
 	<Style Selector="controls|CapturedChessPiecesControl">
 		<!-- Set Defaults -->
 		<Setter Property="SideButtonOpacity" Value="0.0" />
-		<Setter Property="SlideInBoxMaxWidth" Value="500" />
-		<Setter Property="SlideInBoxIsVisible" Value="false" />
-		<Setter Property="SlideInBoxHeight" Value="510" />
+		<Setter Property="CapturedBoxMaxWidth" Value="500" />
+		<Setter Property="CapturedBoxIsVisible" Value="false" />
+		<Setter Property="CapturedBoxHeight" Value="510" />
 		<Setter Property="Padding" Value="0" />
 		<Setter Property="Arrow" Value="&lt;" />
 		<Setter Property="Template">
@@ -22,12 +22,11 @@
 					Name="CapturedChessPiecesControlGrid"
 					ColumnDefinitions="*, 20">
 					<Border
-						Name="SlideInBox"
+						Name="CapturedBox"
 						Grid.Column="0"
-						Margin="0, 52, 0, 0"
 						Background="#ffb366"
-						Width="{Binding SlideInBoxWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}, FallbackValue=0}"
-						Height="{TemplateBinding SlideInBoxHeight}"
+						Width="{Binding CapturedBoxWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}, FallbackValue=0}"
+						Height="{TemplateBinding CapturedBoxHeight}"
 						HorizontalAlignment="Right"
 						BorderBrush="SaddleBrown"
 						BorderThickness="1, 1, 0, 1"
@@ -38,11 +37,6 @@
 								<DoubleTransition Property="Width" Duration="0:0:0.2" />
 							</Transitions>
 						</Border.Transitions>
-						<i:Interaction.Behaviors>
-							<ia:EventTriggerBehavior EventName="Initialized">
-								<ia:InvokeCommandAction Command="{Binding OnSlideInBoxInitialized, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}" CommandParameter="{Binding ElementName=SlideInBox}"/>
-							</ia:EventTriggerBehavior>
-						</i:Interaction.Behaviors>
 						<Grid>
                 			<Viewbox
 								Stretch="Fill"
@@ -50,7 +44,7 @@
 								<Grid
 									Margin="0"
 									Width="500"
-									Height="{TemplateBinding SlideInBoxHeight}">
+									Height="{TemplateBinding CapturedBoxHeight}">
 									<ContentPresenter Content="{Binding Content, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:CapturedChessPiecesControl}}" />
 								</Grid>
 							</Viewbox>

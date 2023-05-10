@@ -283,9 +283,8 @@
 			Grid.Row="0"
 			Grid.ColumnSpan="10"
 			Grid.RowSpan="6"
-			SlideInBoxIsVisible="False"
-			SideButtonOpacity="0.0"
-			DataContext="{Binding}">
+			CapturedBoxIsVisible="False"
+			CapturedBoxTopOffset="52">
 			<controls:CapturedChessPiecesControl.Content>
 				<Grid
 					ZIndex="20"
