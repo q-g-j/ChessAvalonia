@@ -1,10 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
+using System.Globalization;
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -13,16 +14,8 @@ using ChessAvalonia.GameLogic;
 using ChessAvalonia.WebApiClient;
 using ChessAvalonia.Services;
 using ChessAvalonia.Models;
-using static ChessAvalonia.Services.MessengerService;
-using System.Diagnostics.CodeAnalysis;
 using ChessAvalonia.Controls;
-using System.Linq;
-using Avalonia.VisualTree;
-using Avalonia.Controls.Presenters;
-using static System.Diagnostics.Debug;
-using System;
-using System.Xml.Linq;
-using System.Globalization;
+using static ChessAvalonia.Services.MessengerService;
 
 namespace ChessAvalonia.ViewModels.Pages.Main;
 
