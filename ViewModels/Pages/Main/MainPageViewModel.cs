@@ -22,6 +22,7 @@ using Avalonia.Controls.Presenters;
 using static System.Diagnostics.Debug;
 using System;
 using System.Xml.Linq;
+using System.Globalization;
 
 namespace ChessAvalonia.ViewModels.Pages.Main;
 
@@ -35,7 +36,13 @@ public partial class MainPageViewModel
         ClientInstance = new(@"http://qgj.myddns.me:7002");
         // ClientInstance = new(@"http://localhost:7002");
 
+        CanvasRectangles = new();
+        CanvasImages = new();
+
+        FillCanvasRectangles();
+
         InitializeMessageHandlers();
+
         StartGame(false);
     }
     #endregion
@@ -109,7 +116,7 @@ public partial class MainPageViewModel
             if (!string.IsNullOrEmpty(value))
             {
                 var split = position.Split(',');
-                pointerPosition = new(int.Parse(split[0]), int.Parse(split[1]));
+                pointerPosition = new((int)double.Parse(split[0], CultureInfo.InvariantCulture), (int)double.Parse(split[1], CultureInfo.InvariantCulture));
             }
         }
     }
@@ -119,9 +126,6 @@ public partial class MainPageViewModel
 
     [ObservableProperty]
     private CapturedChessPieces capturedBlackChessPieces;
-
-    [ObservableProperty]
-    private int testLeft;
 
     [ObservableProperty]
     private ObservableCollection<CanvasImage> canvasImages;
@@ -196,7 +200,6 @@ public partial class MainPageViewModel
             if (!string.IsNullOrEmpty(name))
             {
                 CapturedChessPiecesControlZIndex = -1;
-                TestLeft = 100;
                 currentlyDraggedImageName = name;
                 currentlyDraggedImageOriginalCanvasLeft = -1000;
                 currentlyDraggedImageOriginalCanvasTop = -1000;
@@ -521,13 +524,12 @@ public partial class MainPageViewModel
         GameState.MoveList = new();
 
         SquareDict = new();
+        CreateNotation();
         FillCanvasRectangles();
         FillCanvasImages();
 
         CapturedWhiteChessPieces = new();
         CapturedBlackChessPieces = new();
-
-        CreateNotation();
 
         capturedWhiteCount = 0;
         capturedBlackCount = 0;
@@ -695,7 +697,6 @@ public partial class MainPageViewModel
 
     private void FillCanvasRectangles()
     {
-        CanvasRectangles = new();
         int t = 0;
         for (int col = 8; col > 0; col--, t++)
         {
@@ -737,8 +738,27 @@ public partial class MainPageViewModel
 
     private void FillCanvasImages()
     {
-        CanvasImages = new();
+        CanvasImages.Clear();
+
         int t = 0;
+        //{
+        //    for (int col = 1; col < 9; col++, t++)
+        //    {
+        //        int l = 0;
+        //        for (int row = 8; row > 0; row--, l++)
+        //        {
+        //            CanvasImage cell = new()
+        //            {
+        //                CellName = Coords.IntsToCoordsString(row, col),
+        //                CanvasLeft = l * 60,
+        //                CanvasTop = t * 60,
+        //                Image = ChessPieceImages.Empty,
+        //            };
+
+        //            CanvasImages.Add(cell);
+        //        }
+        //    }
+        //}
         for (int col = 8; col > 0; col--, t++)
         {
             int l = 0;

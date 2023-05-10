@@ -244,7 +244,7 @@
 		<overlays:Menu
 			Grid.Column="0"
 			Grid.Row="0"
-			Grid.ColumnSpan="4"
+			Grid.ColumnSpan="5"
 			Grid.RowSpan="6"
 			ZIndex="20"
 			Margin="45, 102, 0, 0"
