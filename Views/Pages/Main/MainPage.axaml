@@ -34,248 +34,262 @@
 		</ia:EventTriggerBehavior>
 	</i:Interaction.Behaviors>
 
-	<Grid>
-		<Grid
-			Margin="0, 20, 0, 0"
-			Background="Transparent"
-			ColumnDefinitions="10, 40, auto, 40, *"
-			RowDefinitions="*, 50, 40, auto, 40, *, auto">
-			<TextBlock
-				Name="position"
-				Grid.Column="0"
-				Grid.Row="6"
-				Grid.ColumnSpan="5"
-				Text="{Binding Position, Mode=OneWayToSource}"
-				IsVisible="False">
-			</TextBlock>
-			<StackPanel
-				Orientation="Horizontal"
-				Grid.Column="2"
-				Grid.Row="1"
-				VerticalAlignment="Center">
-				<Grid Margin="0">
-					<Button
-						Classes="MenuBarButton"
-						HorizontalAlignment="Center"
-						Command="{Binding MenuButtonPressedCommand}">
-						<Grid Width="32" ColumnDefinitions="*" RowDefinitions="auto, 12, auto, 12, auto" HorizontalAlignment="Center" VerticalAlignment="Center">
-							<Line Classes="MenuBarButtonLine" Grid.Row="0"/>
-							<Line Classes="MenuBarButtonLine" Grid.Row="2"/>
-							<Line Classes="MenuBarButtonLine" Grid.Row="4"/>
-						</Grid>
-					</Button>
-				</Grid>
-				<Label
-					Classes="MoveInfo"
-					Margin="20, 0"
-					VerticalAlignment="Center"
-					Content="{Binding LabelMoveInfo}">
-				</Label>
-			</StackPanel>
-
-			<StackPanel
-				Orientation="Horizontal"
-				ZIndex="-1"
-				Grid.Column="2"
-				Grid.Row="2"
-				Margin="0"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Center">
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[0], FallbackValue=A}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[1], FallbackValue=B}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[2], FallbackValue=C}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[3], FallbackValue=D}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[4], FallbackValue=E}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[5], FallbackValue=F}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[6], FallbackValue=G}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[7], FallbackValue=H}"/>
-			</StackPanel>
-
-			<StackPanel
-				Orientation="Horizontal"
-				ZIndex="1"
-				Grid.Column="2"
-				Grid.Row="4"
-				Margin="0"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Center">
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[0], FallbackValue=A}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[1], FallbackValue=B}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[2], FallbackValue=C}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[3], FallbackValue=D}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[4], FallbackValue=E}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[5], FallbackValue=F}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[6], FallbackValue=G}"/>
-				<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[7], FallbackValue=H}"/>
-			</StackPanel>
-
-			<StackPanel
-				Orientation="Vertical"
-				ZIndex="1"
-				Grid.Column="1"
-				Grid.Row="3"
-				Margin="0"
-				HorizontalAlignment="Right"
-				VerticalAlignment="Center">
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[0], FallbackValue=8}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[1], FallbackValue=7}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[2], FallbackValue=6}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[3], FallbackValue=5}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[4], FallbackValue=4}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[5], FallbackValue=3}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[6], FallbackValue=2}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[7], FallbackValue=1}"/>
-			</StackPanel>
-
-			<StackPanel
-				Orientation="Vertical"
-				ZIndex="1"
-				Grid.Column="3"
-				Grid.Row="3"
-				Margin="0"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Center">
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[0], FallbackValue=8}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[1], FallbackValue=7}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[2], FallbackValue=6}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[3], FallbackValue=5}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[4], FallbackValue=4}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[5], FallbackValue=3}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[6], FallbackValue=2}"/>
-				<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[7], FallbackValue=1}"/>
-			</StackPanel>
-
-			<Grid
-				ZIndex="2"
-				Grid.Column="2"
-				Grid.Row="3"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Stretch"
-				Background="#ffce9e">
-				<Grid
-					ZIndex="3"
-					Background="SaddleBrown"
-					Width="500"
-					Height="500">
-
-					<ItemsControl Items="{Binding CanvasRectangles}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<Canvas
-									Width="480"
-									Height="480">
-									<Canvas.RenderTransform>
-										<RotateTransform
-											Angle="{Binding $parent[UserControl].DataContext.RotationAngle}"
-											CenterX="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterX}"
-											CenterY="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterY}">
-										</RotateTransform>
-									</Canvas.RenderTransform>
-								</Canvas>
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-
-						<ItemsControl.Styles>
-							<Style Selector="ContentPresenter">
-								<Setter Property="Canvas.Left" Value="{Binding CanvasLeft}" />
-								<Setter Property="Canvas.Top" Value="{Binding CanvasTop}" />
-							</Style>
-						</ItemsControl.Styles>
-
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Rectangle Classes="Square" Fill="{Binding BackgroundColor}" />
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-
-					</ItemsControl>
-
-					<ItemsControl Items="{Binding CanvasImages}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<Canvas
-									Width="480"
-									Height="480">
-									<Canvas.RenderTransform>
-										<RotateTransform
-											Angle="{Binding $parent[UserControl].DataContext.RotationAngle}"
-											CenterX="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterX}"
-											CenterY="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterY}">
-										</RotateTransform>
-									</Canvas.RenderTransform>
-									<i:Interaction.Behaviors>
-										<iac:ShowPointerPositionBehavior TargetTextBlock="{Binding #position}"/>
-									</i:Interaction.Behaviors>
-								</Canvas>
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-
-						<ItemsControl.Styles>
-							<Style Selector="ContentPresenter">
-								<Setter Property="Canvas.Left" Value="{Binding CanvasLeft}" />
-								<Setter Property="Canvas.Top" Value="{Binding CanvasTop}" />
-								<Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}" />
-							</Style>
-						</ItemsControl.Styles>
-
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Image Tag="{Binding CellName, Mode=OneWay}" Classes="ImageChessPiece"
-									Source="{Binding Image, Converter={StaticResource BitmapConverter}}" >
-									<Image.RenderTransform>
-										<RotateTransform Angle="{Binding $parent[UserControl].DataContext.RotationAngle}" />
-									</Image.RenderTransform>
-									<i:Interaction.Behaviors>
-										<ia:EventTriggerBehavior EventName="PointerPressed">
-											<ia:InvokeCommandAction Command="{Binding $parent[ItemsControl].DataContext.ChessPiecePointerPressedCommand}">
-												<ia:InvokeCommandAction.CommandParameter>
-													<Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
-												</ia:InvokeCommandAction.CommandParameter>
-											</ia:InvokeCommandAction>
-										</ia:EventTriggerBehavior>
-									</i:Interaction.Behaviors>
-								</Image>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-
-					</ItemsControl>
-				</Grid>
-
-				<overlays:Menu
-					ZIndex="20"
-					Margin="-20, -20, 0, 0"
-					IsVisible="{Binding MenuIsVisible, FallbackValue=false}">
-				</overlays:Menu>
-
-				<overlays:PromotePawn
-					ZIndex="20"
+	<Grid
+		Margin="0, 0, 0, 0"
+		Background="Transparent"
+		ColumnDefinitions="10, 40, auto, 40, *"
+		RowDefinitions="*, 50, 40, auto, 40, *, auto">
+		<TextBlock
+			Name="position"
+			Grid.Column="0"
+			Grid.Row="6"
+			Grid.ColumnSpan="5"
+			Text="{Binding Position, Mode=OneWayToSource}"
+			IsVisible="False">
+		</TextBlock>
+		
+		<StackPanel
+			Orientation="Horizontal"
+			Grid.Column="2"
+			Grid.Row="1"
+			VerticalAlignment="Center">
+			<Grid Margin="0">
+				<Button
+					Classes="MenuBarButton"
 					HorizontalAlignment="Center"
-					VerticalAlignment="Center"
-					IsVisible="{Binding PromotePawnIsVisible, FallbackValue=false}">
-				</overlays:PromotePawn>
-
-				<overlays:OnlineGamePlayerQuit
-					ZIndex="20"
-					HorizontalAlignment="Center"
-					VerticalAlignment="Center"
-					IsVisible="{Binding OnlineGamePlayerQuitIsVisible, FallbackValue=false}">
-				</overlays:OnlineGamePlayerQuit>
-
-				<overlays:ErrorMessage
-					ZIndex="20"
-					HorizontalAlignment="Center"
-					VerticalAlignment="Center"
-					IsVisible="{Binding ErrorMessageIsVisible, FallbackValue=false}">
-				</overlays:ErrorMessage>
+					Command="{Binding MenuButtonPressedCommand}">
+					<Grid Width="32" ColumnDefinitions="*" RowDefinitions="auto, 12, auto, 12, auto" HorizontalAlignment="Center" VerticalAlignment="Center">
+						<Line Classes="MenuBarButtonLine" Grid.Row="0"/>
+						<Line Classes="MenuBarButtonLine" Grid.Row="2"/>
+						<Line Classes="MenuBarButtonLine" Grid.Row="4"/>
+					</Grid>
+				</Button>
 			</Grid>
+			<Label
+				Classes="MoveInfo"
+				Margin="20, 0"
+				VerticalAlignment="Center"
+				Content="{Binding LabelMoveInfo}">
+			</Label>
+		</StackPanel>
+
+		<StackPanel
+			Orientation="Horizontal"
+			ZIndex="-1"
+			Grid.Column="2"
+			Grid.Row="2"
+			Margin="0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center">
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[0], FallbackValue=A}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[1], FallbackValue=B}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[2], FallbackValue=C}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[3], FallbackValue=D}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[4], FallbackValue=E}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[5], FallbackValue=F}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[6], FallbackValue=G}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[7], FallbackValue=H}"/>
+		</StackPanel>
+
+		<StackPanel
+			Orientation="Horizontal"
+			ZIndex="-1"
+			Grid.Column="2"
+			Grid.Row="4"
+			Margin="0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center">
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[0], FallbackValue=A}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[1], FallbackValue=B}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[2], FallbackValue=C}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[3], FallbackValue=D}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[4], FallbackValue=E}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[5], FallbackValue=F}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[6], FallbackValue=G}"/>
+			<Label Classes="HorizontalNotation" Content="{Binding HorizontalNotationList[7], FallbackValue=H}"/>
+		</StackPanel>
+
+		<StackPanel
+			Orientation="Vertical"
+			ZIndex="-1"
+			Grid.Column="1"
+			Grid.Row="3"
+			Margin="0"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Center">
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[0], FallbackValue=8}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[1], FallbackValue=7}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[2], FallbackValue=6}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[3], FallbackValue=5}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[4], FallbackValue=4}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[5], FallbackValue=3}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[6], FallbackValue=2}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[7], FallbackValue=1}"/>
+		</StackPanel>
+
+		<StackPanel
+			Orientation="Vertical"
+			ZIndex="-1"
+			Grid.Column="3"
+			Grid.Row="3"
+			Margin="0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center">
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[0], FallbackValue=8}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[1], FallbackValue=7}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[2], FallbackValue=6}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[3], FallbackValue=5}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[4], FallbackValue=4}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[5], FallbackValue=3}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[6], FallbackValue=2}"/>
+			<Label Classes="VerticalNotation" Content="{Binding VerticalNotationList[7], FallbackValue=1}"/>
+		</StackPanel>
+
+		<Grid
+			Grid.Column="2"
+			Grid.Row="3"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			Background="SaddleBrown"
+			Width="500"
+			Height="500">
+
+			<ItemsControl Items="{Binding CanvasRectangles}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Canvas
+							Width="480"
+							Height="480">
+							<Canvas.RenderTransform>
+								<RotateTransform
+									Angle="{Binding $parent[UserControl].DataContext.RotationAngle}"
+									CenterX="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterX}"
+									CenterY="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterY}">
+								</RotateTransform>
+							</Canvas.RenderTransform>
+						</Canvas>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.Styles>
+					<Style Selector="ContentPresenter">
+						<Setter Property="Canvas.Left" Value="{Binding CanvasLeft}" />
+						<Setter Property="Canvas.Top" Value="{Binding CanvasTop}" />
+					</Style>
+				</ItemsControl.Styles>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Rectangle Classes="Square" Fill="{Binding BackgroundColor}" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+
+			</ItemsControl>
+
+			<ItemsControl
+				Items="{Binding CanvasImages}"
+				ClipToBounds="False"
+				Grid.Column="2"
+				Grid.Row="3">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Canvas
+							Width="480"
+							Height="480">
+							<Canvas.RenderTransform>
+								<RotateTransform
+									Angle="{Binding $parent[UserControl].DataContext.RotationAngle}"
+									CenterX="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterX}"
+									CenterY="{Binding $parent[UserControl].DataContext.ChessCanvasRotationCenterY}">
+								</RotateTransform>
+							</Canvas.RenderTransform>
+							<i:Interaction.Behaviors>
+								<iac:ShowPointerPositionBehavior TargetTextBlock="{Binding #position}"/>
+							</i:Interaction.Behaviors>
+						</Canvas>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.Styles>
+					<Style Selector="ContentPresenter">
+						<Setter Property="Canvas.Left" Value="{Binding CanvasLeft}" />
+						<Setter Property="Canvas.Top" Value="{Binding CanvasTop}" />
+						<Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}" />
+					</Style>
+				</ItemsControl.Styles>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Image Tag="{Binding CellName, Mode=OneWay}" Classes="ImageChessPiece"
+							Source="{Binding Image, Converter={StaticResource BitmapConverter}}" >
+							<Image.RenderTransform>
+								<RotateTransform Angle="{Binding $parent[UserControl].DataContext.RotationAngle}" />
+							</Image.RenderTransform>
+							<i:Interaction.Behaviors>
+								<ia:EventTriggerBehavior EventName="PointerPressed">
+									<ia:InvokeCommandAction Command="{Binding $parent[ItemsControl].DataContext.ChessPiecePointerPressedCommand}">
+										<ia:InvokeCommandAction.CommandParameter>
+											<Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+										</ia:InvokeCommandAction.CommandParameter>
+									</ia:InvokeCommandAction>
+								</ia:EventTriggerBehavior>
+							</i:Interaction.Behaviors>
+						</Image>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+
+			</ItemsControl>
 		</Grid>
+			
+		<overlays:Menu
+			Grid.Column="0"
+			Grid.Row="0"
+			Grid.ColumnSpan="4"
+			Grid.RowSpan="6"
+			ZIndex="20"
+			Margin="45, 102, 0, 0"
+			IsVisible="{Binding MenuIsVisible, FallbackValue=false}">
+		</overlays:Menu>
+
+		<overlays:PromotePawn
+			Grid.Column="2"
+			Grid.Row="3"
+			ZIndex="20"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			IsVisible="{Binding PromotePawnIsVisible, FallbackValue=false}">
+		</overlays:PromotePawn>
+
+		<overlays:OnlineGamePlayerQuit
+			Grid.Column="2"
+			Grid.Row="3"
+			ZIndex="20"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			IsVisible="{Binding OnlineGamePlayerQuitIsVisible, FallbackValue=false}">
+		</overlays:OnlineGamePlayerQuit>
+
+		<overlays:ErrorMessage
+			Grid.Column="2"
+			Grid.Row="3"
+			ZIndex="20"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			IsVisible="{Binding ErrorMessageIsVisible, FallbackValue=false}">
+		</overlays:ErrorMessage>
 
 		<controls:CapturedChessPiecesControl
+			ZIndex="{Binding CapturedChessPiecesControlZIndex}"
+			Grid.Column="0"
+			Grid.Row="0"
+			Grid.ColumnSpan="10"
+			Grid.RowSpan="6"
 			SlideInBoxIsVisible="False"
 			SideButtonOpacity="0.0"
 			DataContext="{Binding}">
 			<controls:CapturedChessPiecesControl.Content>
 				<Grid
+					ZIndex="20"
 					Margin="0, 20, 0, 20"
 					ColumnDefinitions="*"
 					RowDefinitions="30, 10, *"
@@ -388,4 +402,5 @@
 			</controls:CapturedChessPiecesControl.Content>
 		</controls:CapturedChessPiecesControl>
 	</Grid>
+
 </UserControl>

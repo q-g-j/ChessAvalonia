@@ -95,6 +95,8 @@ public partial class MainPageViewModel
     [ObservableProperty]
     private bool slideInBoxIsVisible;
 
+    [ObservableProperty]
+    private int capturedChessPiecesControlZIndex = -1;
 
     private string position;
     public string Position
@@ -193,6 +195,7 @@ public partial class MainPageViewModel
         {
             if (!string.IsNullOrEmpty(name))
             {
+                CapturedChessPiecesControlZIndex = -1;
                 TestLeft = 100;
                 currentlyDraggedImageName = name;
                 currentlyDraggedImageOriginalCanvasLeft = -1000;
@@ -307,6 +310,7 @@ public partial class MainPageViewModel
                     CanvasImages[Coords.CoordsStringToIndex(currentlyDraggedImageName)].ZIndex = 100;
                 }
                 currentlyDraggedImageName = "";
+                CapturedChessPiecesControlZIndex = 20;
                 e.Handled = true;
             }
         }
